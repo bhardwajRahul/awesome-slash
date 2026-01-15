@@ -16,7 +16,7 @@ A Claude marketplace plugin providing powerful, zero-configuration slash command
 claude plugin marketplace add avifenesh/awsome-slash
 
 # Step 2: Install the plugin
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 That's it! Commands are available immediately - no restart needed.
@@ -24,7 +24,7 @@ That's it! Commands are available immediately - no restart needed.
 ### Install from Marketplace (Coming Soon)
 
 ```bash
-claude plugin install awesome-slash-commands
+claude plugin install awsome-slash
 ```
 
 ### Verify Installation
@@ -186,7 +186,7 @@ Merge PRs with comprehensive validation and deployment testing.
 
 ```bash
 # Via Claude marketplace (recommended)
-claude plugin install awesome-slash-commands
+claude plugin install awsome-slash
 
 # Or manual installation
 git clone https://github.com/avifenesh/awsome-slash.git

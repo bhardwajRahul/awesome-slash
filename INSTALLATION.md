@@ -1,6 +1,6 @@
 # Installation Guide
 
-How to install and use awesome-slash-commands in Claude Code.
+How to install and use awsome-slash in Claude Code.
 
 ---
 
@@ -13,7 +13,7 @@ Claude Code installs plugins through marketplaces. Add the repository as a marke
 claude plugin marketplace add avifenesh/awsome-slash
 
 # Step 2: Install the plugin
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 **Or using full URL:**
@@ -22,7 +22,7 @@ claude plugin install awesome-slash-commands@awsome-slash
 claude plugin marketplace add https://github.com/avifenesh/awsome-slash
 
 # Step 2: Install the plugin
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 That's it! Claude will:
@@ -35,7 +35,7 @@ That's it! Claude will:
 # List installed plugins
 claude plugin list
 
-# You should see "awesome-slash-commands"
+# You should see "awsome-slash"
 ```
 
 ---
@@ -45,13 +45,13 @@ claude plugin list
 Once published to the Claude marketplace:
 
 ```bash
-claude plugin install awesome-slash-commands
+claude plugin install awsome-slash
 ```
 
 Or via Claude Web Interface:
 1. Go to Claude Settings
 2. Navigate to "Plugins"
-3. Search for "awesome-slash-commands"
+3. Search for "awsome-slash"
 4. Click "Install"
 
 ---
@@ -69,14 +69,14 @@ git clone https://github.com/avifenesh/awsome-slash.git ~/awsome-slash
 mkdir -p ~/.claude/plugins
 
 # Create symlink
-ln -s ~/awsome-slash ~/.claude/plugins/awesome-slash-commands
+ln -s ~/awsome-slash ~/.claude/plugins/awsome-slash
 ```
 
 ### Set Environment Variable (Optional)
 
 Add to ~/.bashrc or ~/.zshrc:
 ```bash
-export CLAUDE_PLUGIN_ROOT="$HOME/.claude/plugins/awesome-slash-commands"
+export CLAUDE_PLUGIN_ROOT="$HOME/.claude/plugins/awsome-slash"
 ```
 
 ### Restart Claude Code
@@ -147,7 +147,7 @@ Claude should be able to run the platform detection and tell you about your proj
 
 Run this to see what you have:
 ```bash
-node ~/.claude/plugins/awesome-slash-commands/lib/platform/verify-tools.js
+node ~/.claude/plugins/awsome-slash/lib/platform/verify-tools.js
 ```
 
 This will show all detected tools and their versions.
@@ -173,7 +173,7 @@ If you want to customize behavior, you can create a `.claude.config.json` in you
 
 ```json
 {
-  "awesome-slash-commands": {
+  "awsome-slash": {
     "deslop-around": {
       "defaultMode": "report",
       "maxChanges": 5
@@ -311,12 +311,12 @@ Intelligent PR merge with validation.
 
 ### From Marketplace (Future)
 ```bash
-claude plugin update awesome-slash-commands
+claude plugin update awsome-slash
 ```
 
 ### Local Installation
 ```bash
-cd ~/.claude/plugins/awesome-slash-commands
+cd ~/.claude/plugins/awsome-slash
 git pull origin main
 
 # Restart Claude Code
@@ -328,13 +328,13 @@ git pull origin main
 
 ### From Marketplace (Future)
 ```bash
-claude plugin uninstall awesome-slash-commands
+claude plugin uninstall awsome-slash
 ```
 
 ### Local Installation
 ```bash
 # Remove symlink or directory
-rm -rf ~/.claude/plugins/awesome-slash-commands
+rm -rf ~/.claude/plugins/awsome-slash
 
 # Remove from shell config
 # Delete the CLAUDE_PLUGIN_ROOT line from ~/.bashrc or ~/.zshrc
@@ -353,7 +353,7 @@ rm -rf ~/.claude/plugins/awesome-slash-commands
 **Solutions**:
 1. Check installation path:
    ```bash
-   ls -la ~/.claude/plugins/awesome-slash-commands
+   ls -la ~/.claude/plugins/awsome-slash
    ```
 
 2. Verify CLAUDE_PLUGIN_ROOT is set:
@@ -375,7 +375,7 @@ rm -rf ~/.claude/plugins/awesome-slash-commands
 **Solution**:
 ```bash
 # Make sure CLAUDE_PLUGIN_ROOT points to correct location
-export CLAUDE_PLUGIN_ROOT="$HOME/.claude/plugins/awesome-slash-commands"
+export CLAUDE_PLUGIN_ROOT="$HOME/.claude/plugins/awsome-slash"
 
 # Verify files exist
 ls -la $CLAUDE_PLUGIN_ROOT/lib/
@@ -478,6 +478,6 @@ If all checked, you're ready to use the plugin! 🚀
 
 ---
 
-**Enjoy using awesome-slash-commands!**
+**Enjoy using awsome-slash!**
 
 If you find it useful, please ⭐ star the repository on GitHub!

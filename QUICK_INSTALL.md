@@ -1,6 +1,6 @@
 # Quick Install - One Command
 
-## Install awesome-slash-commands in 30 seconds
+## Install awsome-slash in 30 seconds
 
 ### Step 1: Add Marketplace
 
@@ -16,7 +16,7 @@ claude plugin marketplace add https://github.com/avifenesh/awsome-slash
 ### Step 2: Install Plugin
 
 ```bash
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 ### Step 3: Verify Installation
@@ -26,7 +26,7 @@ claude plugin install awesome-slash-commands@awsome-slash
 claude plugin list
 ```
 
-You should see `awesome-slash-commands` in the list.
+You should see `awsome-slash` in the list.
 
 ### Step 3: Test It
 
@@ -156,7 +156,7 @@ gh auth login
 To get the latest version:
 
 ```bash
-claude plugin update awesome-slash-commands
+claude plugin update awsome-slash
 ```
 
 ---
@@ -166,7 +166,7 @@ claude plugin update awesome-slash-commands
 If needed:
 
 ```bash
-claude plugin uninstall awesome-slash-commands
+claude plugin uninstall awsome-slash
 ```
 
 ---

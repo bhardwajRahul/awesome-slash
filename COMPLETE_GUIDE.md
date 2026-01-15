@@ -13,7 +13,7 @@ Based on official Claude Code documentation.
 claude plugin marketplace add avifenesh/awsome-slash
 
 # Step 2: Install the plugin
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 **That's it!** Commands are immediately available. No restart needed.
@@ -23,7 +23,7 @@ claude plugin install awesome-slash-commands@awsome-slash
 While in Claude Code chat:
 ```
 /plugin marketplace add avifenesh/awsome-slash
-/plugin install awesome-slash-commands@awsome-slash
+/plugin install awsome-slash@awsome-slash
 ```
 
 ### Verify Installation
@@ -33,7 +33,7 @@ While in Claude Code chat:
 claude plugin list
 ```
 
-You should see `awesome-slash-commands`.
+You should see `awsome-slash`.
 
 ---
 
@@ -64,7 +64,7 @@ Claude will execute the command automatically!
 
 When you install the plugin, command files are placed in:
 ```
-~/.claude/plugins/awesome-slash-commands/commands/
+~/.claude/plugins/awsome-slash/commands/
   ├── deslop-around.md
   ├── next-task.md
   ├── pr-merge.md
@@ -151,7 +151,7 @@ Found 5 issues:
 The plugin includes:
 
 ```
-awesome-slash-commands/
+awsome-slash/
 ├── commands/              # Slash command files
 │   ├── deslop-around.md   # → /deslop-around
 │   ├── next-task.md       # → /next-task
@@ -368,10 +368,10 @@ git status  # Must show valid repo
 
 ```bash
 # View command source
-cat ~/.claude/plugins/awesome-slash-commands/commands/deslop-around.md
+cat ~/.claude/plugins/awsome-slash/commands/deslop-around.md
 
 # View detection logic
-node ~/.claude/plugins/awesome-slash-commands/lib/platform/detect-platform.js
+node ~/.claude/plugins/awsome-slash/lib/platform/detect-platform.js
 ```
 
 ---
@@ -379,7 +379,7 @@ node ~/.claude/plugins/awesome-slash-commands/lib/platform/detect-platform.js
 ## Update Plugin
 
 ```bash
-claude plugin update awesome-slash-commands
+claude plugin update awsome-slash
 ```
 
 Commands are updated immediately.
@@ -389,7 +389,7 @@ Commands are updated immediately.
 ## Uninstall
 
 ```bash
-claude plugin uninstall awesome-slash-commands
+claude plugin uninstall awsome-slash
 ```
 
 ---

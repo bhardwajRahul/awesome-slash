@@ -13,7 +13,7 @@
 claude plugin marketplace add avifenesh/awsome-slash
 
 # Step 2: Install the plugin
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 ```
 
 **That's it!** The plugin is now installed.
@@ -24,7 +24,7 @@ claude plugin install awesome-slash-commands@awsome-slash
 claude plugin list
 ```
 
-You should see `awesome-slash-commands` listed.
+You should see `awsome-slash` listed.
 
 ---
 
@@ -480,7 +480,7 @@ No vague suggestions!
 ```bash
 # 1. Install (30 seconds)
 claude plugin marketplace add avifenesh/awsome-slash
-claude plugin install awesome-slash-commands@awsome-slash
+claude plugin install awsome-slash@awsome-slash
 
 # 2. Verify (10 seconds)
 claude plugin list

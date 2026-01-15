@@ -7,8 +7,8 @@
   },
   "plugins": [
     {
-      "name": "awesome-slash-commands",
-      "source": "./plugins/awesome-slash-commands",
+      "name": "awsome-slash",
+      "source": "./plugins/awsome-slash",
       "description": "Professional-grade slash commands for Claude Code that work across any project",
       "version": "1.0.0",
       "author": {

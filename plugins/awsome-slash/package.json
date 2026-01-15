@@ -1,5 +1,5 @@
 {
-  "name": "awesome-slash-commands",
+  "name": "awsome-slash",
   "version": "1.0.0",
   "description": "Professional-grade slash commands for Claude Code that work across any project",
   "main": "lib/platform/detect-platform.js",
