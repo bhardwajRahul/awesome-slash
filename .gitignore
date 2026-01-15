@@ -43,6 +43,10 @@ logs/
 .cache/
 .temp/
 
+# Plugin lib directories (use shared lib/ at root)
+# These are copied locally for standalone plugin usage
+plugins/*/lib/
+
 # Package manager locks (keep package-lock.json for reproducibility)
 # Uncomment if using yarn or pnpm exclusively
 # package-lock.json
