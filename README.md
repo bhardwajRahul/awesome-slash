@@ -1,63 +1,125 @@
 # Awesome Slash Commands
 
-> Professional-grade slash commands that work across any project
+> Professional-grade workflow automation for AI coding assistants
 
-A marketplace providing 5 powerful, zero-configuration slash commands for common development workflows. Available for **Claude Code**, **Codex CLI**, and **OpenCode**.
+A cross-platform plugin providing powerful, zero-configuration slash commands for development workflows. Works with **Claude Code**, **Codex CLI**, and **OpenCode**.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](https://github.com/avifenesh/awsome-slash/releases)
 [![GitHub stars](https://img.shields.io/github/stars/avifenesh/awsome-slash?style=flat&color=yellow)](https://github.com/avifenesh/awsome-slash/stargazers)
 [![Claude Code](https://img.shields.io/badge/Claude-Code%20Plugin-blue)](https://code.claude.com/)
 [![Codex CLI](https://img.shields.io/badge/Codex-CLI%20Compatible-green)](https://developers.openai.com/codex/cli)
 [![OpenCode](https://img.shields.io/badge/OpenCode-Compatible-orange)](https://opencode.ai)
-[![GitHub issues](https://img.shields.io/github/issues/avifenesh/awsome-slash)](https://github.com/avifenesh/awsome-slash/issues)
 
-## Multi-Tool Support
+## What's New in v2.0.0
 
-Choose your AI coding tool:
-
-| Tool | Installation | Documentation |
-|------|--------------|---------------|
-| 🤖 **Claude Code** | `claude plugin marketplace add avifenesh/awsome-slash` | ⬇️ Below |
-| 🔮 **Codex CLI** | `./adapters/codex/install.sh` | [Codex Guide](./adapters/codex/README.md) |
-| 🔓 **OpenCode** | `./adapters/opencode/install.sh` | [OpenCode Guide](./adapters/opencode/README.md) |
-
-See [Multi-Tool Adapters](./adapters/README.md) for details.
+- **Master Workflow Orchestrator** - `/next-task` now runs complete task-to-production workflows
+- **State Management** - Resume interrupted workflows with `--resume`
+- **8 Specialist Agents** - Opus for complex tasks, Sonnet for operations
+- **Cross-Platform MCP Server** - Works with OpenCode and Codex CLI
+- **Removed pr-merge** - Functionality absorbed into `/ship` and `/next-task`
 
 ---
 
-## Quick Start (Claude Code)
+## Installation
 
-### 1. Add the Marketplace
+### Claude Code (Native)
 
 ```bash
+# Option 1: Marketplace (recommended)
 claude plugin marketplace add avifenesh/awsome-slash
+claude plugin install next-task@awsome-slash ship@awsome-slash
+
+# Option 2: Direct install
+git clone https://github.com/avifenesh/awsome-slash.git
+./scripts/install/claude.sh
 ```
 
-### 2. Install Plugins (Pick What You Need!)
-
-Each command is a separate plugin. Install only what you need:
+### OpenCode
 
 ```bash
-# Install individual plugins
-claude plugin install deslop-around@awsome-slash      # AI slop cleanup
-claude plugin install next-task@awsome-slash          # Task prioritization
-claude plugin install project-review@awsome-slash     # Multi-agent code review
-claude plugin install ship@awsome-slash               # Complete PR workflow
-claude plugin install pr-merge@awsome-slash           # Intelligent PR merge
-
-# Or install all at once
-claude plugin install deslop-around@awsome-slash next-task@awsome-slash project-review@awsome-slash ship@awsome-slash pr-merge@awsome-slash
+git clone https://github.com/avifenesh/awsome-slash.git
+cd awsome-slash
+./scripts/install/opencode.sh
 ```
 
-Commands are available immediately - no restart needed. Type `/` in Claude Code to see them.
+### Codex CLI
 
-**See [INSTALLATION.md](./INSTALLATION.md) for detailed instructions and troubleshooting.**
+```bash
+git clone https://github.com/avifenesh/awsome-slash.git
+cd awsome-slash
+./scripts/install/codex.sh
+```
 
-## Available Plugins
+---
+
+## Available Commands
+
+### 📋 `/next-task` - Master Workflow Orchestrator
+
+Complete task-to-production automation with state management and resume capability.
+
+```bash
+/next-task                   # Start new workflow with policy selection
+/next-task --status          # Check current workflow state
+/next-task --resume          # Resume from last checkpoint
+/next-task --abort           # Cancel workflow and cleanup
+/next-task bug               # Filter by task type
+```
+
+**17-Phase Workflow:**
+1. Policy Selection → Ask user preferences via checkboxes
+2. Task Discovery → Find and prioritize tasks from GitHub/Linear/PLAN.md
+3. Worktree Setup → Create isolated development environment
+4. Exploration → Deep codebase analysis (opus)
+5. Planning → Design implementation plan (opus)
+6. User Approval → Get plan approval before implementation
+7. Implementation → Execute the plan with quality code (opus)
+8. Review Loop → Multi-agent review until approved (opus)
+9. Ship → PR creation, CI monitoring, merge
+10. Cleanup → Remove worktree, update state
+
+**Features:**
+- Resume capability with `.claude/.workflow-state.json`
+- 8 specialist agents with model optimization
+- Policy-based stopping points (pr-created, merged, deployed, production)
+
+---
+
+### 🚀 `/ship` - Complete PR Workflow
+
+Ship your code from commit to production with full validation and state integration.
+
+```bash
+/ship                        # Default workflow
+/ship --strategy rebase      # Rebase before merge
+/ship --dry-run              # Show plan without executing
+/ship --state-file PATH      # Integrate with next-task workflow
+```
+
+**12-Phase Workflow:**
+1. Pre-flight checks and platform detection
+2. Commit with AI-generated message
+3. Create PR with context
+4. Wait for CI
+5. Multi-agent review (code quality, silent failures, test coverage)
+6. Merge PR
+7. Deploy to development (if multi-branch)
+8. Validate development
+9. Deploy to production
+10. Validate production
+11. Cleanup
+12. Completion report
+
+**Platform Support:**
+- **CI:** GitHub Actions, GitLab CI, CircleCI, Jenkins, Travis CI
+- **Deployment:** Railway, Vercel, Netlify, Fly.io, Platform.sh, Render
+
+---
 
 ### 🧹 `/deslop-around` - AI Slop Cleanup
 
-Remove debugging code, old TODOs, and other AI slop from your codebase.
+Remove debugging code, old TODOs, and AI slop from your codebase.
 
 ```bash
 /deslop-around               # Report mode - analyze only
@@ -65,310 +127,122 @@ Remove debugging code, old TODOs, and other AI slop from your codebase.
 /deslop-around apply src/ 10 # Fix up to 10 issues in src/
 ```
 
-**Category:** Development
-**What it detects:**
+**Detects:**
 - Console debugging (`console.log`, `print()`, `dbg!()`)
 - Old TODOs and commented code
-- Placeholder text ("lorem ipsum", "test test")
-- Empty catch blocks without logging
-- Magic numbers and hardcoded URLs
-- Disabled linters (eslint-disable, #noqa)
-- Trailing whitespace and mixed indentation
-
-**Supports:** Node.js, Python, Rust, Go | Jest, Pytest, Cargo test, Go test
-
----
-
-### 📋 `/next-task` - Intelligent Task Prioritization
-
-Discover what to work on next with AI-powered task analysis.
-
-```bash
-/next-task                   # Get top priority tasks
-/next-task bug               # Filter by keyword
-/next-task --include-blocked # Include blocked tasks
-```
-
-**Category:** Productivity
-**What it does:**
-- Collects tasks from GitHub Issues, Linear (optional), PLAN.md
-- Validates tasks aren't already implemented (checks codebase)
-- Scores by impact, urgency, effort, and dependencies
-- Provides top 5 recommendations with evidence (file:line references)
-- Optionally starts multi-agent implementation workflow
-
-**Requires:** GitHub CLI (`gh`)
-**Optional:** Linear integration, PLAN.md file
+- Placeholder text, magic numbers
+- Empty catch blocks, disabled linters
 
 ---
 
 ### 🔍 `/project-review` - Multi-Agent Code Review
 
-Comprehensive code review with specialized AI agents that iterate until zero issues remain.
+Comprehensive code review with specialized agents that iterate until zero issues.
 
 ```bash
 /project-review              # Full codebase review
 /project-review --recent     # Only recent changes
-/project-review --domain security # Focus area
+/project-review --domain security
 ```
 
-**Category:** Development
-**What it does:**
-- Deploys 8 specialized agents (security, performance, architecture, testing, etc.)
-- Adapts to your tech stack (React hooks, Django ORM, Rust safety, etc.)
-- Finds bugs, security issues, performance problems
-- Auto-fixes issues where possible
-- Iterates up to 5 rounds until zero critical/high issues
-- Tracks tech debt in TECHNICAL_DEBT.md
-
-**Framework Detection:** React, Vue, Angular, Django, FastAPI, Express, Actix, Gin, and more
+**8 Specialized Agents:**
+Security · Performance · Architecture · Testing · Error Handling · Code Quality · Type Safety · Documentation
 
 ---
 
-### 🚀 `/ship` - Complete PR Workflow with Deployment
+## Cross-Platform Integration
 
-Ship your code from commit to production with full validation.
+All platforms share the same workflow tools via MCP (Model Context Protocol):
 
-```bash
-/ship                        # Default merge strategy
-/ship --strategy rebase      # Rebase before merge
-```
+| Tool | Description |
+|------|-------------|
+| `workflow_status` | Get current workflow state |
+| `workflow_start` | Start a new workflow |
+| `workflow_resume` | Resume from checkpoint |
+| `workflow_abort` | Cancel and cleanup |
+| `task_discover` | Find and prioritize tasks |
+| `review_code` | Run multi-agent review |
 
-**Category:** Deployment
-**What it does:**
-1. Commits your changes with AI-generated message
-2. Creates PR with description and context
-3. Waits for CI to pass
-4. Runs subagent quality reviews (code, security, tests)
-5. Merges to main (or master)
-6. Deploys to development (if multi-branch detected)
-7. Validates deployment with health checks
-8. Deploys to production (if stable branch exists)
-9. Validates production deployment
-10. Cleans up branches and worktrees
-11. Auto-rollback on any failure
-
-**Platform Support:**
-- **CI:** GitHub Actions, GitLab CI, CircleCI, Jenkins, Travis CI
-- **Deployment:** Railway, Vercel, Netlify, Fly.io, Platform.sh, Render
-
-**Requires:** Git, GitHub CLI (`gh`)
+See [docs/CROSS_PLATFORM.md](./docs/CROSS_PLATFORM.md) for details.
 
 ---
 
-### 🔀 `/pr-merge` - Intelligent PR Merge Procedure
+## Architecture
 
-Merge PRs with comprehensive validation and deployment testing.
+### State Management
 
-```bash
-/pr-merge                    # Merge current branch's PR
-/pr-merge 123                # Merge PR #123
-/pr-merge 123 --strategy rebase
+Workflows persist state in `.claude/.workflow-state.json`:
+
+```json
+{
+  "workflow": { "id": "...", "status": "in_progress" },
+  "policy": { "taskSource": "gh-issues", "stoppingPoint": "merged" },
+  "task": { "id": "142", "title": "Fix auth timeout" },
+  "phases": { "current": "implementation", "history": [...] },
+  "checkpoints": { "canResume": true, "resumeFrom": "implementation" }
+}
 ```
 
-**Category:** Deployment
-**What it does:**
-1. Addresses all review comments (if not resolved)
-2. Runs subagent validation (code quality, security, test coverage)
-3. Waits for CI to pass
-4. Merges PR to main
-5. Tests development environment (if multi-branch)
-6. Merges to production (if stable branch exists)
-7. Validates production deployment
-8. Auto-rollback on deployment failure
-9. Cleans up feature branches
+### Specialist Agents
 
-**Platform Support:** Same as `/ship`
-**Requires:** Git, GitHub CLI (`gh`)
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| policy-selector | Sonnet | Configure workflow policy |
+| task-discoverer | Sonnet | Find and prioritize tasks |
+| worktree-manager | Sonnet | Create isolated worktrees |
+| ci-monitor | Sonnet | Monitor CI/PR status |
+| exploration-agent | **Opus** | Deep codebase analysis |
+| planning-agent | **Opus** | Design implementation plans |
+| implementation-agent | **Opus** | Execute plans with quality |
+| review-orchestrator | **Opus** | Multi-agent code review |
 
 ---
-
-## Key Features
-
-- **Zero Configuration** - Auto-detects CI platform, deployment setup, project type, package manager
-- **Cross-Platform** - Works on Windows, macOS, and Linux
-- **Generic by Design** - No hardcoded project names, URLs, or paths
-- **Modular Installation** - Install only the plugins you need
-- **Context Efficient** - Optimized to minimize token usage (<50k per command)
-- **Strong Validation** - Agents provide file:line evidence for all findings
-- **Graceful Degradation** - Commands work even when optional tools are missing
-
-## Prerequisites
-
-**Required for all commands:**
-- Claude Code CLI
-- Git
-
-**Required for PR commands (`/ship`, `/pr-merge`):**
-- GitHub CLI (`gh`) with authentication
-  ```bash
-  # macOS: brew install gh
-  # Windows: winget install GitHub.cli
-  # Linux: See https://github.com/cli/cli#installation
-  # Then: gh auth login
-  ```
-
-**Optional (enables additional features):**
-- Node.js 18+ (for platform detection scripts)
-- Railway CLI (for Railway deployments)
-- Vercel CLI (for Vercel deployments)
-- Netlify CLI (for Netlify deployments)
-- Linear integration (for `/next-task`)
-
-## Platform Support
-
-### Auto-Detected CI Platforms
-GitHub Actions · GitLab CI · CircleCI · Jenkins · Travis CI · Generic CI
-
-### Auto-Detected Deployment Platforms
-Railway · Vercel · Netlify · Fly.io · Platform.sh · Render · Generic GitHub Actions
-
-### Auto-Detected Project Types
-Node.js (npm, pnpm, yarn, bun) · Python (pip, poetry, pipenv) · Rust (cargo) · Go (go mod) · Java (Maven, Gradle)
-
-### Framework-Specific Reviews
-**Frontend:** React · Vue · Angular · Svelte
-**Backend:** Django · FastAPI · Express · Actix · Gin
-**Testing:** Jest · Vitest · Pytest · Cargo test · Go test
-
-## How It Works
-
-All commands use a sophisticated zero-configuration detection system:
-
-1. **Platform Detection** - Scans for CI configs (`.github/workflows/`, `.gitlab-ci.yml`), deployment files (`railway.json`, `vercel.json`), and lockfiles
-2. **Tool Verification** - Checks which dev tools are available (`gh`, `railway`, `vercel`, etc.)
-3. **Adaptive Execution** - Runs commands appropriate for your setup
-4. **Graceful Degradation** - Skips optional features when tools are missing
-
-No configuration files needed - everything is detected automatically!
-
-## Examples
-
-### Ship a feature from commit to production
-```bash
-# Make your changes
-git add .
-
-# In Claude Code:
-/ship
-
-# Watch as it:
-# ✓ Commits with AI message
-# ✓ Creates PR with context
-# ✓ Waits for CI (GitHub Actions detected)
-# ✓ Reviews code with agents
-# ✓ Merges to main
-# ✓ Deploys to Railway dev environment
-# ✓ Validates deployment
-# ✓ Merges to stable
-# ✓ Deploys to production
-# ✓ Validates production
-```
-
-### Find and fix code quality issues
-```bash
-/project-review
-
-# Iteration 1: Found 12 issues (4 critical, 8 high)
-# ✓ Fixed critical SQL injection in auth.py:45
-# ✓ Fixed race condition in worker.js:123
-# ✓ Fixed missing error handling in api.ts:67
-#
-# Iteration 2: Found 3 issues (0 critical, 3 high)
-# ✓ Fixed all issues
-#
-# ✓ Zero issues remaining - review complete!
-```
-
-### Clean up debugging code
-```bash
-/deslop-around apply
-
-# Changeset 1/5: Remove console.log statements
-# - src/app.js: Removed 3 console.log calls
-# ✓ Tests passed
-#
-# Changeset 2/5: Remove old TODOs (>90 days)
-# - src/utils.js: Removed 2 stale TODOs
-# ✓ Tests passed
-#
-# Summary: 5 files changed, 23 lines deleted, 0 lines added
-```
-
-### Discover next priority task
-```bash
-/next-task
-
-# Top 5 Priority Tasks:
-#
-# 1. [High Impact] Fix login timeout on mobile
-#    Score: 9.2/10 (Impact: 10, Urgency: 9, Effort: 3)
-#    Status: not-started (no code found)
-#    Evidence: No matches in src/auth/** for "mobile timeout"
-#    Source: GitHub Issue #234
-#
-# 2. [Medium Impact] Add password reset flow
-#    Score: 7.8/10 (Impact: 8, Urgency: 7, Effort: 5)
-#    Status: not-started
-#    Evidence: No PasswordReset component found
-#    Source: GitHub Issue #189
-```
-
-## Documentation
-
-- [Installation Guide](./INSTALLATION.md) - Detailed installation and troubleshooting
-- [Usage Examples](./USAGE_EXAMPLES.md) - Real-world usage scenarios
-- [Complete Guide](./COMPLETE_GUIDE.md) - Comprehensive documentation
-- [Manual Testing](./MANUAL_TESTING.md) - Testing and validation guide
-- [Contributing](./CONTRIBUTING.md) - Contribution guidelines
 
 ## Repository Structure
-
-This repository serves as both a Claude Code marketplace and multi-tool adapter source:
 
 ```
 awsome-slash/
 ├── .claude-plugin/
-│   └── marketplace.json          # Claude Code marketplace manifest
-├── plugins/                      # Claude Code plugins
-│   ├── deslop-around/           # AI slop cleanup plugin
-│   ├── next-task/               # Task prioritization plugin
-│   ├── project-review/          # Code review plugin
-│   ├── ship/                    # PR workflow plugin
-│   └── pr-merge/                # PR merge plugin
-├── adapters/                     # Multi-tool adapters
-│   ├── codex/                   # Codex CLI adapter
-│   │   ├── install.sh           # Installation script
-│   │   └── README.md            # Documentation
-│   └── opencode/                # OpenCode adapter
-│       ├── install.sh           # Installation script
-│       └── README.md            # Documentation
+│   └── marketplace.json      # Claude Code marketplace manifest
+├── plugins/
+│   ├── next-task/           # Master workflow orchestrator
+│   │   ├── commands/
+│   │   └── agents/          # 8 specialist agents
+│   ├── ship/                # PR workflow
+│   ├── deslop-around/       # AI slop cleanup
+│   └── project-review/      # Multi-agent review
+├── lib/
+│   ├── state/               # Workflow state management
+│   ├── platform/            # Auto-detection
+│   └── patterns/            # Code analysis patterns
+├── mcp-server/              # Cross-platform MCP server
+├── scripts/install/         # Platform installers
 └── docs/
 ```
 
-Each Claude plugin contains:
-- `.claude-plugin/plugin.json` - Plugin manifest
-- `commands/*.md` - Slash command definitions
-- `lib/` - Shared detection and pattern libraries
+---
 
-Each adapter provides:
-- `install.sh` - One-command installation
-- `README.md` - Tool-specific documentation
-- Path adjustments for tool compatibility
+## Requirements
 
-## Roadmap
+**Required:**
+- Git
+- Node.js 18+
+- GitHub CLI (`gh`) with authentication
 
-- [x] **Support for Codex CLI and OpenCode** ✓
-- [ ] Support for Cursor and Gemini CLI
-- [ ] BitBucket Pipelines support
-- [ ] Azure DevOps support
-- [ ] AWS CodePipeline support
-- [ ] Custom pattern library system
-- [ ] Optional plugin configuration file
+**For Claude Code:**
+- Claude Code CLI
+
+**For OpenCode:**
+- OpenCode CLI (`opencode`)
+
+**For Codex CLI:**
+- Codex CLI (`codex`)
+
+---
 
 ## Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+Contributions welcome! See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 
@@ -379,12 +253,6 @@ MIT © [Avi Fenesh](https://github.com/avifenesh)
 - **Issues:** https://github.com/avifenesh/awsome-slash/issues
 - **Discussions:** https://github.com/avifenesh/awsome-slash/discussions
 
-## Resources
-
-- [Claude Code Documentation](https://code.claude.com/docs)
-- [Plugin Reference](https://code.claude.com/docs/en/plugins-reference)
-- [Marketplace Guide](https://code.claude.com/docs/en/plugin-marketplaces)
-
 ---
 
-Made with ❤️ for the Claude Code community
+Made with ❤️ for the AI coding community
