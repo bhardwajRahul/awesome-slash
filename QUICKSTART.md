@@ -1,6 +1,6 @@
 # Quick Start - Test in 5 Minutes
 
-The fastest way to test awesome-slash-commands manually.
+The fastest way to test awsome-slash manually.
 
 ---
 
@@ -169,7 +169,7 @@ TODO comments: 1
 
 In Claude Code chat:
 ```
-I have the awesome-slash-commands repository. Can you test if the platform
+I have the awsome-slash repository. Can you test if the platform
 detection works by running:
 node /path/to/awsome-slash/lib/platform/detect-platform.js
 ```
@@ -277,7 +277,7 @@ git init
 
 After 5 minutes, you should have:
 
-- [x] ✅ Cloned awesome-slash-commands repo
+- [x] ✅ Cloned awsome-slash repo
 - [x] ✅ Verified platform detection works
 - [x] ✅ Verified pattern libraries load
 - [x] ✅ Created test project

@@ -1,6 +1,6 @@
 # Manual Testing Guide
 
-How to manually test the awesome-slash-commands in your own projects.
+How to manually test the awsome-slash commands in your own projects.
 
 ---
 
@@ -38,7 +38,7 @@ claude plugin install avifenesh/awsome-slash
 
 ```bash
 # Copy to Claude Code plugins directory
-cp -r awsome-slash ~/.claude/plugins/awesome-slash-commands
+cp -r awsome-slash ~/.claude/plugins/awsome-slash
 ```
 
 ---
