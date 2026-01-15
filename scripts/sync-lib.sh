@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
-# Sync shared lib/ to all plugins for local development/usage
-# Run this after cloning or when lib/ files are updated
+# Sync shared lib/ to all plugins
+# 
+# DEVELOPER TOOL: Run this after modifying files in lib/ to propagate
+# changes to all plugins. Then commit the updated plugin lib/ files.
+#
+# Users don't need to run this - plugin lib/ files are tracked in git.
 
 set -e
 
@@ -30,4 +34,8 @@ for plugin in "${PLUGINS[@]}"; do
 done
 
 echo ""
-echo "Done! All plugins now have local lib/ copies."
+echo "Done! All plugins now have updated lib/ copies."
+echo ""
+echo "Next steps:"
+echo "  git add plugins/*/lib/"
+echo "  git commit -m 'chore: sync lib updates to plugins'"
