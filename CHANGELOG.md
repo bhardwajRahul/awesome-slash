@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.1] - 2026-01-17
+
 ### Fixed
 - **Error Handling**: `readState()` now returns Error object for corrupted JSON files instead of null (#50)
   - Enables distinction between missing files (returns `null`) and corrupted files (returns `Error` with code `ERR_STATE_CORRUPTED`)
