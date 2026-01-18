@@ -6,6 +6,48 @@ See @README.md for project overview and @CONTRIBUTING.md for guidelines.
 
 ---
 
+## Project Purpose & Development Philosophy
+
+### What This Project Is
+
+**awesome-slash is a plugin for OTHER projects** - it provides workflow automation for developers using Claude Code, Codex CLI, and OpenCode in their own repositories.
+
+This is NOT a project where we optimize for internal development convenience. Every decision must be evaluated through the lens of: **"How does this improve the experience for users of the plugin?"**
+
+### Core Priorities (In Order)
+
+1. **User DX** - The developer experience when using this plugin in external projects
+2. **Controlled, worry-free automation** - Users should trust the plugin to run autonomously
+3. **Minimal context/token consumption** - Agents should be efficient, not verbose
+4. **Quality agent output** - Code written by agents must be production-ready
+5. **Simplicity over features** - Remove complexity that doesn't serve users
+
+### Development Approach
+
+When working on this codebase, always ask:
+
+- **"Does this help plugin users?"** - Not internal tooling, not developer convenience here
+- **"Is this simple enough?"** - If it feels overengineered, it probably is
+- **"Will agents using this consume fewer tokens?"** - Efficiency matters
+- **"Does this make the automation more reliable?"** - Trust is everything
+
+### What To Avoid
+
+- **Overengineering** - No config systems nobody asked for, no schemas for the sake of schemas
+- **Internal tooling focus** - We don't optimize for developing THIS repo
+- **Complexity creep** - Every abstraction must justify its existence
+- **Summary files** - Don't create audit/completion/summary files (see Work Guidelines)
+
+### State Management Philosophy
+
+State should be **simple and flat**:
+- `tasks.json` in main project - tracks active worktree/task
+- `flow.json` in worktree - tracks workflow progress
+- No history arrays, no nested objects, no cached settings
+- Policy is per-task, not global
+
+---
+
 ## Release Process
 
 All releases include **both npm publish and GitHub tag**:
