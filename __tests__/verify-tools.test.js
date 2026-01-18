@@ -4,21 +4,16 @@
 
 // Mock child_process
 jest.mock('child_process', () => ({
-  execFileSync: jest.fn(),
-  spawnSync: jest.fn(),
   spawn: jest.fn()
 }));
 
-const { execFileSync, spawnSync, spawn } = require('child_process');
+const { spawn } = require('child_process');
 const { EventEmitter } = require('events');
 
 const {
   checkTool,
-  checkToolAsync,
   verifyTools,
-  verifyToolsAsync,
-  TOOL_DEFINITIONS,
-  _resetDeprecationWarnings
+  TOOL_DEFINITIONS
 } = require('../lib/platform/verify-tools');
 
 describe('verify-tools', () => {
@@ -26,109 +21,7 @@ describe('verify-tools', () => {
     jest.clearAllMocks();
   });
 
-  describe('checkTool (sync)', () => {
-    const isWindows = process.platform === 'win32';
-
-    it('should return available: true with version when tool exists', () => {
-      if (isWindows) {
-        spawnSync.mockReturnValue({
-          stdout: 'git version 2.40.0\n',
-          status: 0
-        });
-      } else {
-        execFileSync.mockReturnValue('git version 2.40.0\n');
-      }
-
-      const result = checkTool('git');
-      expect(result.available).toBe(true);
-      expect(result.version).toBe('git version 2.40.0');
-    });
-
-    it('should return available: false when tool does not exist', () => {
-      if (isWindows) {
-        spawnSync.mockReturnValue({
-          error: new Error('not found'),
-          status: 1
-        });
-      } else {
-        execFileSync.mockImplementation(() => { throw new Error('not found'); });
-      }
-
-      const result = checkTool('nonexistent');
-      expect(result.available).toBe(false);
-      expect(result.version).toBeNull();
-    });
-
-    it('should reject commands with invalid characters', () => {
-      const result = checkTool('rm -rf /');
-      expect(result.available).toBe(false);
-      expect(result.version).toBeNull();
-      expect(execFileSync).not.toHaveBeenCalled();
-      expect(spawnSync).not.toHaveBeenCalled();
-    });
-
-    it('should reject version flags with invalid characters', () => {
-      const result = checkTool('git', '--version; rm -rf /');
-      expect(result.available).toBe(false);
-      expect(result.version).toBeNull();
-      expect(execFileSync).not.toHaveBeenCalled();
-      expect(spawnSync).not.toHaveBeenCalled();
-    });
-
-    describe('comprehensive command injection patterns', () => {
-      const dangerousPatterns = [
-        // Newlines
-        { pattern: 'cmd\n', name: 'LF newline' },
-        { pattern: 'cmd\r', name: 'CR carriage return' },
-        { pattern: 'cmd\r\n', name: 'CRLF Windows newline' },
-        // Null bytes
-        { pattern: 'cmd\x00', name: 'null byte' },
-        // Path traversal
-        { pattern: '../../../bin/sh', name: 'Unix path traversal' },
-        { pattern: '..\\..\\cmd.exe', name: 'Windows path traversal' },
-        // Command substitution
-        { pattern: 'cmd`whoami`', name: 'backtick command substitution' },
-        { pattern: 'cmd$(ls)', name: 'dollar-paren substitution' },
-        { pattern: 'cmd"$(ls)"', name: 'quoted command substitution' },
-        // Quote escaping
-        { pattern: "cmd'test", name: 'single quote' },
-        { pattern: 'cmd"test', name: 'double quote' },
-        // Additional metacharacters
-        { pattern: 'cmd|cat', name: 'pipe' },
-        { pattern: 'cmd||true', name: 'OR operator' },
-        { pattern: 'cmd&&echo', name: 'AND operator' },
-        { pattern: 'cmd>file', name: 'output redirection' },
-        { pattern: 'cmd<file', name: 'input redirection' },
-        { pattern: 'cmd $VAR', name: 'variable expansion' },
-        { pattern: 'cmd*', name: 'glob wildcard' },
-        { pattern: 'cmd?', name: 'single char glob' },
-      ];
-
-      it.each(dangerousPatterns)(
-        'should reject $name: $pattern',
-        ({ pattern }) => {
-          const result = checkTool(pattern);
-          expect(result.available).toBe(false);
-          expect(result.version).toBeNull();
-          expect(execFileSync).not.toHaveBeenCalled();
-          expect(spawnSync).not.toHaveBeenCalled();
-        }
-      );
-
-      it.each(dangerousPatterns)(
-        'should reject $name in version flag: $pattern',
-        ({ pattern }) => {
-          const result = checkTool('git', pattern);
-          expect(result.available).toBe(false);
-          expect(result.version).toBeNull();
-          expect(execFileSync).not.toHaveBeenCalled();
-          expect(spawnSync).not.toHaveBeenCalled();
-        }
-      );
-    });
-  });
-
-  describe('checkToolAsync', () => {
+  describe('checkTool', () => {
     it('should resolve with available: true when tool exists', async () => {
       const mockChild = new EventEmitter();
       mockChild.stdout = new EventEmitter();
@@ -136,11 +29,9 @@ describe('verify-tools', () => {
 
       spawn.mockReturnValue(mockChild);
 
-      const promise = checkToolAsync('node');
+      const promise = checkTool('node');
 
-      // Simulate stdout data
       mockChild.stdout.emit('data', Buffer.from('v20.0.0\n'));
-      // Simulate successful close
       mockChild.emit('close', 0);
 
       const result = await promise;
@@ -155,9 +46,8 @@ describe('verify-tools', () => {
 
       spawn.mockReturnValue(mockChild);
 
-      const promise = checkToolAsync('nonexistent');
+      const promise = checkTool('nonexistent');
 
-      // Simulate error
       mockChild.emit('error', new Error('spawn ENOENT'));
 
       const result = await promise;
@@ -172,7 +62,7 @@ describe('verify-tools', () => {
 
       spawn.mockReturnValue(mockChild);
 
-      const promise = checkToolAsync('failing-tool');
+      const promise = checkTool('failing-tool');
       mockChild.emit('close', 1);
 
       const result = await promise;
@@ -180,8 +70,22 @@ describe('verify-tools', () => {
     });
 
     it('should reject invalid command characters', async () => {
-      const result = await checkToolAsync('rm; cat /etc/passwd');
+      const result = await checkTool('rm; cat /etc/passwd');
       expect(result.available).toBe(false);
+      expect(spawn).not.toHaveBeenCalled();
+    });
+
+    it('should reject commands with invalid characters', async () => {
+      const result = await checkTool('rm -rf /');
+      expect(result.available).toBe(false);
+      expect(result.version).toBeNull();
+      expect(spawn).not.toHaveBeenCalled();
+    });
+
+    it('should reject version flags with invalid characters', async () => {
+      const result = await checkTool('git', '--version; rm -rf /');
+      expect(result.available).toBe(false);
+      expect(result.version).toBeNull();
       expect(spawn).not.toHaveBeenCalled();
     });
 
@@ -201,9 +105,8 @@ describe('verify-tools', () => {
 
         spawn.mockReturnValue(mockChild);
 
-        const promise = checkToolAsync('slow-tool');
+        const promise = checkTool('slow-tool');
 
-        // Fast-forward past the timeout
         jest.advanceTimersByTime(5001);
 
         const result = await promise;
@@ -220,15 +123,13 @@ describe('verify-tools', () => {
 
         spawn.mockReturnValue(mockChild);
 
-        const promise = checkToolAsync('fast-tool');
+        const promise = checkTool('fast-tool');
 
-        // Simulate quick completion
         mockChild.stdout.emit('data', Buffer.from('v1.0.0\n'));
         mockChild.emit('close', 0);
 
         const result = await promise;
 
-        // Advance timers to ensure timeout doesn't fire
         jest.advanceTimersByTime(6000);
 
         expect(mockChild.kill).not.toHaveBeenCalled();
@@ -243,19 +144,61 @@ describe('verify-tools', () => {
 
         spawn.mockReturnValue(mockChild);
 
-        const promise = checkToolAsync('error-tool');
+        const promise = checkTool('error-tool');
 
-        // Simulate error before timeout
         mockChild.emit('error', new Error('spawn failed'));
 
         const result = await promise;
 
-        // Advance timers - kill should not be called since we cleaned up
         jest.advanceTimersByTime(6000);
 
         expect(mockChild.kill).not.toHaveBeenCalled();
         expect(result.available).toBe(false);
       });
+    });
+
+    describe('comprehensive command injection patterns', () => {
+      const dangerousPatterns = [
+        { pattern: 'cmd\n', name: 'LF newline' },
+        { pattern: 'cmd\r', name: 'CR carriage return' },
+        { pattern: 'cmd\r\n', name: 'CRLF Windows newline' },
+        { pattern: 'cmd\x00', name: 'null byte' },
+        { pattern: '../../../bin/sh', name: 'Unix path traversal' },
+        { pattern: '..\\..\\cmd.exe', name: 'Windows path traversal' },
+        { pattern: 'cmd`whoami`', name: 'backtick command substitution' },
+        { pattern: 'cmd$(ls)', name: 'dollar-paren substitution' },
+        { pattern: 'cmd"$(ls)"', name: 'quoted command substitution' },
+        { pattern: "cmd'test", name: 'single quote' },
+        { pattern: 'cmd"test', name: 'double quote' },
+        { pattern: 'cmd|cat', name: 'pipe' },
+        { pattern: 'cmd||true', name: 'OR operator' },
+        { pattern: 'cmd&&echo', name: 'AND operator' },
+        { pattern: 'cmd>file', name: 'output redirection' },
+        { pattern: 'cmd<file', name: 'input redirection' },
+        { pattern: 'cmd $VAR', name: 'variable expansion' },
+        { pattern: 'cmd*', name: 'glob wildcard' },
+        { pattern: 'cmd?', name: 'single char glob' },
+      ];
+
+      it.each(dangerousPatterns)(
+        'should reject $name: $pattern',
+        async ({ pattern }) => {
+          const result = await checkTool(pattern);
+          expect(result.available).toBe(false);
+          expect(result.version).toBeNull();
+          expect(spawn).not.toHaveBeenCalled();
+        }
+      );
+
+      it.each(dangerousPatterns)(
+        'should reject $name in version flag: $pattern',
+        async ({ pattern }) => {
+          const result = await checkTool('git', pattern);
+          expect(result.available).toBe(false);
+          expect(result.version).toBeNull();
+          expect(spawn).not.toHaveBeenCalled();
+        }
+      );
     });
   });
 
@@ -283,35 +226,13 @@ describe('verify-tools', () => {
     });
   });
 
-  describe('verifyTools (sync)', () => {
-    const isWindows = process.platform === 'win32';
-
-    it('should return object with all tool definitions', () => {
-      if (isWindows) {
-        spawnSync.mockReturnValue({ stdout: 'v1.0.0', status: 0 });
-      } else {
-        execFileSync.mockReturnValue('v1.0.0');
-      }
-
-      const result = verifyTools();
-
-      TOOL_DEFINITIONS.forEach(tool => {
-        expect(result).toHaveProperty(tool.name);
-        expect(result[tool.name]).toHaveProperty('available');
-        expect(result[tool.name]).toHaveProperty('version');
-      });
-    });
-  });
-
-  describe('verifyToolsAsync', () => {
+  describe('verifyTools', () => {
     it('should return object with all tool definitions', async () => {
-      // Use process.nextTick for more deterministic async behavior
       spawn.mockImplementation(() => {
         const child = new EventEmitter();
         child.stdout = new EventEmitter();
         child.kill = jest.fn();
 
-        // Use process.nextTick for more deterministic timing than setImmediate
         process.nextTick(() => {
           child.stdout.emit('data', Buffer.from('v1.0.0'));
           child.emit('close', 0);
@@ -320,7 +241,7 @@ describe('verify-tools', () => {
         return child;
       });
 
-      const result = await verifyToolsAsync();
+      const result = await verifyTools();
 
       TOOL_DEFINITIONS.forEach(tool => {
         expect(result).toHaveProperty(tool.name);
@@ -340,9 +261,8 @@ describe('verify-tools', () => {
         return child;
       });
 
-      const result = await verifyToolsAsync();
+      const result = await verifyTools();
 
-      // All tools should have results, even if unavailable
       TOOL_DEFINITIONS.forEach(tool => {
         expect(result).toHaveProperty(tool.name);
         expect(result[tool.name].available).toBe(false);
@@ -353,66 +273,7 @@ describe('verify-tools', () => {
   describe('platform-specific behavior', () => {
     const isWindows = process.platform === 'win32';
 
-    describe('checkTool sync execution', () => {
-      if (isWindows) {
-        it('should use spawnSync on Windows', () => {
-          spawnSync.mockReturnValue({ stdout: 'git version 2.40.0', status: 0 });
-
-          const result = checkTool('git');
-
-          expect(spawnSync).toHaveBeenCalledWith(
-            'git',
-            ['--version'],
-            expect.objectContaining({
-              encoding: 'utf8',
-              shell: true,
-              windowsHide: true
-            })
-          );
-          expect(result.available).toBe(true);
-        });
-
-        it('should pass shell: true option on Windows for .cmd scripts', () => {
-          spawnSync.mockReturnValue({ stdout: 'npm 9.0.0', status: 0 });
-
-          checkTool('npm');
-
-          expect(spawnSync).toHaveBeenCalledWith(
-            'npm',
-            ['--version'],
-            expect.objectContaining({ shell: true })
-          );
-        });
-      } else {
-        it('should use execFileSync on Unix', () => {
-          execFileSync.mockReturnValue('git version 2.40.0');
-
-          const result = checkTool('git');
-
-          expect(execFileSync).toHaveBeenCalledWith(
-            'git',
-            ['--version'],
-            expect.objectContaining({
-              encoding: 'utf8',
-              timeout: 5000
-            })
-          );
-          expect(result.available).toBe(true);
-        });
-
-        it('should not use shell option on Unix for security', () => {
-          execFileSync.mockReturnValue('npm 9.0.0');
-
-          checkTool('npm');
-
-          // Verify execFileSync is called (not shell-based)
-          expect(execFileSync).toHaveBeenCalled();
-          expect(spawnSync).not.toHaveBeenCalled();
-        });
-      }
-    });
-
-    describe('checkToolAsync execution', () => {
+    describe('checkTool execution', () => {
       it('should spawn process with platform-appropriate options', async () => {
         const mockChild = new EventEmitter();
         mockChild.stdout = new EventEmitter();
@@ -420,9 +281,8 @@ describe('verify-tools', () => {
 
         spawn.mockReturnValue(mockChild);
 
-        const promise = checkToolAsync('git');
+        const promise = checkTool('git');
 
-        // Simulate successful response
         mockChild.stdout.emit('data', Buffer.from('git version 2.40.0'));
         mockChild.emit('close', 0);
 
@@ -432,7 +292,6 @@ describe('verify-tools', () => {
         expect(result.available).toBe(true);
 
         if (isWindows) {
-          // On Windows, should use cmd.exe with /c flag
           expect(spawn).toHaveBeenCalledWith(
             'cmd.exe',
             expect.arrayContaining(['/c', 'git', '--version']),
@@ -443,22 +302,28 @@ describe('verify-tools', () => {
     });
 
     describe('tool path validation', () => {
-      it('should accept common tool names without path separators', () => {
-        if (isWindows) {
-          spawnSync.mockReturnValue({ stdout: 'v1.0.0', status: 0 });
-        } else {
-          execFileSync.mockReturnValue('v1.0.0');
-        }
+      it('should accept common tool names without path separators', async () => {
+        spawn.mockImplementation(() => {
+          const child = new EventEmitter();
+          child.stdout = new EventEmitter();
+          child.kill = jest.fn();
+
+          process.nextTick(() => {
+            child.stdout.emit('data', Buffer.from('v1.0.0'));
+            child.emit('close', 0);
+          });
+
+          return child;
+        });
 
         const validTools = ['git', 'node', 'npm', 'docker', 'python3', 'go'];
-        validTools.forEach(tool => {
-          const result = checkTool(tool);
+        for (const tool of validTools) {
+          const result = await checkTool(tool);
           expect(result.available).toBe(true);
-        });
+        }
       });
 
-      it('should reject paths with platform-specific separators', () => {
-        // Both / and \\ should be rejected as they indicate path traversal
+      it('should reject paths with platform-specific separators', async () => {
         const invalidPaths = [
           '/usr/bin/git',
           'C:\\Program Files\\git',
@@ -466,60 +331,91 @@ describe('verify-tools', () => {
           '.\\git'
         ];
 
-        invalidPaths.forEach(path => {
-          const result = checkTool(path);
+        for (const path of invalidPaths) {
+          const result = await checkTool(path);
           expect(result.available).toBe(false);
           expect(result.version).toBeNull();
-        });
+        }
 
-        // Verify no execution attempted
-        expect(execFileSync).not.toHaveBeenCalled();
-        expect(spawnSync).not.toHaveBeenCalled();
+        expect(spawn).not.toHaveBeenCalled();
       });
 
-      it('should accept hyphenated tool names', () => {
-        if (isWindows) {
-          spawnSync.mockReturnValue({ stdout: 'v1.0.0', status: 0 });
-        } else {
-          execFileSync.mockReturnValue('v1.0.0');
-        }
+      it('should accept hyphenated tool names', async () => {
+        spawn.mockImplementation(() => {
+          const child = new EventEmitter();
+          child.stdout = new EventEmitter();
+          child.kill = jest.fn();
+
+          process.nextTick(() => {
+            child.stdout.emit('data', Buffer.from('v1.0.0'));
+            child.emit('close', 0);
+          });
+
+          return child;
+        });
 
         const hyphenatedTools = ['docker-compose', 'git-lfs', 'pre-commit'];
-        hyphenatedTools.forEach(tool => {
-          const result = checkTool(tool);
+        for (const tool of hyphenatedTools) {
+          const result = await checkTool(tool);
           expect(result.available).toBe(true);
-        });
+        }
       });
 
-      it('should accept underscored tool names', () => {
-        if (isWindows) {
-          spawnSync.mockReturnValue({ stdout: 'v1.0.0', status: 0 });
-        } else {
-          execFileSync.mockReturnValue('v1.0.0');
-        }
+      it('should accept underscored tool names', async () => {
+        spawn.mockImplementation(() => {
+          const child = new EventEmitter();
+          child.stdout = new EventEmitter();
+          child.kill = jest.fn();
 
-        const result = checkTool('my_tool');
+          process.nextTick(() => {
+            child.stdout.emit('data', Buffer.from('v1.0.0'));
+            child.emit('close', 0);
+          });
+
+          return child;
+        });
+
+        const result = await checkTool('my_tool');
         expect(result.available).toBe(true);
       });
     });
 
     describe('version flag validation', () => {
-      it('should accept common version flags', () => {
-        if (isWindows) {
-          spawnSync.mockReturnValue({ stdout: 'v1.0.0', status: 0 });
-        } else {
-          execFileSync.mockReturnValue('v1.0.0');
-        }
+      it('should accept common version flags', async () => {
+        spawn.mockImplementation(() => {
+          const child = new EventEmitter();
+          child.stdout = new EventEmitter();
+          child.kill = jest.fn();
+
+          process.nextTick(() => {
+            child.stdout.emit('data', Buffer.from('v1.0.0'));
+            child.emit('close', 0);
+          });
+
+          return child;
+        });
 
         const validFlags = ['--version', '-v', '-V', 'version', '--help'];
-        validFlags.forEach(flag => {
+        for (const flag of validFlags) {
           jest.clearAllMocks();
-          const result = checkTool('git', flag);
+          spawn.mockImplementation(() => {
+            const child = new EventEmitter();
+            child.stdout = new EventEmitter();
+            child.kill = jest.fn();
+
+            process.nextTick(() => {
+              child.stdout.emit('data', Buffer.from('v1.0.0'));
+              child.emit('close', 0);
+            });
+
+            return child;
+          });
+          const result = await checkTool('git', flag);
           expect(result.available).toBe(true);
-        });
+        }
       });
 
-      it('should reject flags with special characters', () => {
+      it('should reject flags with special characters', async () => {
         const invalidFlags = [
           '--version; rm -rf /',
           '-v && cat /etc/passwd',
@@ -527,78 +423,13 @@ describe('verify-tools', () => {
           '`id`'
         ];
 
-        invalidFlags.forEach(flag => {
-          const result = checkTool('git', flag);
+        for (const flag of invalidFlags) {
+          const result = await checkTool('git', flag);
           expect(result.available).toBe(false);
-        });
+        }
 
-        expect(execFileSync).not.toHaveBeenCalled();
-        expect(spawnSync).not.toHaveBeenCalled();
+        expect(spawn).not.toHaveBeenCalled();
       });
-    });
-  });
-
-  describe('deprecation warnings', () => {
-    const isWindows = process.platform === 'win32';
-    let warnSpy;
-
-    beforeEach(() => {
-      warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      _resetDeprecationWarnings();
-      // Set up basic mocks
-      if (isWindows) {
-        spawnSync.mockReturnValue({ stdout: 'version 1.0', status: 0 });
-      } else {
-        execFileSync.mockReturnValue('version 1.0');
-      }
-    });
-
-    afterEach(() => {
-      warnSpy.mockRestore();
-    });
-
-    it('checkTool() warns about deprecation on first call', () => {
-      checkTool('git');
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('DEPRECATED: checkTool()')
-      );
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('Use checkToolAsync() instead')
-      );
-    });
-
-    it('verifyTools() warns about deprecation on first call', () => {
-      verifyTools();
-      expect(warnSpy).toHaveBeenCalledWith(
-        expect.stringContaining('DEPRECATED: verifyTools()')
-      );
-    });
-
-    it('checkTool() warns only once across multiple calls', () => {
-      checkTool('git');
-      checkTool('node');
-      checkTool('npm');
-      const warnings = warnSpy.mock.calls.filter(
-        call => call[0].includes('DEPRECATED: checkTool()')
-      );
-      expect(warnings.length).toBe(1);
-    });
-
-    it('async functions do not emit deprecation warnings', async () => {
-      // Create mock for async
-      const mockChild = new EventEmitter();
-      mockChild.stdout = new EventEmitter();
-      mockChild.kill = jest.fn();
-      spawn.mockReturnValue(mockChild);
-
-      const promise = checkToolAsync('git');
-      mockChild.stdout.emit('data', 'version 1.0');
-      mockChild.emit('close', 0);
-
-      await promise;
-      expect(warnSpy).not.toHaveBeenCalledWith(
-        expect.stringContaining('DEPRECATED: checkToolAsync()')
-      );
     });
   });
 });
