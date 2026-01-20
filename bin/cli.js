@@ -172,7 +172,7 @@ function installForOpenCode(installDir) {
 
   console.log('✅ OpenCode installation complete!');
   console.log(`   Config: ${configPath}`);
-  console.log('   Commands: /next-task, /ship, /deslop-around\n');
+  console.log('   MCP tools: workflow_start, workflow_status, workflow_resume, task_discover, review_code\n');
   return true;
 }
 
@@ -217,7 +217,7 @@ enabled = true
 
   console.log('✅ Codex CLI installation complete!');
   console.log(`   Config: ${configPath}`);
-  console.log('   Commands: $next-task, $ship, $deslop-around (note: $ prefix)\n');
+  console.log('   MCP tools: workflow_start, workflow_status, workflow_resume, task_discover, review_code\n');
   return true;
 }
 
