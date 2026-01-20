@@ -113,7 +113,7 @@ function installDependencies(installDir) {
   }
 }
 
-function installForClaude(installDir) {
+function installForClaude() {
   console.log('\n📦 Installing for Claude Code...\n');
 
   if (!commandExists('claude')) {
@@ -126,10 +126,10 @@ function installForClaude(installDir) {
   }
 
   try {
-    // Add as local marketplace
-    console.log('Adding local marketplace...');
+    // Add GitHub marketplace
+    console.log('Adding marketplace...');
     try {
-      execSync(`claude plugin marketplace add "${installDir}"`, { stdio: 'pipe' });
+      execSync('claude plugin marketplace add avifenesh/awesome-slash', { stdio: 'pipe' });
     } catch {
       // May already exist
     }
@@ -403,17 +403,22 @@ For Claude Code (recommended):
 
   console.log(`\nInstalling for: ${selected.join(', ')}\n`);
 
-  // Download
-  const installDir = getInstallDir();
-  cleanOldInstallation(installDir);
-  copyFromPackage(installDir);
-  installDependencies(installDir);
+  // Only copy to ~/.awesome-slash if OpenCode or Codex selected (they need local files)
+  const needsLocalInstall = selected.includes('opencode') || selected.includes('codex');
+  let installDir = null;
+
+  if (needsLocalInstall) {
+    installDir = getInstallDir();
+    cleanOldInstallation(installDir);
+    copyFromPackage(installDir);
+    installDependencies(installDir);
+  }
 
   // Install for each platform
   for (const platform of selected) {
     switch (platform) {
       case 'claude':
-        installForClaude(installDir);
+        installForClaude();
         break;
       case 'opencode':
         installForOpenCode(installDir);
@@ -425,7 +430,9 @@ For Claude Code (recommended):
   }
 
   console.log('─'.repeat(45));
-  console.log(`\nInstallation directory: ${installDir}`);
+  if (installDir) {
+    console.log(`\nInstallation directory: ${installDir}`);
+  }
   console.log('\nTo update:  npm update -g awesome-slash');
   console.log('To remove:  npm uninstall -g awesome-slash && awesome-slash --remove');
   console.log('\nDocs: https://github.com/avifenesh/awesome-slash');
