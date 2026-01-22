@@ -33,6 +33,10 @@ Thumbs.db
 # Documentation (keep essential only)
 docs/
 agent-docs/
+*-REFERENCE.md
+*-RESEARCH.md
+*-LIBRARY.md
+KNOWLEDGE-LIBRARY.md
 ADAPTER_DESIGN.md
 CONTRIBUTING.md
 MANUAL_TESTING.md
