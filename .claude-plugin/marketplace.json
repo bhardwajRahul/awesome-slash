@@ -26,7 +26,7 @@
     {
       "name": "deslop-around",
       "source": "./plugins/deslop-around",
-      "description": "AI slop cleanup with minimal diffs and behavior preservation",
+      "description": "3-phase AI slop detection: regex patterns (HIGH), multi-pass analyzers (MEDIUM), CLI tools (LOW)",
       "version": "2.6.1",
       "category": "development"
     },
@@ -48,7 +48,7 @@
   "mcpServer": {
     "name": "awesome-slash",
     "source": "./mcp-server",
-    "description": "MCP server for cross-platform integration (OpenCode, Codex CLI)",
-    "tools": ["workflow_status", "workflow_start", "workflow_resume", "workflow_abort", "task_discover", "review_code"]
+    "description": "Cross-platform MCP server with 3-phase slop detection pipeline",
+    "tools": ["workflow_status", "workflow_start", "workflow_resume", "workflow_abort", "task_discover", "review_code", "slop_detect"]
   }
 }
