@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.9.1] - 2025-01-23
+
+### Changed
+- **deslop-around skill** - Refactored to follow skill best practices
+  - Added `scripts/detect.js` CLI runner to invoke pipeline (instead of describing logic for LLM)
+  - Added `references/slop-categories.md` for progressive disclosure
+  - Moved constraints to top with explicit priority order (addresses "lost-in-the-middle")
+  - Added `<output_format>` XML tags for explicit output specification
+  - Reduced skill from 240 lines to 165 lines (~31% smaller)
+
 ## [2.9.0] - 2025-01-23
 
 ### Added
