@@ -32,7 +32,7 @@ try {
 const crossPlatformPatterns = {
   hardcoded_claude_dir: {
     pattern: /\.claude\//,
-    exclude: /AI_STATE_DIR|\$\{.*STATE.*\}|getStateDir\(\)|State directory is platform-aware/i,
+    exclude: /AI_STATE_DIR|\$\{.*STATE.*\}|getStateDir\(\)|State directory is platform-aware|Hardcoded \.claude\/ without/i,
     certainty: 'HIGH',
     issue: 'Hardcoded .claude/ directory',
     fix: 'Use ${STATE_DIR}/ placeholder or getStateDir()'
