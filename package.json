@@ -1,7 +1,7 @@
 {
   "name": "awesome-slash",
   "version": "2.9.1",
-  "description": "Professional-grade slash commands for Claude Code that work across any project",
+  "description": "6 specialized plugins for AI workflow automation - works with Claude Code, OpenCode, and Codex CLI",
   "main": "lib/platform/detect-platform.js",
   "type": "commonjs",
   "bin": {
@@ -50,7 +50,10 @@
     "mcp",
     "developer-tools",
     "opencode",
-    "codex-cli"
+    "codex-cli",
+    "ai-agents",
+    "slop-detection",
+    "pr-automation"
   ],
   "author": {
     "name": "Avi Fenesh",

@@ -1,64 +1,218 @@
-# Awesome Slash Commands
+# awesome-slash
 
-> Professional-grade workflow automation for AI coding assistants
+> Stop babysitting AI agents. Automate your entire workflow.
 
-A cross-platform plugin providing powerful, zero-configuration slash commands for development workflows. Works with **Claude Code**, **Codex CLI**, and **OpenCode**.
+**1307 tests. 7 languages. 21 specialist agents. Production-grade.**
 
 [![npm](https://img.shields.io/npm/v/awesome-slash?color=red)](https://www.npmjs.com/package/awesome-slash)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-2.9.1-blue)](https://github.com/avifenesh/awesome-slash/releases)
 [![GitHub stars](https://img.shields.io/github/stars/avifenesh/awesome-slash?style=flat&color=yellow)](https://github.com/avifenesh/awesome-slash/stargazers)
-[![Claude Code](https://img.shields.io/badge/Claude-Code%20Plugin-blue)](https://docs.anthropic.com/en/docs/claude-code)
-[![Codex CLI](https://img.shields.io/badge/Codex-CLI%20Compatible-green)](https://developers.openai.com/codex/cli)
-[![OpenCode](https://img.shields.io/badge/OpenCode-Compatible-orange)](https://opencode.ai)
 
-> **📋 Disclaimer**: This project originated from personal workflow needs and was made public due to its effective delivery. Usage is entirely at your own responsibility. The maintainers make no guarantees about fitness for any particular purpose. Context/token efficiency has not been formally benchmarked.
+**Claude Code** | **OpenCode** | **Codex CLI**
 
-> **💡 Model Recommendation**: Using **Opus** as the main agent model produces significantly better results and follows workflow phases more tightly. While Sonnet works for simpler tasks, Opus is recommended for complex multi-step workflows.
+[Try It Now](#try-it-now-30-seconds) | [Documentation](./docs/) | [Support](#support)
 
-## What's New in v2.9.1
+---
 
-- **deslop-around Refactor** - Skill refactored to follow best practices with CLI runner and progressive disclosure
+## Try It Now (30 seconds)
 
-## What's New in v2.9.0
+```bash
+# Claude Code
+/plugin marketplace add avifenesh/awesome-slash
+/plugin install deslop-around@awesome-slash
 
-- **Gitignore Support** - File scanning now respects `.gitignore` patterns automatically
-- **Multi-Language Stub Detection** - Python, Rust, Java, Go support with 95% false positive reduction
-- **Java Dead Code Analysis** - Extended dead code detection to Java codebases
-- **Critical Bug Fixes** - Function name extraction, TypeScript matching, bracket balance tracking
+# Then just run:
+/deslop-around
+```
 
-## What's New in v2.8.0
+See what AI slop is hiding in your code. No config. No setup.
 
-- **Complete /enhance Suite** - 7 enhancement analyzers for plugins, agents, prompts, docs, and project memory
-- **Master /enhance Orchestrator** - Run all enhancers in parallel with unified reporting and deduplication
-- **Cross-Platform Validation** - New `npm run validate:cross-platform` for Claude Code, OpenCode, Codex compatibility
-- **21 Specialist Agents** - Up from 16, including 7 new enhancement agents
+---
 
-## What's New in v2.7.0
+## Which Plugin Do You Need?
 
-- **GitHub Issue Progress Comments** - Workflow posts status updates to GitHub issues (start, plan, completion)
-- **Auto-Close Issues** - Issues automatically closed with completion comment when PR merges
-- **Deslop Enhancements** - Added infrastructure-without-implementation and buzzword inflation detection
+| Your Problem | Plugin | What Actually Happens |
+|-------------|--------|----------------------|
+| "I have 50 issues, which first?" | `/next-task` | Discovers → Worktree → Implements → Reviews (no limit) → Ships |
+| "PRs are scary" | `/ship` | Auto-detects CI + deploy platform → Monitors → Auto-rollback if fails |
+| "AI slop everywhere" | `/deslop-around` | 3-phase pipeline: regex (HIGH) → analyzers (MEDIUM) → CLI tools (LOW) |
+| "Need thorough review" | `/project-review` | 8 agents review in parallel until zero critical/high issues |
+| "Docs lie about code" | `/reality-check` | JS collectors + single Opus call. Semantic matching, not string search. |
+| "Prompts need work" | `/enhance` | 5 analyzers, 50+ patterns, certainty-based findings |
 
-## What's New in v2.6.1
+---
 
-- **CLI Installer Fixes** - Fixed OpenCode and Codex installation paths
-- **Codex Skills** - Proper `SKILL.md` format with `name` and `description` fields
-- **Smaller Package** - Removed adapters and dev scripts from npm package
+## The Plugin Marketplace
 
-## What's New in v2.6.0
+### Workflow Automation
 
-- **CLI Installer** - `npm install -g awesome-slash@latest && awesome-slash` for cross-platform setup
-- **Reality Check Refactor** - Replaced 4 LLM agents with JS collectors (~77% token reduction)
-- **Automated Releases** - GitHub Actions workflow with npm provenance
-- **Breaking** - `.claude/reality-check.local.md` settings file no longer used
+<details>
+<summary><strong>/next-task</strong> - Master Workflow Orchestrator</summary>
 
-## What's New in v2.5.1
+**Problem:** You have dozens of issues. Manual workflow is tedious.
 
-- **Platform-Aware State Directories** - State now stored in `.opencode/` for OpenCode, `.codex/` for Codex
-- **Fixed OpenCode/Codex Installers** - Correct config formats and Windows path handling
-- **MCP Server Bug Fixes** - Fixed workflow state references and resume logic
-- **Documentation Updates** - Added note that Codex uses `$` prefix instead of `/`
+**Solution:** Complete task-to-production automation with 14 specialist agents.
+- Discovers tasks from GitHub/GitLab/Linear/local files
+- Creates worktree + branch
+- Implements with quality gates (deslop, test coverage, review)
+- Ships PR with validation
+- **Resume from any checkpoint if interrupted**
+
+```bash
+/next-task              # Start workflow
+/next-task --resume     # Resume from checkpoint
+/next-task --status     # Check progress
+/next-task --abort      # Cancel and cleanup
+```
+
+**18-Phase Workflow:** policy-selection → task-discovery → worktree-setup → exploration → planning → user-approval → implementation → review-loop → delivery-approval → ship-prep → create-pr → ci-wait → comment-fix → merge → production-ci → deploy → production-release → complete
+
+</details>
+
+<details>
+<summary><strong>/ship</strong> - Complete PR Workflow</summary>
+
+**Problem:** PRs sit waiting for CI. Deploys are scary.
+
+**Solution:** Commit → PR → CI → Review → Merge → Deploy, fully automated.
+- Detects your CI (GitHub Actions, GitLab CI, CircleCI, Jenkins, Travis)
+- Detects your deploy platform (Railway, Vercel, Netlify, Fly.io, Render)
+- Monitors CI, addresses review comments
+- Automatic rollback if production fails
+
+```bash
+/ship                   # Full workflow
+/ship --dry-run         # Preview what will happen
+/ship --strategy rebase # Use rebase instead of squash
+```
+
+</details>
+
+### Code Quality
+
+<details>
+<summary><strong>/deslop-around</strong> - AI Slop Detection</summary>
+
+**Problem:** Your codebase is full of console.logs, TODOs, and AI artifacts.
+
+**Solution:** 3-phase detection pipeline with 95% false positive reduction.
+- **Phase 1:** Regex patterns (HIGH certainty) - always runs
+- **Phase 2:** Multi-pass analyzers (MEDIUM certainty) - context-aware
+- **Phase 3:** CLI tools (LOW certainty) - graceful degradation
+- Supports JS/TS, Python, Rust, Go, Java
+
+**Detects:** Console debugging, old TODOs, commented code, placeholder text, magic numbers, empty catch blocks, placeholder functions, excessive documentation, phantom references, buzzword inflation, code smells
+
+```bash
+/deslop-around          # Report only
+/deslop-around apply    # Fix automatically
+/deslop-around apply src/ 10  # Fix 10 issues in src/
+```
+
+</details>
+
+<details>
+<summary><strong>/project-review</strong> - Multi-Agent Code Review</summary>
+
+**Problem:** You need thorough review but don't have time.
+
+**Solution:** 8 specialized agents review until zero issues remain.
+- Security, Performance, Architecture, Testing
+- Error Handling, Code Quality, Type Safety, Documentation
+- Iterates until all critical/high issues resolved
+
+```bash
+/project-review              # Full review
+/project-review --recent     # Only recent changes
+/project-review --domain security  # Focused review
+```
+
+</details>
+
+### Analysis & Intelligence
+
+<details>
+<summary><strong>/reality-check:scan</strong> - Plan Drift Detection</summary>
+
+**Problem:** Your docs say one thing, your code does another.
+
+**Solution:** Deep analysis comparing documentation to actual implementation.
+- Finds issues that should be closed (already done)
+- Finds "done" phases that aren't actually done
+- Identifies release blockers
+- ~77% token reduction vs multi-agent approaches
+
+```bash
+/reality-check:scan          # Full analysis
+/reality-check:scan --depth quick  # Quick scan
+```
+
+</details>
+
+<details>
+<summary><strong>/enhance</strong> - Quality Analyzer Suite</summary>
+
+**Problem:** Your prompts, plugins, and docs need improvement.
+
+**Solution:** 5 specialized enhancers run in parallel.
+- **plugin** - Plugin structures, MCP tools, security patterns
+- **agent** - Agent prompts, frontmatter, tool restrictions
+- **claudemd** - CLAUDE.md/AGENTS.md project memory files
+- **docs** - Documentation structure and RAG optimization
+- **prompt** - General prompt quality and clarity
+
+```bash
+/enhance                     # Run all analyzers
+/enhance --focus=agent       # Specific analyzer
+/enhance --apply             # Apply HIGH certainty fixes
+```
+
+</details>
+
+---
+
+## What Makes It Different
+
+<details>
+<summary><strong>For the curious</strong> - Real engineering under the hood</summary>
+
+**Not another AI wrapper.** Here's what's actually happening:
+
+| Capability | The Detail |
+|------------|------------|
+| **Certainty-Based Detection** | Findings tagged HIGH/MEDIUM/LOW. HIGH = auto-fix safe. LOW = needs judgment. |
+| **Self-Healing Review Loop** | Review-orchestrator has NO iteration limit. Loops until clean. Then runs deslop on the fixes. |
+| **Workflow Enforcement** | SubagentStop hook literally prevents skipping phases. Cannot push before validation. |
+| **Autonomous Validation** | Delivery-validator extracts requirements from task description, maps to changed files, verifies implementation. No human approval needed. |
+| **Token Efficiency** | Compact mode = 60-70% reduction. Reality-check uses JS collectors + single Opus call = 77% reduction. |
+| **ReDoS Hardening** | MAX_PATTERN_CACHE=50, MAX_GLOB_WILDCARDS=10, maxBuffer=10MB. Won't DOS your machine. |
+| **Semantic Matching** | Reality-check compares "user authentication" concept to auth/, login.js, session handling. Not string matching. |
+| **7 Languages** | JS/TS, Python, Rust, Go, Java with language-specific patterns. 2,232 lines of detection rules. |
+
+</details>
+
+---
+
+## How They Work Together
+
+**Use standalone:**
+```bash
+/deslop-around apply    # Just clean up slop
+/ship                   # Just ship this branch
+```
+
+**Use integrated:**
+```
+/next-task picks issue → explores → plans → implements
+    ↓
+deslop-work cleans before review
+    ↓
+review-orchestrator iterates until approved
+    ↓
+/ship creates PR → monitors CI → merges → deploys
+```
+
+**Resume from any checkpoint** if interrupted. State tracked in `.claude/flow.json`.
 
 ---
 
@@ -72,343 +226,37 @@ A cross-platform plugin providing powerful, zero-configuration slash commands fo
 /plugin install ship@awesome-slash
 ```
 
-### All Platforms (npm)
+### Any Platform (npm)
 
 ```bash
-npm install -g awesome-slash@latest
-awesome-slash
+npm install -g awesome-slash && awesome-slash
 ```
 
-Interactive installer for Claude Code, OpenCode, and Codex CLI. Select one or more platforms.
+Interactive installer for Claude Code, OpenCode, and Codex CLI.
 
-```
-Update:  npm update -g awesome-slash
-Remove:  npm uninstall -g awesome-slash
+```bash
+npm update -g awesome-slash       # Update
+npm uninstall -g awesome-slash    # Remove
 ```
 
-**See [docs/INSTALLATION.md](./docs/INSTALLATION.md) for all options.**
+[Full Installation Guide →](./docs/INSTALLATION.md)
 
 ---
 
-## Available Commands
+## Why awesome-slash?
 
-> **Platform Note:** Commands use `/` prefix in Claude Code and OpenCode, but `$` prefix in Codex CLI (e.g., `$next-task` instead of `/next-task`).
-
-### `/next-task` - Master Workflow Orchestrator
-
-Complete task-to-production automation with state management and resume capability.
-
-```bash
-/next-task                        # Start new workflow with policy selection
-/next-task --status               # Check current workflow state
-/next-task --resume               # Resume from last checkpoint
-/next-task --abort                # Cancel workflow and cleanup
-/next-task bug                    # Filter by task type
-```
-
-**Workflow phases (tracked in `.claude/flow.json`):**
-- policy-selection
-- task-discovery
-- worktree-setup
-- exploration
-- planning
-- user-approval
-- implementation
-- review-loop
-- delivery-approval
-- ship-prep
-- create-pr
-- ci-wait
-- comment-fix
-- merge
-- production-ci
-- deploy
-- production-release
-- complete
-
-**Quality gates:**
-- deslop-work
-- test-coverage-checker
-- review-orchestrator
-- delivery-validator
-- docs-updater
-
-**Task Sources:**
-- **GitHub Issues** - Uses `gh` CLI (handles large backlogs with priority filtering)
-- **GitLab Issues** - Uses `glab` CLI
-- **Local files** - Reads from PLAN.md, tasks.md, or TODO.md
-- **Custom CLI** - Any CLI tool (tea, jira-cli, etc.) with auto-discovery
-- **Other** - Describe your source and the agent figures it out
-
-Your source preference is cached in `.claude/sources/preference.json` for fast subsequent runs.
-
-**Notes:**
-- Fully autonomous after plan approval
-- Resume capability with `.claude/flow.json`
-- Policy-based stopping points (pr-created, merged, deployed, production)
-- /ship handles PR creation, CI monitoring, merge, and cleanup
+| Feature | The Reality |
+|---------|-------------|
+| **1307 Tests** | Production-grade. Not a weekend project. |
+| **21 Specialist Agents** | Opus for reasoning, Sonnet for reviews, Haiku for execution |
+| **7 Languages** | JS/TS, Python, Rust, Go, Java with 2,232 lines of patterns |
+| **Zero Config** | Auto-detects CI (5 platforms), deploy (6 platforms), project type |
+| **Resume Anywhere** | Dual state system: tasks.json + flow.json. Exact checkpoint recovery. |
+| **Cross-Platform** | Claude Code, OpenCode, Codex CLI. Same tools, different state dirs. |
 
 ---
 
-### `/ship` - Complete PR Workflow
-
-Ship your code from commit to production with full validation and state integration.
-
-```bash
-/ship                             # Default workflow
-/ship --strategy rebase           # Rebase before merge
-/ship --dry-run                   # Show plan without executing
-/ship --state-file PATH           # Integrate with next-task workflow
-```
-
-**Stages:**
-- Pre-flight checks and platform detection
-- Commit and PR creation
-- CI wait and review loop
-- Merge and (optional) deploy validation
-- Cleanup and completion report
-
-**Platform Support:**
-- **CI:** GitHub Actions, GitLab CI, CircleCI, Jenkins, Travis CI
-- **Deployment:** Railway, Vercel, Netlify, Fly.io, Platform.sh, Render
-
----
-
-### `/deslop-around` - AI Slop Cleanup
-
-Remove debugging code, old TODOs, and AI slop from your codebase with a 3-phase detection pipeline.
-
-```bash
-/deslop-around                    # Report mode - analyze only
-/deslop-around apply              # Apply fixes with verification
-/deslop-around apply src/ 10      # Fix up to 10 issues in src/
-```
-
-**Architecture:**
-- **Phase 1** - Built-in regex patterns (HIGH certainty)
-- **Phase 2** - Multi-pass analyzers (MEDIUM certainty)
-- **Phase 3** - Optional CLI tools (LOW certainty, graceful degradation)
-  - JavaScript/TypeScript: jscpd, madge, escomplex
-  - Python: pylint, radon
-  - Go: golangci-lint
-  - Rust: clippy
-
-**Thoroughness levels:**
-- `quick` - Phase 1 only (fastest)
-- `normal` - Phase 1 + Phase 2 (default)
-- `deep` - Phase 1 + Phase 2 + Phase 3 (if tools available)
-
-**Detects:**
-- Console debugging (`console.log`, `print()`, `dbg!()`)
-- Old TODOs and commented code
-- Placeholder text, magic numbers
-- Empty catch blocks, disabled linters
-- Placeholder functions (`return 0`, `todo!()`, `raise NotImplementedError`)
-- Excessive documentation (JSDoc >3x function body)
-- Phantom references (issue/PR mentions, file path references in comments)
-- Infrastructure components configured but never used (unused DB clients, caches, API clients)
-- Code smells: boolean blindness, message chains, mutable globals, dead code, shotgun surgery
-- Buzzword inflation (quality claims without evidence)
-
----
-
-### `/project-review` - Multi-Agent Code Review
-
-Comprehensive code review with specialized agents that iterate until zero issues.
-
-```bash
-/project-review                   # Full codebase review
-/project-review --recent          # Only recent changes
-/project-review --domain security # Domain-focused review
-```
-
-**Review domains:**
-Security, Performance, Architecture, Testing, Error Handling, Code Quality, Type Safety, Documentation
-
----
-
-### `/update-docs-around` - Documentation Sync
-
-Sync documentation with actual code state across the repository.
-
-```bash
-/update-docs-around               # Report mode - analyze only
-/update-docs-around --apply       # Apply safe fixes
-/update-docs-around docs/ --apply # Sync specific directory
-```
-
-**Checks:**
-- Outdated code references in documentation
-- Invalid syntax in code examples
-- Missing CHANGELOG entries
-- Version mismatches
-- Broken file/import paths
-
----
-
-### `/delivery-approval` - Delivery Validation
-
-Validate task completion and approve for shipping (standalone or part of workflow).
-
-```bash
-/delivery-approval                # Validate current work
-/delivery-approval --task-id 142  # Validate specific task
-/delivery-approval --verbose      # Show detailed check output
-```
-
-**Validation checks:**
-- Tests pass
-- Build passes
-- Lint passes
-- Type check passes
-- Task requirements met
-
----
-
-### `/reality-check:scan` - Plan Drift Detection
-
-Deep repository analysis to identify where documented plans diverge from actual code reality.
-
-```bash
-/reality-check:scan                        # Full scan (default)
-/reality-check:scan --sources github,docs  # Specific sources
-/reality-check:scan --depth quick          # Quick scan
-```
-
-**Architecture:**
-- **JavaScript collectors** - Pure JS data collection (no LLM overhead)
-- **Single Opus call** - Deep semantic analysis with full context
-- **~77% token reduction** - Efficient compared to multi-agent approach
-
-
-### `/enhance` - Master Enhancement Orchestrator
-
-Run all enhancement analyzers in parallel and generate a unified report.
-
-```bash
-/enhance                          # Full analysis of current directory
-/enhance --focus=agent            # Run specific enhancer only
-/enhance --apply                  # Apply auto-fixes for HIGH certainty issues
-/enhance plugins/ --verbose       # Analyze with all issues shown
-```
-
-**Enhancers:**
-- plugin - Plugin structures, MCP tools, security patterns
-- agent - Agent prompts, frontmatter, tool restrictions
-- claudemd - CLAUDE.md/AGENTS.md project memory files
-- docs - Documentation structure and RAG optimization
-- prompt - General prompt quality and clarity
-
-**Output:**
-- Unified report with findings from all enhancers
-- Deduplicated issues sorted by certainty level
-- Auto-fixable issues highlighted
-- Clear executive summary with counts
-
----
-
-### Focused Enhancers
-
-> **Note:** Individual enhancers can be run via `/enhance --focus=TYPE` or the shorthand `/enhance:TYPE`. Both are equivalent.
-
-#### `/enhance:plugin` - Plugin Structure Analyzer
-
-Analyze plugin structures, MCP tools, and security patterns against best practices.
-
-```bash
-/enhance --focus=plugin           # Via master command (recommended)
-/enhance:plugin                   # Shorthand syntax
-/enhance:plugin next-task         # Analyze specific plugin
-/enhance:plugin --fix             # Apply HIGH certainty auto-fixes
-```
-
-**Checks:**
-- plugin.json structure and version consistency
-- MCP tool definitions
-- Security patterns
-- Tool over-exposure
-
-#### `/enhance:agent` - Agent Prompt Optimizer
-
-Analyze agent prompt files for prompt engineering best practices.
-
-```bash
-/enhance --focus=agent            # Via master command (recommended)
-/enhance:agent                    # Shorthand syntax
-/enhance:agent exploration-agent  # Analyze specific agent
-/enhance:agent --fix              # Apply auto-fixes
-```
-
-**Detects:**
-- Missing frontmatter (name, description, tools, model)
-- Unrestricted tool access
-- Chain-of-thought appropriateness
-- Anti-patterns and prompt bloat
-
-#### `/enhance:docs` - Documentation Optimizer
-
-Analyze documentation for readability and RAG optimization.
-
-```bash
-/enhance --focus=docs             # Via master command (recommended)
-/enhance:docs                     # Shorthand syntax
-/enhance:docs --ai                # AI-only mode (aggressive RAG optimization)
-/enhance:docs docs/ --fix         # Apply fixes to docs directory
-```
-
-**Modes:**
-- `--both` (default) - Balance readability with AI-friendliness
-- `--ai` - Aggressive RAG optimization for agent-docs
-
-**Checks:**
-- Broken links and inconsistent headings
-- RAG chunking (AI mode)
-- Token efficiency (AI mode)
-- Structure and organization
-
-#### `/enhance:claudemd` - Project Memory Optimizer
-
-Analyze CLAUDE.md/AGENTS.md for optimization opportunities.
-
-```bash
-/enhance --focus=claudemd         # Via master command (recommended)
-/enhance:claudemd                 # Shorthand syntax
-/enhance:claudemd /path/to/proj   # Analyze specific project
-/enhance:claudemd --verbose       # Show all issues
-```
-
-**Checks:**
-- Critical rules, architecture, key commands sections
-- File and command reference validation
-- Token efficiency and README duplication
-- Cross-platform compatibility
-- WHY explanations for rules
-
-#### `/enhance:prompt` - Prompt Quality Analyzer
-
-Analyze general prompts for prompt engineering best practices.
-
-```bash
-/enhance --focus=prompt           # Via master command (recommended)
-/enhance:prompt                   # Shorthand syntax
-/enhance:prompt my-prompt.md      # Analyze specific prompt
-/enhance:prompt prompts/ --fix    # Apply fixes to prompts directory
-```
-
-**Differentiation:**
-- Use `/enhance:prompt` for general prompts, system prompts, templates
-- Use `/enhance:agent` for agent files with YAML frontmatter
-
-**Detects:**
-- Vague instructions and negative-only constraints
-- Missing XML structure and examples
-- Context gaps (WHY explanations, priority order)
-- Output format issues
-- Anti-patterns (redundant CoT, prompt bloat)
-
----
-
-## Cross-Platform Integration
+## Cross-Platform Support
 
 All platforms share the same workflow tools via MCP (Model Context Protocol):
 
@@ -421,135 +269,15 @@ All platforms share the same workflow tools via MCP (Model Context Protocol):
 | `task_discover` | Find and prioritize tasks |
 | `review_code` | Run pattern-based code review |
 | `slop_detect` | Detect AI slop patterns |
-| `enhance_analyze` | Analyze plugins, agents, docs for enhancements |
+| `enhance_analyze` | Analyze plugins, agents, docs |
 
-See [docs/CROSS_PLATFORM.md](./docs/CROSS_PLATFORM.md) for details.
-
----
-
-## Architecture
-
-### State Management
-
-Simple state tracking with platform-aware directories:
+**Platform Note:** Commands use `/` prefix in Claude Code and OpenCode, but `$` prefix in Codex CLI.
 
 | Platform | State Directory |
 |----------|-----------------|
 | Claude Code | `.claude/` |
 | OpenCode | `.opencode/` |
 | Codex CLI | `.codex/` |
-
-Override with `AI_STATE_DIR` environment variable.
-
-**Main project: `{state-dir}/tasks.json`** - Tracks active worktree/task:
-```json
-{
-  "active": {
-    "worktree": "../project-task-123",
-    "branch": "feature/123-fix-auth",
-    "taskId": "123",
-    "taskTitle": "Fix auth timeout"
-  }
-}
-```
-
-**Worktree: `{state-dir}/flow.json`** - Tracks workflow progress:
-```json
-{
-  "task": { "id": "123", "title": "Fix auth timeout" },
-  "policy": { "stoppingPoint": "merged" },
-  "phase": "implementation",
-  "status": "in_progress",
-  "exploration": { "keyFiles": [...] },
-  "plan": { "steps": [...] },
-  "pr": { "number": 456, "url": "..." }
-}
-```
-
-**Source Preferences: `{state-dir}/sources/preference.json`** - Caches task source selection:
-```json
-{
-  "source": "custom",
-  "type": "cli",
-  "tool": "tea",
-  "savedAt": "2025-01-19T08:00:00.000Z"
-}
-```
-
-### Specialist Agents (21 Total)
-
-**Core Workflow (Opus - Complex Tasks):**
-| Agent | Purpose |
-|-------|---------|
-| exploration-agent | Deep codebase analysis |
-| planning-agent | Design implementation plans |
-| implementation-agent | Execute plans with quality code |
-| review-orchestrator | Multi-agent code review with iteration |
-
-**Quality Gates (Sonnet - Side Reviewers):**
-| Agent | Purpose |
-|-------|---------|
-| deslop-work | Clean AI slop from new work (committed but unpushed) |
-| test-coverage-checker | Validate new work has test coverage |
-| delivery-validator | Autonomous delivery validation (not manual) |
-| docs-updater | Update docs related to changes |
-
-**Operational (Sonnet - Infrastructure):**
-| Agent | Purpose |
-|-------|---------|
-| task-discoverer | Find and prioritize tasks (multi-source) |
-| worktree-manager | Create isolated worktrees |
-| ci-monitor | Monitor CI/PR status with sleep loops |
-| ci-fixer | Fix CI failures and review comments |
-| simple-fixer | Execute predefined code fixes |
-
-**Reality Check (Opus - Plan Drift Detection):**
-| Agent | Purpose |
-|-------|---------|
-| plan-synthesizer | Deep semantic analysis with full context (opus) |
-
-*Data collection handled by JavaScript collectors (lib/reality-check/collectors.js)*
-
-**Enhancement (Mixed Models):**
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| enhancement-orchestrator | opus | Coordinate parallel enhancer execution and aggregate results |
-| enhancement-reporter | sonnet | Generate unified reports with deduplication |
-| plugin-enhancer | sonnet | Analyze plugin structures and MCP tools |
-| agent-enhancer | opus | Analyze agent prompts and frontmatter |
-| docs-enhancer | sonnet | Analyze documentation for RAG optimization |
-| claudemd-enhancer | sonnet | Analyze CLAUDE.md/AGENTS.md files |
-| prompt-enhancer | opus | Analyze general prompts for quality |
-
-
----
-
-## Repository Structure
-
-```
-awesome-slash/
-|-- .claude-plugin/
-|   |-- marketplace.json      # Claude Code marketplace manifest
-|-- plugins/
-|   |-- next-task/             # Master workflow orchestrator
-|   |   |-- commands/          # next-task, update-docs-around, delivery-approval
-|   |   |-- agents/            # Specialist agents
-|   |   |-- hooks/             # SubagentStop hooks for workflow automation
-|   |-- ship/                  # PR workflow
-|   |-- deslop-around/         # AI slop cleanup
-|   |-- project-review/        # Multi-agent review
-|   |-- reality-check/         # Plan drift detection
-|-- lib/
-|   |-- config/                # Configuration management
-|   |-- state/                 # Workflow state management
-|   |-- sources/               # Multi-source task discovery
-|   |-- platform/              # Auto-detection
-|   |-- patterns/              # Code analysis patterns
-|   |-- utils/                 # Shell escaping and context optimization
-|-- mcp-server/                # Cross-platform MCP server
-|-- scripts/install/           # Platform installers
-|-- docs/
-```
 
 ---
 
@@ -559,33 +287,30 @@ awesome-slash/
 - Git
 - Node.js 18+
 
-**Required for GitHub-backed workflows:**
+**For GitHub workflows:**
 - GitHub CLI (`gh`) with authentication
 
-**For Claude Code:**
-- Claude Code CLI
-
-**For OpenCode:**
-- OpenCode CLI (`opencode`)
-
-**For Codex CLI:**
-- Codex CLI (`codex`)
+**For GitLab workflows:**
+- GitLab CLI (`glab`) with authentication
 
 ---
 
-## Contributing
+## Documentation
 
-Contributions welcome. See [CONTRIBUTING.md](./CONTRIBUTING.md).
+- [Installation](./docs/INSTALLATION.md) - All install methods
+- [Usage Guide](./docs/USAGE.md) - Examples and workflows
+- [Architecture](./docs/ARCHITECTURE.md) - Technical details
+- [Cross-Platform](./docs/CROSS_PLATFORM.md) - OpenCode/Codex setup
 
-## License
-
-MIT - [Avi Fenesh](https://github.com/avifenesh)
+---
 
 ## Support
 
-- **Issues:** https://github.com/avifenesh/awesome-slash/issues
-- **Discussions:** https://github.com/avifenesh/awesome-slash/discussions
+- **Issues:** [github.com/avifenesh/awesome-slash/issues](https://github.com/avifenesh/awesome-slash/issues)
+- **Discussions:** [github.com/avifenesh/awesome-slash/discussions](https://github.com/avifenesh/awesome-slash/discussions)
 
 ---
 
-Made with care for the AI coding community
+> **Model Recommendation:** Using **Opus** as the main agent model produces significantly better results. While Sonnet works for simpler tasks, Opus is recommended for complex multi-step workflows.
+
+Made by [Avi Fenesh](https://github.com/avifenesh) | MIT License
