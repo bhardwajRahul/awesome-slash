@@ -391,42 +391,29 @@ Select a task (1-5) or provide a custom task:
 **CRITICAL**: You MUST use AskUserQuestion here - do NOT present tasks as text and ask for typed input.
 
 ```javascript
-// Helper to truncate label to 30 chars (OpenCode limit)
+// CRITICAL: All labels MUST be max 30 characters (OpenCode enforces this limit)
+// Use this helper for EVERY option label:
 function truncateLabel(num, title) {
   const prefix = `#${num}: `;
   const maxTitleLen = 30 - prefix.length;
-  const truncatedTitle = title.length > maxTitleLen
-    ? title.substring(0, maxTitleLen - 1) + '…'
-    : title;
-  return prefix + truncatedTitle;
+  return title.length > maxTitleLen
+    ? prefix + title.substring(0, maxTitleLen - 1) + '…'
+    : prefix + title;
 }
 
+// Build options array - apply truncateLabel to ALL tasks
+const options = topTasks.slice(0, 5).map(task => ({
+  label: truncateLabel(task.number, task.title),  // MAX 30 CHARS!
+  description: `Score: ${task.score} | ${(task.labels || []).slice(0, 2).join(', ')}`
+}));
+
 AskUserQuestion({
-  questions: [
-    {
-      header: "Select Task",
-      question: "Which task should I work on?",
-      options: [
-        {
-          label: truncateLabel(task1.number, task1.title),
-          description: `Score: ${score1} | ${task1.labels.slice(0, 3).join(', ')}`
-        },
-        {
-          label: truncateLabel(task2.number, task2.title),
-          description: `Score: ${score2} | ${task2.labels.slice(0, 3).join(', ')}`
-        },
-        {
-          label: truncateLabel(task3.number, task3.title),
-          description: `Score: ${score3} | ${task3.labels.slice(0, 3).join(', ')}`
-        },
-        {
-          label: truncateLabel(task4.number, task4.title),
-          description: `Score: ${score4} | ${task4.labels.slice(0, 3).join(', ')}`
-        }
-      ],
-      multiSelect: false
-    }
-  ]
+  questions: [{
+    header: "Select Task",
+    question: "Which task should I work on?",
+    options: options,  // All labels already truncated to 30 chars
+    multiSelect: false
+  }]
 })
 ```
 
