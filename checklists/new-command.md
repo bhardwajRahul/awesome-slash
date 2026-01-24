@@ -66,13 +66,13 @@ File: `bin/cli.js`
 Add command mappings for OpenCode and Codex:
 
 ```javascript
-// OpenCode mappings (~line 218)
+// Search: OPENCODE_COMMAND_MAPPINGS
 const commandMappings = [
   // ... existing
   ['new-command.md', 'plugin-name', 'new-command.md'],
 ];
 
-// Codex skill mappings (~line 476) - MUST include trigger phrases!
+// Search: CODEX_SKILL_MAPPINGS - MUST include trigger phrases!
 const skillMappings = [
   // ... existing
   ['new-command', 'plugin-name', 'new-command.md',

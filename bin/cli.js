@@ -134,7 +134,7 @@ function installForClaude() {
       // May already exist
     }
 
-    // Install or update plugins
+    // PLUGINS_ARRAY - Install or update plugins
     const plugins = ['next-task', 'ship', 'deslop-around', 'project-review', 'reality-check', 'enhance'];
     for (const plugin of plugins) {
       console.log(`  Installing ${plugin}...`);
@@ -232,7 +232,7 @@ function installForOpenCode(installDir) {
     fs.rmSync(wrongDir, { recursive: true, force: true });
   }
 
-  // Sync command files (matching install.sh mappings)
+  // OPENCODE_COMMAND_MAPPINGS - Sync command files
   const commandMappings = [
     ['deslop-around.md', 'deslop-around', 'deslop-around.md'],
     ['enhance.md', 'enhance', 'enhance.md'],
@@ -470,8 +470,7 @@ AI_STATE_DIR = ".codex"
   }
 
   // Skill mappings: [skillName, plugin, sourceFile, description]
-  // Codex skills require SKILL.md with name and description in YAML frontmatter
-  // IMPORTANT: Descriptions must include trigger phrases per Codex best practices
+  // CODEX_SKILL_MAPPINGS - Skills with trigger-phrase descriptions
   // Format: "Use when user asks to 'phrase1', 'phrase2'. Description of what it does."
   const skillMappings = [
     ['enhance', 'enhance', 'enhance.md',

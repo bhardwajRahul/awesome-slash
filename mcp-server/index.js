@@ -31,7 +31,7 @@ const enhance = require('../lib/enhance/index.js');
 // Plugin root for relative paths
 const PLUGIN_ROOT = process.env.PLUGIN_ROOT || path.join(__dirname, '..');
 
-// Define available tools
+// MCP_TOOLS_ARRAY - Define available tools
 const TOOLS = [
   {
     name: 'workflow_status',
@@ -812,7 +812,8 @@ const toolHandlers = {
 
 // Create and run server
 async function main() {
-  const server = new Server(
+  // MCP_SERVER_VERSION - Update on release
+const server = new Server(
     {
       name: 'awesome-slash',
       version: '2.9.1',

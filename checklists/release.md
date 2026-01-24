@@ -14,7 +14,7 @@ grep -r '"version"' package.json .claude-plugin/ plugins/*/.claude-plugin/ mcp-s
 - [ ] `package.json` → `"version": "X.Y.Z"`
 - [ ] `.claude-plugin/plugin.json` → `"version": "X.Y.Z"`
 - [ ] `.claude-plugin/marketplace.json` → `"version"` (6 occurrences)
-- [ ] `mcp-server/index.js` → `version: 'X.Y.Z'` (~line 668)
+- [ ] `mcp-server/index.js` → `version: 'X.Y.Z'` (search: MCP_SERVER_VERSION)
 - [ ] `README.md` → Version badge + "What's New" section
 - [ ] `plugins/next-task/.claude-plugin/plugin.json`
 - [ ] `plugins/ship/.claude-plugin/plugin.json`
@@ -27,8 +27,8 @@ grep -r '"version"' package.json .claude-plugin/ plugins/*/.claude-plugin/ mcp-s
 
 If adding a NEW plugin (not just updating):
 
-- [ ] `bin/cli.js` → Add plugin name to `plugins` array (~line 138)
-- [ ] `bin/cli.js` → Update console output message (~line 155)
+- [ ] `bin/cli.js` → Add plugin name to `plugins` array (search: PLUGINS_ARRAY)
+- [ ] `bin/cli.js` → Update console output messages for OpenCode and Codex
 - [ ] `docs/INSTALLATION.md` → Add `/plugin install <name>@awesome-slash` commands
 - [ ] `.claude-plugin/marketplace.json` → Add new plugin entry to `plugins` array
 - [ ] `plugins/<name>/.claude-plugin/plugin.json` → Create plugin manifest

@@ -293,7 +293,7 @@ Plugin loaded via marketplace
 
 For new commands:
 ```javascript
-// OpenCode command mappings (~line 218)
+// Search: OPENCODE_COMMAND_MAPPINGS
 const commandMappings = [
   // [destFile, plugin, sourceFile]
   ['new-command.md', 'plugin-name', 'new-command.md'],
@@ -302,7 +302,7 @@ const commandMappings = [
 
 For new skills (Codex):
 ```javascript
-// Codex skill mappings (~line 476)
+// Search: CODEX_SKILL_MAPPINGS
 const skillMappings = [
   // [skillName, plugin, sourceFile, triggerDescription]
   ['new-skill', 'plugin-name', 'new-command.md',

@@ -12,7 +12,7 @@ Adding or updating MCP server tools.
 
 File: `mcp-server/index.js`
 
-Add to `TOOLS` array (~line 30):
+Add to `TOOLS` array (search: MCP_TOOLS_ARRAY):
 ```javascript
 {
   name: 'tool_name',
@@ -77,14 +77,11 @@ Add tool to mcpServer.tools array:
 
 File: `bin/cli.js`
 
-Update MCP tools list in both OpenCode and Codex sections:
+Update MCP tools list in console output messages:
 
-```javascript
-// OpenCode (~line 239)
-console.log('   MCP tools: ..., new_tool\n');
-
-// Codex (~line 371)
-console.log('   MCP tools: ..., new_tool\n');
+```bash
+# Search for these lines and add new tool name
+grep -n "MCP tools:" bin/cli.js
 ```
 
 ## 5. Update Documentation
