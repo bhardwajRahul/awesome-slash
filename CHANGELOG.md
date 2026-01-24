@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.2] - 2025-01-24
+
+### Fixed
+- **Slop Detection Windows Paths** - `isFileExcluded()` now normalizes backslashes to forward slashes, fixing pattern matching on Windows (e.g., `bin/**` now correctly excludes `bin\cli.js`)
+
 ## [3.0.1] - 2025-01-24
 
 ### Fixed
