@@ -29,13 +29,14 @@ Quick reference for AI assistants. Follow links for details.
    - OpenCode plugin update → `checklists/update-opencode-plugin.md`
    *WHY: Multi-file changes have hidden dependencies. Checklists prevent missed updates.*
 
-6. **Post-creation validation** - After creating/modifying commands, agents, or prompts:
-   - Run `/enhance` on the new/modified files to validate quality
-   - Check `checklists/cross-platform-compatibility.md` for platform requirements
-   - Verify OpenCode compatibility (30-char labels, `PLUGIN_ROOT` env var)
-   - Verify Codex compatibility (trigger-phrase descriptions, SKILL.md format)
+6. **Before delivering ANY work** - Check the relevant checklist for completion requirements:
+   - Identify which checklist applies to your work (see rule #5)
+   - Go through EVERY item in that checklist
+   - Run `/enhance` on new/modified commands, agents, or prompts
+   - Verify cross-platform compatibility (OpenCode + Codex)
    - Update `bin/cli.js` mappings if new command/agent added
-   *WHY: We support 3 platforms. Every feature must work on Claude Code, OpenCode, AND Codex.*
+   - Don't mark complete until ALL checklist items are done
+   *WHY: Checklists exist because we kept missing things. They are the definition of "done".*
 </critical-rules>
 
 ## Architecture
@@ -114,8 +115,9 @@ Cannot skip in /next-task:
 <end-reminder>
 **REMEMBER**:
 - No summary files (`*_AUDIT.md`, `*_SUMMARY.md`) - use CHANGELOG.md
-- Multi-file changes → Read checklist FIRST (`checklists/*.md`)
-- After creating commands/agents/prompts → Run `/enhance` + check cross-platform compatibility
+- BEFORE starting → Read the relevant checklist (`checklists/*.md`)
+- BEFORE delivering → Go through that checklist item by item
+- Run `/enhance` on new/modified commands, agents, prompts
 - 3 platforms: Claude Code + OpenCode + Codex - ALL must work
 </end-reminder>
 
