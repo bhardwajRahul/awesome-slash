@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [3.2.0-rc.1] - 2026-01-27
+## [3.2.1] - 2026-01-28
 
 ### Added
 - **Repo Map Plugin** - AST-based repository map generation using ast-grep with incremental updates and cached symbol/import maps
@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **repo_map MCP Tool** - Cross-platform repo-map generation via MCP
 - **map-validator Agent** - Lightweight validation of repo-map output
 - **orchestrate-review Skill** - New skill providing review pass definitions, signal detection patterns, and iteration algorithms for Phase 9 review loop
+- **Release Tag Hook** - Pre-push hook blocks version tag pushes until validation passes (npm test, npm run validate, npm pack)
 
 ### Changed
 - **/ship** - Automatically updates repo-map after merge when a map exists
