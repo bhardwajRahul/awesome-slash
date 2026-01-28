@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-01-28
+
 ### Changed
 - **Docs** - Documented `npm run detect`/`npm run verify` diagnostics scripts for platform/tool checks
 - **Docs** - Clarified Phase 9 review loop uses the `orchestrate-review` skill for pass definitions
