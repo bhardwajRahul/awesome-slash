@@ -37,6 +37,12 @@
    - Update `bin/cli.js` mappings if new command/agent added
    - Don't mark complete until ALL checklist items are done
    *WHY: Checklists exist because we kept missing things. They are the definition of "done".*
+
+7. **No emojis or ASCII art** - No emojis (✓✗❌✅🎉⚠️) or decorative ASCII boxes (╔═╗║╚╝) in any files.
+   - Use plain text: `[OK]`, `[ERROR]`, `[WARN]`, `[CRITICAL]`
+   - Use markdown formatting instead of decorative borders
+   - This applies to: agent prompts, commands, code examples, documentation
+   *WHY: Emojis and ASCII art waste tokens without adding clarity. AI models parse plain text better.*
 </critical-rules>
 
 <architecture>
