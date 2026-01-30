@@ -1,4 +1,5 @@
 ---
+name: enhance
 description: Analyze plugins, agents, prompts, docs, hooks, and skills for best-practice gaps
 argument-hint: "[target-path] [--apply] [--focus=TYPE] [--verbose]"
 ---
