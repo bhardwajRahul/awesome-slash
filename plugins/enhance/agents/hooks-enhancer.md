@@ -330,7 +330,8 @@ fi
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-printf '%s %s\n' "$(date -Is)" "$cmd" >> .claude/commands.log
+STATE_DIR="${AI_STATE_DIR:-.claude}"
+printf '%s %s\n' "$(date -Is)" "$cmd" >> "$STATE_DIR/commands.log"
 ```
 **Why it's bad**: No explicit exit code; relies on last command success.
 </bad_example>
@@ -339,10 +340,11 @@ printf '%s %s\n' "$(date -Is)" "$cmd" >> .claude/commands.log
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-printf '%s %s\n' "$(date -Is)" "$cmd" >> .claude/commands.log
+STATE_DIR="${AI_STATE_DIR:-.claude}"
+printf '%s %s\n' "$(date -Is)" "$cmd" >> "$STATE_DIR/commands.log"
 exit 0
 ```
-**Why it's good**: Explicit success exit code makes intent clear.
+**Why it's good**: Explicit success exit code makes intent clear. Uses AI_STATE_DIR for cross-platform support.
 </good_example>
 </examples>
 
