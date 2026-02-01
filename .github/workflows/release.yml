@@ -89,17 +89,6 @@ jobs:
             exit 1
           fi
 
-          # Check MCP server
-          MCP_VERSION=$(node -e "const fs=require('fs');const content=fs.readFileSync('mcp-server/index.js','utf8');const match=content.match(/version:\s*'([^']+)'/);console.log(match?match[1]:'');")
-          if [ -z "$MCP_VERSION" ]; then
-            echo "[ERROR] mcp-server/index.js version not found"
-            exit 1
-          fi
-          if [ "$MCP_VERSION" != "$VERSION" ]; then
-            echo "[ERROR] mcp-server/index.js version ($MCP_VERSION) doesn't match release version ($VERSION)"
-            exit 1
-          fi
-
           # Check plugin.json files
           for plugin_json in .claude-plugin/plugin.json plugins/*/.claude-plugin/plugin.json; do
             if [ -f "$plugin_json" ]; then
@@ -127,17 +116,11 @@ jobs:
 
       - run: npm ci
 
-      - name: Install MCP server dependencies
-        run: cd mcp-server && npm ci
-
       - name: Run tests
         run: npm test
 
       - name: Validate plugin structure
         run: node scripts/validate-plugins.js
-
-      - name: MCP smoke test
-        run: node scripts/mcp-smoke-test.js
 
   publish-npm:
     name: Publish to npm
