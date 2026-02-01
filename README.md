@@ -8,7 +8,7 @@
 
 AI models can write code. That's not the hard part anymore. The hard part is everything else—picking what to work on, managing branches, reviewing output, cleaning up artifacts, handling CI, addressing comments, deploying. **awesome-slash automates the entire workflow**, not just the coding.
 
-**9 plugins · 39 agents · 24 skills · 22k lines of lib code · 1,790 tests · 3 platforms**
+**9 plugins · 39 agents · 24 skills · 26k lines of lib code · 1,818 tests · 3 platforms**
 
 If you find this useful: [⭐ Star the repo](https://github.com/avifenesh/awesome-slash)
 
@@ -666,7 +666,7 @@ This project is built on research, not guesswork.
 - Instruction following reliability
 
 **Testing:**
-- 1,790 tests passing
+- 1,818 tests passing
 - Drift-detect validated on 1,000+ repositories
 - E2E workflow testing across all commands
 - Cross-platform validation (Claude Code, OpenCode, Codex CLI)
