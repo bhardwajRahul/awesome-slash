@@ -371,6 +371,61 @@ function installForOpenCode(installDir, options = {}) {
     content = content.replace(/\.claude'/g, ".opencode'");
     content = content.replace(/\.claude"/g, '.opencode"');
     content = content.replace(/\.claude`/g, '.opencode`');
+
+    // Transform JavaScript code blocks to OpenCode instructions
+    // OpenCode commands don't execute JS - they're instruction files
+    content = content.replace(
+      /```javascript\n([\s\S]*?)```/g,
+      (match, code) => {
+        // Extract key actions from the code
+        let instructions = '**OpenCode Instructions:**\n';
+
+        // Extract Task calls and convert to @ mentions
+        const taskMatches = code.matchAll(/(?:await\s+)?Task\s*\(\s*\{[^}]*subagent_type:\s*["']([^"':]+):([^"']+)["'][^}]*\}\s*\)/g);
+        for (const taskMatch of taskMatches) {
+          const agent = taskMatch[2];
+          instructions += `- Invoke @${agent} agent\n`;
+        }
+
+        // Extract workflowState calls as status notes
+        if (code.includes('workflowState.startPhase')) {
+          const phaseMatch = code.match(/startPhase\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+          if (phaseMatch) {
+            instructions += `- Phase: ${phaseMatch[1]}\n`;
+          }
+        }
+
+        // Extract AskUserQuestion
+        if (code.includes('AskUserQuestion')) {
+          instructions += '- Ask user for input using question prompts\n';
+        }
+
+        // Extract EnterPlanMode
+        if (code.includes('EnterPlanMode')) {
+          instructions += '- Enter plan mode for user approval\n';
+        }
+
+        // If no specific instructions extracted, keep as reference
+        if (instructions === '**OpenCode Instructions:**\n') {
+          return '```\n' + code + '```\n*(Reference - adapt for OpenCode)*';
+        }
+
+        return instructions;
+      }
+    );
+
+    // Add OpenCode-specific note at the top if it's a complex command
+    if (content.includes('@') && content.includes('agent')) {
+      const note = `
+> **OpenCode Note**: This command uses @ mentions to invoke agents.
+> Example: \`@exploration-agent analyze the codebase for task #123\`
+> Agents are installed in ~/.opencode/agents/
+
+`;
+      // Insert after frontmatter
+      content = content.replace(/^(---\n[\s\S]*?---\n)/, `$1${note}`);
+    }
+
     return content;
   }
 

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.2-rc.2] - 2026-02-01
+
+### Fixed
+- **OpenCode Command Transformation** - Commands now properly transform for OpenCode
+  - JavaScript code blocks converted to OpenCode instructions
+  - Task tool calls converted to @ mention syntax (`@agent-name`)
+  - Added OpenCode note to complex commands explaining @ mention usage
+  - workflowState references converted to phase instructions
+
 ## [3.7.2-rc.1] - 2026-02-01
 
 ### Fixed
