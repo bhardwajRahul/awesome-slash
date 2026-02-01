@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.7.0-rc.1] - 2026-02-01
+
+### Added
+- **Repo-Map Usage Analyzer** - New analyzer for tracking repo-map usage patterns across workflows
+- **Shared Collectors** - Consolidated data collection utilities for repo-map and drift detection
+
+### Changed
+- **sync-docs Consolidation** - Refactored to single skill, single agent, single command architecture (#161)
+- **agent-docs Library** - Consolidated knowledge base, removed duplications for cleaner maintainability (#160)
+- **CLI Improvements** - Enhanced installer output and dev-install plugin registration
+
+### Fixed
+- **Deslop Large Repo Crash** - Prevented crash when running deslop on repositories with many files
+- **gh pr checks Field** - Corrected state field usage (was using `conclusion`, now using `state`)
+- **Windows CLI Gotchas** - Added documentation for `$` escaping and single quote issues
+- **CLAUDE.md --no-verify Rule** - Added rule to never skip git hooks
+
 ## [3.6.1] - 2026-01-31
 
 ### Added
