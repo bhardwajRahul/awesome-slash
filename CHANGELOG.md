@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.0-rc.2] - 2026-02-02
+
+### Fixed
+- **OpenCode Plugin TypeError** - Handle `input.agent` as object or string in chat.params hook
+
 ## [3.8.0-rc.1] - 2026-02-02
 
 ### Added

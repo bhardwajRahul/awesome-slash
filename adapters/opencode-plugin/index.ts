@@ -116,7 +116,9 @@ export const AwesomeSlashPlugin: Plugin = async (ctx) => {
      * - options (provider-specific, including thinking config)
      */
     "chat.params": async (input, output) => {
-      const agentName = input.agent?.toLowerCase() || ""
+      // Handle agent as string or object with name property
+      const rawAgent = input.agent
+      const agentName = (typeof rawAgent === "string" ? rawAgent : rawAgent?.name || "").toLowerCase()
 
       // Check if this is one of our agents
       const config = AGENT_THINKING_CONFIG[agentName]
