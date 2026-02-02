@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.8.0-rc.1] - 2026-02-02
+
+### Added
+- **sync-docs Repo-Map Integration** - AST-based symbol detection for documentation drift
+  - Uses repo-map when available for ~95% accuracy (vs ~30% regex)
+  - Auto-initializes repo-map if ast-grep installed
+  - New `undocumented-export` issue type for exports missing from docs
+  - Graceful fallback to regex when repo-map unavailable
+  - New helpers: `ensureRepoMap()`, `getExportsFromRepoMap()`, `findUndocumentedExports()`
+- **Version Bump Tool** - `npm run bump <version>` to update all version files
+
+### Fixed
+- **OpenCode Config Path** - Use correct `~/.config/opencode/` path (not `~/.opencode/`)
+- **CI Validation** - Restored agent count detail for delivery validation
+
+### Changed
+- **Documentation** - Optimized CLAUDE.md for token efficiency
+
 ## [3.7.2] - 2026-02-01
 
 ### Fixed
