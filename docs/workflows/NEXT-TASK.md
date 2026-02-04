@@ -185,19 +185,30 @@ Both agents run in parallel:
 **Execution:** Inline in main orchestrator (uses orchestrate-review skill)
 **Human interaction: No**
 
+**CRITICAL**: The orchestrator MUST spawn multiple parallel reviewer agents. A single generic reviewer is NOT acceptable.
+
 The orchestrator:
-1. Reads orchestrate-review skill for guidance
-2. Detects content signals (database, API, frontend, backend, devops, architecture)
-3. Spawns parallel Task agents (general-purpose, sonnet) - one per review pass:
-   - Core (always): code quality, security, performance, test coverage
-   - Conditional: database, architecture, api, frontend, backend, devops
-4. Aggregates findings by severity (critical/high/medium/low)
-5. Fixes all non-false-positive issues
-6. Commits fixes
-7. Runs deslop-work after each iteration
-8. Re-reviews changed files
-9. Repeats until no open issues remain
-10. Stops early if iteration limit or stall detected
+1. Gets changed files via `git diff --name-only main...HEAD`
+2. Detects signals for conditional specialists:
+   - Database files → database specialist
+   - API/routes/handlers → api designer
+   - .tsx/.jsx/.vue/.svelte → frontend specialist
+   - server/backend/services → backend specialist
+   - workflows/Dockerfile/k8s → devops reviewer
+   - 20+ files → architecture reviewer
+3. **MUST spawn 4 core reviewers in parallel** (always):
+   - code quality reviewer
+   - security reviewer
+   - performance reviewer
+   - test coverage reviewer
+4. Adds conditional specialists based on detected signals
+5. Each reviewer returns JSON findings: `{file, line, severity, description, suggestion}`
+6. Aggregates findings by severity (critical/high/medium/low)
+7. Fixes all non-false-positive issues
+8. Commits fixes
+9. Runs deslop-work after each iteration
+10. Re-reviews changed files with ALL reviewers again
+11. Repeats until no open issues remain (max 5 iterations)
 
 The loop continues until clean, but stops early if iteration limits or stall detection trigger.
 

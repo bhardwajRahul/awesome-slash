@@ -513,6 +513,8 @@ Ask the user these questions using AskUserQuestion:
 - Merged - Until PR is merged to main
 - PR Created - Stop after creating PR
 - Implemented - Stop after local implementation
+- Deployed - Deploy to staging
+- Production - Full production deployment
 
 After user answers, proceed to Phase 2 with the selected policy.
 
