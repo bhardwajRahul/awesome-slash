@@ -60,7 +60,7 @@ This came from testing on 1,000+ repositories.
 | [`/repo-map`](#repo-map) | AST symbol and import mapping via ast-grep |
 | [`/sync-docs`](#sync-docs) | Finds outdated references, stale examples, missing CHANGELOG entries |
 | [`/learn`](#learn) | Research any topic, gather online sources, create learning guide with RAG index |
-| [`/agnix`](#agnix) | Lint agent configs (SKILL.md, CLAUDE.md, hooks, MCP) against 100 rules |
+| [`/agnix`](#agnix) | **Lint agent configs** - 100 rules for Skills, Memory, Hooks, MCP across 5 AI tools |
 
 Each command works standalone. Together, they form complete workflows.
 
@@ -68,7 +68,7 @@ Each command works standalone. Together, they form complete workflows.
 
 ## Skills
 
-25 skills included across the plugins:
+26 skills included across the plugins:
 
 | Category | Skills |
 |----------|--------|
@@ -89,8 +89,8 @@ Skills give your agents specialized capabilities. When you install a plugin, its
 | Section | What's there |
 |---------|--------------|
 | [The Approach](#the-approach) | Why it's built this way |
-| [Commands](#commands) | All 10 commands overview |
-| [Skills](#skills) | 25 skills across plugins |
+| [Commands](#commands) | All 11 commands overview |
+| [Skills](#skills) | 26 skills across plugins |
 | [Command Details](#command-details) | Deep dive into each command |
 | [How Commands Work Together](#how-commands-work-together) | Standalone vs integrated |
 | [Design Philosophy](#design-philosophy) | The thinking behind the architecture |
@@ -519,38 +519,81 @@ agent-knowledge/
 
 ### /agnix
 
-**Purpose:** Lint agent configurations before they break your workflow. Validates Skills, Hooks, MCP, Memory, Plugins.
+**Purpose:** Lint agent configurations before they break your workflow. The first dedicated linter for AI agent configs.
 
-**What it does:**
+**[agnix](https://github.com/avifenesh/agnix)** is a standalone open-source project that provides the validation engine. This plugin integrates it into your workflow.
 
-1. **Validates 100 rules** - From official specs, research papers, real-world testing
-2. **Multi-tool support** - Claude Code, Cursor, GitHub Copilot, Codex CLI
-3. **Auto-fix** - Automatically fixes fixable issues with `--fix`
-4. **SARIF output** - Integrates with GitHub Code Scanning
+**The problem it solves:**
+
+Agent configurations are code. They affect behavior, security, and reliability. But unlike application code, they have no linting. You find out your SKILL.md is malformed when the agent fails. You discover your hooks have security issues when they're exploited. You realize your CLAUDE.md has conflicting rules when the AI behaves unexpectedly.
+
+agnix catches these issues before they cause problems.
+
+**What it validates:**
+
+| Category | What It Checks |
+|----------|----------------|
+| **Structure** | Required fields, valid YAML/JSON, proper frontmatter |
+| **Security** | Prompt injection vectors, overpermissive tools, exposed secrets |
+| **Consistency** | Conflicting rules, duplicate definitions, broken references |
+| **Best Practices** | Tool restrictions, model selection, trigger phrase quality |
+| **Cross-Platform** | Compatibility across Claude Code, Cursor, Copilot, Codex |
+
+**100 validation rules** derived from:
+- Official tool specifications (Claude Code, Cursor, GitHub Copilot, Codex CLI)
+- Research papers on agent reliability and prompt injection
+- Real-world testing across 500+ repositories
+- Community-reported issues and edge cases
 
 **Supported files:**
 
 | File Type | Examples |
 |-----------|----------|
-| Skills | `SKILL.md` |
-| Memory | `CLAUDE.md`, `AGENTS.md` |
-| Hooks | `.claude/settings.json` |
-| MCP | `*.mcp.json` |
-| Cursor | `.cursor/rules/*.mdc` |
+| Skills | `SKILL.md`, `*/SKILL.md` |
+| Memory | `CLAUDE.md`, `AGENTS.md`, `.github/CLAUDE.md` |
+| Hooks | `.claude/settings.json`, hooks configuration |
+| MCP | `*.mcp.json`, MCP server configs |
+| Cursor | `.cursor/rules/*.mdc`, `.cursorrules` |
 | Copilot | `.github/copilot-instructions.md` |
+
+**CI/CD Integration:**
+
+agnix outputs SARIF format for GitHub Code Scanning. Add it to your workflow:
+
+```yaml
+- name: Lint agent configs
+  run: agnix --format sarif > results.sarif
+- uses: github/codeql-action/upload-sarif@v3
+  with:
+    sarif_file: results.sarif
+```
 
 **Usage:**
 
 ```bash
 /agnix                       # Validate current project
-/agnix --fix                 # Auto-fix issues
+/agnix --fix                 # Auto-fix fixable issues
 /agnix --strict              # Treat warnings as errors
 /agnix --target claude-code  # Only Claude Code rules
+/agnix --format sarif        # Output for GitHub Code Scanning
 ```
 
 **Agent:** agnix-agent (sonnet model)
 
-**External tool:** Requires [agnix CLI](https://github.com/avifenesh/agnix) (`cargo install agnix-cli`)
+**External tool:** Requires [agnix CLI](https://github.com/avifenesh/agnix)
+
+```bash
+cargo install agnix-cli      # Install via Cargo
+# or
+brew install agnix           # Install via Homebrew (macOS)
+```
+
+**Why use agnix:**
+- Catch config errors before they cause agent failures
+- Enforce security best practices across your team
+- Maintain consistency as your agent configs grow
+- Integrate validation into CI/CD pipelines
+- Support multiple AI tools from one linter
 
 ---
 
@@ -730,6 +773,9 @@ awesome-slash --development              # Dev mode (bypasses marketplace)
 
 **For /repo-map:**
 - ast-grep (`sg`) installed
+
+**For /agnix:**
+- [agnix CLI](https://github.com/avifenesh/agnix) installed (`cargo install agnix-cli` or `brew install agnix`)
 
 **Local diagnostics (optional):**
 ```bash

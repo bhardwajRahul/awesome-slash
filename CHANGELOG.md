@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **README /agnix Documentation** - Expanded agnix section to be on par with other major commands
+  - Added "The problem it solves" section explaining why agent config linting matters
+  - Added "What it validates" table with 5 categories (Structure, Security, Consistency, Best Practices, Cross-Platform)
+  - Added details about 100 validation rules and their sources
+  - Added CI/CD integration example with GitHub Code Scanning SARIF workflow
+  - Added installation instructions (Cargo, Homebrew)
+  - Added "Why use agnix" value proposition section
+  - Prominent link to [agnix CLI project](https://github.com/avifenesh/agnix)
+  - Updated Commands table with more descriptive entry
+  - Updated skill count to 26 across all references
+
 ## [4.1.0] - 2026-02-05
 
 ### Added
