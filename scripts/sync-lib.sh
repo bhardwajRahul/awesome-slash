@@ -33,24 +33,29 @@ fi
 
 echo "Syncing lib/ to all plugins..."
 
-PLUGINS=(
-  "audit-project"
-  "deslop"
-  "drift-detect"
-  "enhance"
-  "next-task"
-  "ship"
-  "sync-docs"
-  "repo-map"
-  "perf"
-  "learn"
-)
+# Always regenerate plugin list to avoid staleness
+PLUGIN_LIST="$REPO_ROOT/scripts/plugins.txt"
+node "$REPO_ROOT/scripts/generate-plugin-list.js"
+PLUGINS=()
+while IFS= read -r line; do
+  [ -n "$line" ] && PLUGINS+=("$line")
+done < "$PLUGIN_LIST"
+
+# Only sync to plugins that already have lib/ (excludes standalone tools like agnix)
+# New plugins that need lib/ should create an empty lib/ directory first
+PLUGINS_WITH_LIB=()
+for plugin in "${PLUGINS[@]}"; do
+  if [ -d "$REPO_ROOT/plugins/$plugin/lib" ]; then
+    PLUGINS_WITH_LIB+=("$plugin")
+  fi
+done
+PLUGINS=("${PLUGINS_WITH_LIB[@]}")
 
 for plugin in "${PLUGINS[@]}"; do
   PLUGIN_LIB="$REPO_ROOT/plugins/$plugin/lib"
 
   # Create lib directory structure
-  mkdir -p "$PLUGIN_LIB"/{platform,patterns,utils,sources,state,reality-check}
+  mkdir -p "$PLUGIN_LIB"/{platform,patterns,utils,sources,state,reality-check,discovery}
 
   # Copy all lib files using explicit iteration for safety
   for item in "${REPO_ROOT}/lib"/*; do
