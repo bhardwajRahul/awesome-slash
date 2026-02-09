@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 const fs = require('fs');
+const path = require('path');
 
 function main() {
   // Read the source file
-  const content = fs.readFileSync('plugins/next-task/commands/next-task.md', 'utf8');
+  const content = fs.readFileSync(path.join(__dirname, '..', 'plugins', 'next-task', 'commands', 'next-task.md'), 'utf8');
 
   // Apply transformation (same as installer)
   let transformed = content;

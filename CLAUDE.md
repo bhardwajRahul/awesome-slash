@@ -117,13 +117,17 @@ bin/cli.js    → npm CLI installer
 
 ### Dev Commands
 ```bash
-awesome-slash-dev status           # Project health (version, counts, branch)
-awesome-slash-dev validate         # Run all validators
-awesome-slash-dev validate plugins # Run single validator
-awesome-slash-dev bump <version>   # Bump all version files (e.g., 3.7.3)
-awesome-slash-dev sync-lib         # Sync lib/ to plugins/
-awesome-slash-dev test             # Run test suite
-awesome-slash-dev --help           # Show all commands
+# Local dev CLI (when developing awesome-slash itself)
+npx awesome-slash-dev status           # Project health (version, counts, branch)
+npx awesome-slash-dev validate         # Run all validators
+npx awesome-slash-dev validate plugins # Run single validator
+npx awesome-slash-dev bump <version>   # Bump all version files (e.g., 3.7.3)
+npx awesome-slash-dev sync-lib         # Sync lib/ to plugins/
+npx awesome-slash-dev test             # Run test suite
+npx awesome-slash-dev --help           # Show all commands
+
+# Alternative: direct invocation
+node bin/dev-cli.js <command>
 
 # npm aliases still work:
 npm test                     # Run tests (do before commits)

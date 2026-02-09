@@ -195,6 +195,15 @@ const COMMANDS = {
     usage: 'dev-install [tool] [--clean]',
     handler: (args) => {
       // dev-install reads process.argv, so we need to adjust
+      // Validate args to prevent injection
+      const validArgs = ['claude', 'opencode', 'codex', '--clean'];
+      for (const arg of args) {
+        if (!validArgs.includes(arg) && !arg.startsWith('--')) {
+          console.error(`[ERROR] Invalid argument: ${arg}`);
+          console.error(`Valid arguments: ${validArgs.join(', ')}`);
+          return 1;
+        }
+      }
       const { main } = require(path.join(ROOT_DIR, 'scripts', 'dev-install.js'));
       const origArgv = process.argv;
       process.argv = ['node', 'dev-install.js', ...args];
@@ -265,6 +274,20 @@ const COMMANDS = {
     description: 'Migrate commands for OpenCode compatibility',
     usage: 'migrate-opencode [--target <path>] [--dry-run]',
     handler: (args) => {
+      // Validate args to prevent injection
+      for (const arg of args) {
+        if (!arg.startsWith('--') && arg !== args[args.indexOf('--target') + 1]) {
+          console.error(`[ERROR] Invalid argument: ${arg}`);
+          console.error(`Valid flags: --target <path>, --dry-run`);
+          return 1;
+        }
+        // Validate flag names
+        if (arg.startsWith('--') && arg !== '--target' && arg !== '--dry-run') {
+          console.error(`[ERROR] Unknown flag: ${arg}`);
+          console.error(`Valid flags: --target <path>, --dry-run`);
+          return 1;
+        }
+      }
       const { main } = require(path.join(ROOT_DIR, 'scripts', 'migrate-opencode.js'));
       const origArgv = process.argv;
       process.argv = ['node', 'migrate-opencode.js', ...args];

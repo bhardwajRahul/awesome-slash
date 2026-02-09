@@ -299,7 +299,7 @@ describe('argument forwarding', () => {
   });
 
   test('validate platform-docs forwards --json flag', () => {
-    const code = VALIDATE_SUBCOMMANDS['platform-docs'].handler(['--json']);
+    VALIDATE_SUBCOMMANDS['platform-docs'].handler(['--json']);
     expect(console.log).toHaveBeenCalledWith(expect.stringContaining('{'));
   });
 });
