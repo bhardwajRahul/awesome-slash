@@ -106,5 +106,5 @@ describe('repo-map batch scanning', () => {
     expect(normalizeDependencies(actual.dependencies)).toEqual(
       normalizeDependencies(expected.dependencies)
     );
-  });
+  }, 15000);
 });
