@@ -1,6 +1,6 @@
 {
   "name": "awesome-slash",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "11 specialized plugins for AI workflow automation (drift detection + AST repo maps + topic research + agent config linting) - works with Claude Code, OpenCode, and Codex CLI",
   "main": "lib/platform/detect-platform.js",
   "type": "commonjs",
@@ -76,5 +76,8 @@
   },
   "devDependencies": {
     "jest": "^29.7.0"
-  }
+  },
+  "workspaces": [
+    "lib"
+  ]
 }
