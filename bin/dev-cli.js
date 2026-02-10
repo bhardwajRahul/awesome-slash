@@ -18,10 +18,6 @@ const { execSync } = require('child_process');
 const VERSION = require('../package.json').version;
 const ROOT_DIR = path.join(__dirname, '..');
 
-// ---------------------------------------------------------------------------
-// Command registry
-// ---------------------------------------------------------------------------
-
 const VALIDATE_SUBCOMMANDS = {
   'plugins': {
     description: 'Validate plugin structure',
@@ -334,12 +330,18 @@ const COMMANDS = {
       if (typeof result === 'number') return result;
       return 0;
     }
+  },
+  'gen-adapters': {
+    description: 'Generate platform adapter files from plugin source',
+    usage: 'gen-adapters [--check] [--dry-run]',
+    handler: (args) => {
+      const { main } = require(path.join(ROOT_DIR, 'scripts', 'gen-adapters.js'));
+      const result = main(args);
+      if (typeof result === 'number') return result;
+      return 0;
+    }
   }
 };
-
-// ---------------------------------------------------------------------------
-// Argument parsing
-// ---------------------------------------------------------------------------
 
 function parseArgs(args) {
   const result = {
@@ -390,10 +392,6 @@ function parseArgs(args) {
   return result;
 }
 
-// ---------------------------------------------------------------------------
-// Help output
-// ---------------------------------------------------------------------------
-
 function printHelp() {
   console.log(`
 awesome-slash-dev v${VERSION} - Developer CLI
@@ -436,6 +434,9 @@ Commands:
   expand-templates        Expand agent template snippets
     --check               Validate freshness (exit 1 if stale)
     --dry-run             Show changes without writing
+  gen-adapters            Generate platform adapter files from source
+    --check               Validate freshness (exit 1 if stale)
+    --dry-run             Show changes without writing
 
 Aliases (npm scripts):
   npm run validate          = awesome-slash-dev validate
@@ -447,6 +448,8 @@ Aliases (npm scripts):
   npm run gen-docs:check    = awesome-slash-dev gen-docs --check
   npm run expand-templates  = awesome-slash-dev expand-templates
   npm run expand-templates:check = awesome-slash-dev expand-templates --check
+  npm run gen-adapters      = awesome-slash-dev gen-adapters
+  npm run gen-adapters:check = awesome-slash-dev gen-adapters --check
 `);
 }
 
@@ -461,10 +464,6 @@ function printCommandHelp(cmdName, cmd) {
   }
   console.log('');
 }
-
-// ---------------------------------------------------------------------------
-// Router
-// ---------------------------------------------------------------------------
 
 function route(parsed) {
   // Global flags
@@ -515,10 +514,6 @@ function route(parsed) {
 
   return cmd.handler(parsed.rest);
 }
-
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
 
 if (require.main === module) {
   const parsed = parseArgs(process.argv.slice(2));

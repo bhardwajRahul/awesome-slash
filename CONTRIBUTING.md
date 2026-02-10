@@ -58,6 +58,20 @@ git add lib/ plugins/*/lib/
 git commit -m "fix(lib): description"
 ```
 
+### Adapter Generation
+
+Platform adapters (`adapters/opencode/`, `adapters/codex/`) are auto-generated from plugin source.
+Files with `AUTO-GENERATED` headers must not be manually edited.
+
+After changing plugins, regenerate adapters:
+
+```bash
+npm run gen-adapters
+# Or: npx awesome-slash-dev gen-adapters
+```
+
+CI validates adapter freshness on every push.
+
 ---
 
 ## Pull Request Process
