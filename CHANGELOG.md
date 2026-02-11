@@ -94,6 +94,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Updated Commands table with more descriptive entry
   - Updated skill count to 26 across all references
 
+### Security
+- **consult plugin security hardening** (#208) - Shell injection prevention, path traversal protection, and API key redaction
+  - Question text passed via temp files instead of shell interpolation (prevents `$()` and backtick expansion)
+  - File context validation blocks UNC paths, resolves canonical paths, prevents symlink escapes
+  - Output sanitization redacts 12 credential patterns (API keys, tokens, env vars, auth headers)
+  - Fixed 3 pre-existing test regressions in consult-command.test.js
+
 ## [4.1.0] - 2026-02-05
 
 ### Added

@@ -27,14 +27,25 @@ Orchestration work: parse config, invoke skill, execute CLI command, parse outpu
 
 ### 1. Parse Input
 
-Extract from prompt:
-- **tool**: Target tool (claude, gemini, codex, opencode, copilot) - REQUIRED
-- **question**: The consultation question - REQUIRED
-- **effort**: Thinking effort level (low, medium, high, max) - default: medium
-- **model**: Specific model override (or null for auto)
+Extract from prompt. ALL parameters MUST be pre-resolved by the caller (the /consult command or direct Task invocation). This agent runs as a subagent and cannot interact with the user.
+
+**Required** (caller must provide):
+- **tool**: Target tool (claude, gemini, codex, opencode, copilot)
+- **question**: The consultation question
+- **effort**: Thinking effort level (low, medium, high, max)
+
+**Optional**:
+- **model**: Specific model override (or null for auto from effort)
 - **context**: Context mode (diff, file, none) - default: none
 - **continueSession**: Session ID or true/false
 - **sessionFile**: Path to session state file
+
+If any required parameter is missing, return an error:
+```
+=== CONSULT_RESULT ===
+{"error": "Missing required parameter: [param]. The caller must resolve all parameters before spawning this agent."}
+=== END_RESULT ===
+```
 
 ### 2. Invoke Consult Skill (MUST)
 
@@ -90,3 +101,25 @@ Write session state to the sessionFile path provided by the command for continui
 - MUST invoke the `consult` skill before executing any command. The skill is the single source of truth for provider configs.
 - MUST set a 120-second timeout on Bash execution. Prevents hanging processes and resource exhaustion.
 - MUST use safe-mode defaults for all tool invocations (skill defines per-provider flags). Prevents unintended writes or destructive actions.
+- MUST sanitize tool output before returning. Consulted tools may echo environment variables or API keys in their response.
+
+## Output Sanitization
+
+Before including any consulted tool's response in the `=== CONSULT_RESULT ===` output, scan the response text and redact matches for these patterns:
+
+| Pattern | Description | Replacement |
+|---------|-------------|-------------|
+| `sk-[a-zA-Z0-9_-]{20,}` | Anthropic API keys | `[REDACTED_API_KEY]` |
+| `sk-proj-[a-zA-Z0-9_-]{20,}` | OpenAI project keys | `[REDACTED_API_KEY]` |
+| `sk-ant-[a-zA-Z0-9_-]{20,}` | Anthropic API keys (ant prefix) | `[REDACTED_API_KEY]` |
+| `AIza[a-zA-Z0-9_-]{30,}` | Google API keys | `[REDACTED_API_KEY]` |
+| `ghp_[a-zA-Z0-9]{36,}` | GitHub personal access tokens | `[REDACTED_TOKEN]` |
+| `gho_[a-zA-Z0-9]{36,}` | GitHub OAuth tokens | `[REDACTED_TOKEN]` |
+| `github_pat_[a-zA-Z0-9_]{20,}` | GitHub fine-grained PATs | `[REDACTED_TOKEN]` |
+| `ANTHROPIC_API_KEY=[^\s]+` | Key assignment in env output | `ANTHROPIC_API_KEY=[REDACTED]` |
+| `OPENAI_API_KEY=[^\s]+` | Key assignment in env output | `OPENAI_API_KEY=[REDACTED]` |
+| `GOOGLE_API_KEY=[^\s]+` | Key assignment in env output | `GOOGLE_API_KEY=[REDACTED]` |
+| `GEMINI_API_KEY=[^\s]+` | Key assignment in env output | `GEMINI_API_KEY=[REDACTED]` |
+| `Bearer [a-zA-Z0-9_-]{20,}` | Authorization headers | `Bearer [REDACTED]` |
+
+Apply redaction to the full response text before inserting into the result JSON. If any redaction occurs, append a note: `[WARN] Sensitive tokens were redacted from the response.`

@@ -47,6 +47,8 @@ Command: claude -p "QUESTION" --output-format json --model "MODEL" --max-turns T
 Session resume: --resume "SESSION_ID"
 ```
 
+Models: haiku, sonnet, opus
+
 | Effort | Model | Max Turns |
 |--------|-------|-----------|
 | low | haiku | 1 |
@@ -65,11 +67,13 @@ Command: gemini -p "QUESTION" --output-format json -m "MODEL"
 Session resume: --resume "SESSION_ID"
 ```
 
+Models: gemini-2.5-flash, gemini-2.5-pro, gemini-3-flash-preview, gemini-3-pro-preview
+
 | Effort | Model |
 |--------|-------|
 | low | gemini-2.5-flash |
-| medium | gemini-3-flash-preview |
-| high | gemini-3-pro-preview |
+| medium | gemini-2.5-pro |
+| high | gemini-3-flash-preview |
 | max | gemini-3-pro-preview |
 
 **Parse output**: `JSON.parse(stdout).response`
@@ -80,6 +84,8 @@ Session resume: --resume "SESSION_ID"
 ```
 Command: codex -q "QUESTION" --json -m "MODEL" -a suggest -c model_reasoning_effort="LEVEL"
 ```
+
+Models: gpt-5.1-codex-mini, gpt-5-codex, gpt-5.1-codex, gpt-5.2-codex, gpt-5.3-codex, gpt-5.1-codex-max
 
 | Effort | Model | Reasoning |
 |--------|-------|-----------|
@@ -98,12 +104,14 @@ Command: opencode run "QUESTION" --format json --model "MODEL" --variant "VARIAN
 With thinking: add --thinking flag
 ```
 
+Models: 75+ via providers (format: provider/model). Top picks: claude-sonnet-4-5, claude-opus-4-5, gpt-5.2, gpt-5.1-codex, gemini-3-pro, minimax-m2.1
+
 | Effort | Model | Variant |
 |--------|-------|---------|
-| low | glm-4.7 | low |
-| medium | github-copilot/claude-opus-4-6 | medium |
-| high | github-copilot/claude-opus-4-6 | high |
-| max | github-copilot/gpt-5.3-codex | high + --thinking |
+| low | (user-selected or default) | low |
+| medium | (user-selected or default) | medium |
+| high | (user-selected or default) | high |
+| max | (user-selected or default) | high + --thinking |
 
 **Parse output**: Parse JSON events from stdout, extract final text response
 **Continuable**: No
@@ -114,9 +122,11 @@ With thinking: add --thinking flag
 Command: copilot -p "QUESTION"
 ```
 
+Models: claude-sonnet-4-5 (default), claude-opus-4-6, claude-haiku-4-5, claude-sonnet-4, gpt-5
+
 | Effort | Notes |
 |--------|-------|
-| all | No model or effort control available |
+| all | No effort control available. Model selectable via --model flag. |
 
 **Parse output**: Raw text from stdout
 **Continuable**: No
@@ -128,7 +138,11 @@ Before building commands, validate all user-provided arguments:
 - **--tool**: MUST be one of: gemini, codex, claude, opencode, copilot. Reject all other values.
 - **--effort**: MUST be one of: low, medium, high, max. Default to medium.
 - **--model**: Allow any string, but quote it in the command.
-- **--context=file=PATH**: MUST resolve within the current project directory. Reject absolute paths outside cwd and paths containing `..` that escape the project root.
+- **--context=file=PATH**: MUST pass all of these checks before reading:
+  1. **Block UNC paths** (Windows): Reject paths starting with `\\` or `//` (network shares)
+  2. **Resolve canonical path**: Use the Read tool to read the file (do NOT use shell commands). Before reading, resolve the path: join `cwd + PATH`, then normalize (collapse `.`, `..`, resolve symlinks)
+  3. **Verify containment**: The resolved canonical path MUST start with the current working directory. If it escapes (via `..`, symlinks, or junction points), reject with: `[ERROR] Path escapes project directory: {PATH}`
+  4. **No shell access**: Read file content using the Read tool only. Never pass user-provided paths to shell commands (prevents injection via path values)
 
 ## Command Building
 
@@ -148,15 +162,30 @@ If OpenCode at max effort: append `--thinking`.
 ### Step 3: Context Packaging
 
 If `--context=diff`: Run `git diff 2>/dev/null` and prepend output to the question.
-If `--context=file=PATH`: Read the specified file and prepend its content to the question.
+If `--context=file=PATH`: Read the file using the Read tool and prepend its content to the question.
 
-### Step 4: Shell Escaping
+### Step 4: Safe Question Passing
 
-Escape ALL user-provided values (question, model, session ID) for safe shell execution:
-- Replace `"` with `\"`
-- Replace `$` with `\$` (Unix) or leave as-is (Windows cmd)
-- Replace backticks with `\``
-- Wrap in double quotes
+User-provided question text MUST NOT be interpolated into shell command strings. Shell escaping is insufficient -- `$()`, backticks, and other expansion sequences can execute arbitrary commands even inside double quotes.
+
+**Required approach -- pass question via stdin or temp file:**
+
+1. **Write the question** to a temporary file using the Write tool (e.g., `{AI_STATE_DIR}/consult/question.tmp`)
+2. **Build the command** using the temp file as input instead of inline text:
+
+| Provider | Safe command pattern |
+|----------|---------------------|
+| Claude | `claude -p - --output-format json --model "MODEL" --max-turns TURNS --allowedTools "Read,Glob,Grep" < "{AI_STATE_DIR}/consult/question.tmp"` |
+| Gemini | `gemini -p - --output-format json -m "MODEL" < "{AI_STATE_DIR}/consult/question.tmp"` |
+| Codex | `codex -q "$(cat "{AI_STATE_DIR}/consult/question.tmp")" --json -m "MODEL" -a suggest` (Codex lacks stdin mode -- use cat subshell from trusted file) |
+| OpenCode | `opencode run - --format json --model "MODEL" --variant "VARIANT" < "{AI_STATE_DIR}/consult/question.tmp"` |
+| Copilot | `copilot -p - < "{AI_STATE_DIR}/consult/question.tmp"` |
+
+3. **Delete the temp file** after the command completes.
+
+**Model and session ID values** are controlled strings (from pickers or saved state) and safe to quote directly in the command. Only the question contains arbitrary user text and requires the temp file approach.
+
+**NEVER** interpolate user question text directly into a shell command string, even with escaping.
 
 ## Provider Detection
 
@@ -195,6 +224,10 @@ For `--continue`, read the session file and restore:
 - model (reuse same model)
 
 If session file not found, warn and proceed as fresh consultation.
+
+## Output Sanitization
+
+Before returning the response, the invoking agent MUST scan for and redact API keys, tokens, and credentials that may appear in the consulted tool's output. See `consult-agent.md` for the complete redaction pattern list.
 
 ## Output Format
 

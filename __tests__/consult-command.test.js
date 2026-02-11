@@ -163,7 +163,7 @@ describe('provider configuration consistency', () => {
         /### Copilot[\s\S]*?(?=### |## |$)/i
       );
       expect(copilotSection).not.toBeNull();
-      expect(copilotSection[0]).toMatch(/no model or effort control/i);
+      expect(copilotSection[0]).toMatch(/no effort control/i);
     });
   });
 
@@ -295,6 +295,57 @@ describe('security constraints', () => {
   test('skill validates --context=file=PATH is within project', () => {
     expect(skillContent).toMatch(/within.*project.*directory|reject.*absolute.*paths/i);
   });
+
+  test('skill blocks UNC paths for file context', () => {
+    expect(skillContent).toMatch(/UNC path/i);
+    expect(skillContent).toMatch(/\\\\|\/\//);
+  });
+
+  test('skill requires canonical path resolution for file context', () => {
+    expect(skillContent).toMatch(/canonical path/i);
+    expect(skillContent).toMatch(/symlink/i);
+  });
+
+  test('skill warns shell escaping is insufficient', () => {
+    expect(skillContent).toMatch(/shell escaping is insufficient/i);
+  });
+
+  test('skill requires temp file approach for question text', () => {
+    expect(skillContent).toMatch(/temp.*file|question\.tmp/i);
+    expect(skillContent).toMatch(/MUST NOT.*interpolat/i);
+  });
+
+  test('skill provider commands use stdin or temp file', () => {
+    // All providers should use < redirect or $(cat) from temp file
+    expect(skillContent).toMatch(/< "\{AI_STATE_DIR\}\/consult\/question\.tmp"/);
+  });
+
+  test('skill requires temp file cleanup', () => {
+    expect(skillContent).toMatch(/delete the temp file/i);
+  });
+
+  test('agent has output sanitization with redaction patterns', () => {
+    expect(agentContent).toMatch(/Output Sanitization/);
+    // Key patterns must be present
+    expect(agentContent).toMatch(/sk-\[a-zA-Z0-9/);
+    expect(agentContent).toMatch(/AIza\[a-zA-Z0-9/);
+    expect(agentContent).toMatch(/ghp_/);
+    expect(agentContent).toMatch(/Bearer/);
+    expect(agentContent).toMatch(/AKIA/);
+    expect(agentContent).toMatch(/REDACTED/);
+  });
+
+  test('agent redaction warning is conditional', () => {
+    expect(agentContent).toMatch(/if any redaction occurs/i);
+  });
+
+  test('skill has inline redaction pattern summary', () => {
+    // Skill should be self-contained with at least key patterns
+    expect(skillContent).toMatch(/sk-.*API key/i);
+    expect(skillContent).toMatch(/ghp_/);
+    expect(skillContent).toMatch(/Bearer/);
+    expect(skillContent).toMatch(/AKIA/);
+  });
 });
 
 // ─── 5. Interactive Selection Completeness ──────────────────────────
@@ -307,11 +358,11 @@ describe('interactive selection completeness', () => {
     expect(commandContent).toMatch(/AskUserQuestion[\s\S]*?header:\s*"Effort"/);
   });
 
-  test('Phase 2c has MUST enforcement language', () => {
-    // Verify the fix was applied
-    expect(commandContent).toMatch(/MUST ask if no --effort/);
+  test('Phase 2b has MUST enforcement language for effort', () => {
+    // Effort picker is in Step 2b (batch selection), model picker in Step 2c
+    expect(commandContent).toMatch(/Do NOT silently default --effort/);
     expect(commandContent).toMatch(/Do NOT skip this step/);
-    expect(commandContent).toMatch(/Do NOT default to "medium" without asking/);
+    expect(commandContent).toMatch(/Do NOT skip any missing parameter/);
   });
 
   test('Phase 2 header has MUST language for all missing parameters', () => {
@@ -503,8 +554,9 @@ describe('codex AskUserQuestion transform compatibility', () => {
   });
 
   test('effort selection options have label+description format', () => {
+    // Effort picker is in Step 2b (batch selection), not Step 2c (model selection)
     const effortPickerSection = commandContent.match(
-      /Step 2c[\s\S]*?Phase 3/
+      /Step 2b[\s\S]*?Step 2c/
     );
     expect(effortPickerSection).not.toBeNull();
 
