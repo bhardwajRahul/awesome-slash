@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <b>11 plugins · 40 agents · 26 skills · 26k lines of lib code · 3,357 tests · 3 platforms</b>
+  <b>12 plugins · 41 agents · 27 skills · 26k lines of lib code · 3,357 tests · 3 platforms</b>
 </p>
 
 <p align="center">
@@ -80,6 +80,7 @@ This came from testing on 1,000+ repositories.
 | [`/repo-map`](#repo-map) | AST symbol and import mapping via ast-grep |
 | [`/sync-docs`](#sync-docs) | Finds outdated references, stale examples, missing CHANGELOG entries |
 | [`/learn`](#learn) | Research any topic, gather online sources, create learning guide with RAG index |
+| [`/consult`](#consult) | Consult another AI CLI tool for a second opinion. Use when you want to cross-check ideas, get alternative approaches, or validate decisions with Gemini, Codex, Claude, OpenCode, or Copilot. |
 <!-- GEN:END:readme-commands -->
 
 Each command works standalone. Together, they form complete workflows.
@@ -89,7 +90,7 @@ Each command works standalone. Together, they form complete workflows.
 ## Skills
 
 <!-- GEN:START:readme-skills -->
-26 skills included across the plugins:
+27 skills included across the plugins:
 
 | Category | Skills |
 |----------|--------|
@@ -98,6 +99,7 @@ Each command works standalone. Together, they form complete workflows.
 | **Workflow** | `next-task:discover-tasks`, `next-task:orchestrate-review`, `next-task:validate-delivery` |
 | **Cleanup** | `deslop:deslop`, `sync-docs:sync-docs` |
 | **Analysis** | `drift-detect:drift-analysis`, `repo-map:repo-mapping` |
+| **Productivity** | `consult:consult` |
 | **Learning** | `learn:learn` |
 | **Linting** | `agnix:agnix` |
 <!-- GEN:END:readme-skills -->
@@ -111,8 +113,8 @@ Skills give your agents specialized capabilities. When you install a plugin, its
 | Section | What's there |
 |---------|--------------|
 | [The Approach](#the-approach) | Why it's built this way |
-| [Commands](#commands) | All 11 commands overview |
-| [Skills](#skills) | 26 skills across plugins |
+| [Commands](#commands) | All 12 commands overview |
+| [Skills](#skills) | 27 skills across plugins |
 | [Command Details](#command-details) | Deep dive into each command |
 | [How Commands Work Together](#how-commands-work-together) | Standalone vs integrated |
 | [Design Philosophy](#design-philosophy) | The thinking behind the architecture |
@@ -618,6 +620,42 @@ agent-knowledge/
 ```
 
 **Agent:** learn-agent (opus model for research quality)
+
+---
+
+### /consult
+
+**Purpose:** Get a second opinion from another AI CLI tool without leaving your current session.
+
+**What it does:**
+
+1. **Tool Detection** - Detects which AI CLI tools are installed (cross-platform)
+2. **Interactive Picker** - If no tool specified, shows only installed tools to choose from
+3. **Effort Mapping** - Maps effort levels to per-provider models and reasoning flags
+4. **Execution** - Runs the consultation with safe-mode defaults and 120s timeout
+5. **Session Continuity** - Saves session state for Claude and Gemini (supports `--continue`)
+
+**Supported tools:**
+
+| Tool | Default Model (high) | Reasoning Control |
+|------|---------------------|-------------------|
+| Claude | opus | max-turns |
+| Gemini | gemini-3-pro-preview | built-in |
+| Codex | gpt-5.3-codex | model_reasoning_effort |
+| OpenCode | github-copilot/claude-opus-4-6 | --variant |
+| Copilot | (default) | none |
+
+**Usage:**
+
+```bash
+/consult "Is this the right approach?" --tool=gemini --effort=high
+/consult "Review for performance issues" --tool=codex
+/consult "Suggest alternatives" --tool=claude --effort=max
+/consult "Continue from where we left off" --continue
+/consult "Explain this error" --context=diff --tool=gemini
+```
+
+**Agent:** consult-agent (sonnet model for orchestration)
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "awesome-slash",
-    "description": "Production-ready skills, agents, and commands for Claude Code, OpenCode, and Codex CLI. 11 plugins that automate the entire AI development workflow, not just the coding.",
+    "description": "Production-ready skills, agents, and commands for Claude Code, OpenCode, and Codex CLI. 12 plugins that automate the entire AI development workflow, not just the coding.",
     "url": "https://avifenesh.github.io/awesome-slash",
     "repo": "https://github.com/avifenesh/awesome-slash",
     "npm": "https://www.npmjs.com/package/awesome-slash",
@@ -23,17 +23,17 @@
   },
   "stats": [
     {
-      "value": "11",
+      "value": "12",
       "label": "Plugins",
       "suffix": ""
     },
     {
-      "value": "40",
+      "value": "41",
       "label": "Agents",
       "suffix": ""
     },
     {
-      "value": "26",
+      "value": "27",
       "label": "Skills",
       "suffix": ""
     },
@@ -300,8 +300,8 @@
     }
   ],
   "agents": {
-    "total": 40,
-    "file_based": 30,
+    "total": 41,
+    "file_based": 31,
     "role_based": 10,
     "by_model": [
       {

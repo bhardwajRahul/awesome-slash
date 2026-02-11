@@ -3,7 +3,7 @@
 Complete reference for all agents in awesome-slash.
 
 <!-- GEN:START:agents-counts -->
-**TL;DR:** 40 agents across 11 plugins (10 have agents). opus for reasoning, sonnet for patterns, haiku for execution. Each agent does one thing well. <!-- AGENT_COUNT_TOTAL: 40 -->
+**TL;DR:** 41 agents across 12 plugins (11 have agents). opus for reasoning, sonnet for patterns, haiku for execution. Each agent does one thing well. <!-- AGENT_COUNT_TOTAL: 41 -->
 <!-- GEN:END:agents-counts -->
 
 ---
@@ -15,6 +15,7 @@ Complete reference for all agents in awesome-slash.
 |--------|--------|---------|
 | agnix | 1 | [agnix-agent](#agnix-agent) |
 | audit-project | 10 | [code-quality-reviewer](#code-quality-reviewer), [security-expert](#security-expert), [performance-engineer](#performance-engineer), [test-quality-guardian](#test-quality-guardian), [architecture-reviewer](#architecture-reviewer), [database-specialist](#database-specialist), [api-designer](#api-designer), [frontend-specialist](#frontend-specialist), [backend-specialist](#backend-specialist), [devops-reviewer](#devops-reviewer) |
+| consult | 1 | [consult-agent](#consult-agent) |
 | deslop | 1 | [deslop-agent](#deslop-agent) |
 | drift-detect | 1 | [plan-synthesizer](#plan-synthesizer) |
 | enhance | 8 | [agent-enhancer](#agent-enhancer), [claudemd-enhancer](#claudemd-enhancer), [cross-file-enhancer](#cross-file-enhancer), [docs-enhancer](#docs-enhancer), [hooks-enhancer](#hooks-enhancer), [plugin-enhancer](#plugin-enhancer), [prompt-enhancer](#prompt-enhancer), [skills-enhancer](#skills-enhancer) |
@@ -34,7 +35,7 @@ Complete reference for all agents in awesome-slash.
 
 ## Overview
 
-awesome-slash uses 39 specialized agents across 10 plugins (9 have agents - ship uses commands only). Each agent is optimized for a specific task and assigned a model based on complexity:
+awesome-slash uses 41 specialized agents across 12 plugins (11 have agents - ship uses commands only). Each agent is optimized for a specific task and assigned a model based on complexity:
 
 | Model | Use Case | Cost |
 |-------|----------|------|
@@ -43,7 +44,7 @@ awesome-slash uses 39 specialized agents across 10 plugins (9 have agents - ship
 | haiku | Mechanical execution, no judgment | Low |
 
 **Agent types:**
-- **File-based agents** (30) - Defined in `plugins/*/agents/*.md` with frontmatter <!-- AGENT_COUNT_FILE_BASED: 30 -->
+- **File-based agents** (31) - Defined in `plugins/*/agents/*.md` with frontmatter <!-- AGENT_COUNT_FILE_BASED: 31 -->
 - **Role-based agents** (10) - Defined inline via Task tool with specialized prompts <!-- AGENT_COUNT_ROLE_BASED: 10 -->
 
 ---
