@@ -229,7 +229,7 @@ function generateArchitectureTable(plugins, agents, skills) {
 
   const lines = [
     '```',
-    'lib/          \u2192 Shared library (published as @awesome-slash/lib, vendored to plugins)',
+    'lib/          \u2192 Shared library (vendored to plugins)',
     `plugins/      \u2192 ${plugins.length} plugins, ${totalAgents} agents (${fileBasedAgents} file-based + ${ROLE_BASED_AGENT_COUNT} role-based), ${totalSkills} skills`,
     'adapters/     \u2192 Platform adapters (opencode-plugin/, opencode/, codex/)',
     'checklists/   \u2192 Action checklists (9 files)',

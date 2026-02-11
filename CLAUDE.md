@@ -80,7 +80,7 @@
 
 <!-- GEN:START:claude-architecture -->
 ```
-lib/          → Shared library (published as @awesome-slash/lib, vendored to plugins)
+lib/          → Shared library (vendored to plugins)
 plugins/      → 12 plugins, 41 agents (31 file-based + 10 role-based), 27 skills
 adapters/     → Platform adapters (opencode-plugin/, opencode/, codex/)
 checklists/   → Action checklists (9 files)

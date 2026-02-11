@@ -623,8 +623,7 @@ function checkLibPluginSync(changedFiles, options) {
 
   collectFilesRecursive(libDir, libDir);
 
-  // Exclude package.json from sync check - it belongs to the publishable
-  // @awesome-slash/lib package and is intentionally not synced to plugins
+  // Exclude package.json - only belongs to lib/ root, not synced to plugins
   delete libFiles['package.json'];
 
   // Compare with each plugin's lib/ directory using mtime+size first, hash only on mismatch

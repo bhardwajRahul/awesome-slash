@@ -58,7 +58,7 @@ for plugin in "${PLUGINS[@]}"; do
   mkdir -p "$PLUGIN_LIB"/{platform,patterns,utils,sources,state,reality-check,discovery}
 
   # Copy all lib files using explicit iteration for safety
-  # Skip package.json - it belongs only to the publishable @awesome-slash/lib package
+  # Skip package.json - only belongs to lib/ root, not synced to plugins
   for item in "${REPO_ROOT}/lib"/*; do
     if [ "$(basename "$item")" = "package.json" ]; then
       continue

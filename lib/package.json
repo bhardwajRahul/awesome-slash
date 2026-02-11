@@ -17,9 +17,6 @@
     "url": "git+https://github.com/avifenesh/awesome-slash.git",
     "directory": "lib"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "files": [
     "**/*.js",
     "**/*.json",

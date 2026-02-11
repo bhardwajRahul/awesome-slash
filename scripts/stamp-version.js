@@ -14,7 +14,6 @@
  * Files stamped:
  *   - .claude-plugin/plugin.json
  *   - .claude-plugin/marketplace.json (all version occurrences)
- *   - lib/package.json
  *   - plugins/*\/.claude-plugin/plugin.json (discovered via lib/discovery)
  *   - site/content.json (meta.version)
  *   - plugins/*\/skills/*\/SKILL.md (version in YAML frontmatter)
@@ -130,10 +129,6 @@ function stampVersion(rootDir) {
   // Marketplace
   console.log('\nMarketplace:');
   updateMarketplaceJson(path.join(rootDir, '.claude-plugin', 'marketplace.json'), version);
-
-  // Lib package
-  console.log('\nLib package:');
-  updateJsonFile(path.join(rootDir, 'lib', 'package.json'), version);
 
   // Plugin plugin.json files (discovered from filesystem)
   console.log('\nPlugins:');
