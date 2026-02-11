@@ -3,7 +3,7 @@
 name: consult
 description: "Cross-tool AI consultation. Use when user asks to 'consult gemini', 'ask codex', 'get second opinion', 'cross-check with claude', 'consult another AI', 'ask opencode', 'copilot opinion', or wants a second opinion from a different AI tool."
 version: 1.0.0
-argument-hint: "[question] [--tool] [--effort]"
+argument-hint: "[question] [--tool] [--effort] [--model] [--context] [--continue]"
 ---
 
 > **OpenCode Note**: Invoke agents using `@agent-name` syntax.
@@ -138,7 +138,7 @@ Before building commands, validate all user-provided arguments:
 - **--tool**: MUST be one of: gemini, codex, claude, opencode, copilot. Reject all other values.
 - **--effort**: MUST be one of: low, medium, high, max. Default to medium.
 - **--model**: Allow any string, but quote it in the command.
-- **--context=file=PATH**: MUST pass all of these checks before reading:
+- **--context=file=PATH**: MUST resolve within the project directory. Reject absolute paths outside cwd. Additional checks:
   1. **Block UNC paths** (Windows): Reject paths starting with `\\` or `//` (network shares)
   2. **Resolve canonical path**: Use the Read tool to read the file (do NOT use shell commands). Before reading, resolve the path: join `cwd + PATH`, then normalize (collapse `.`, `..`, resolve symlinks)
   3. **Verify containment**: The resolved canonical path MUST start with the current working directory. If it escapes (via `..`, symlinks, or junction points), reject with: `[ERROR] Path escapes project directory: {PATH}`
@@ -171,21 +171,24 @@ User-provided question text MUST NOT be interpolated into shell command strings.
 **Required approach -- pass question via stdin or temp file:**
 
 1. **Write the question** to a temporary file using the Write tool (e.g., `{AI_STATE_DIR}/consult/question.tmp`)
+
+   Platform state directory:
+   - Claude Code: `.opencode/`
+   - OpenCode: `.opencode/`
+   - Codex CLI: `.codex/`
 2. **Build the command** using the temp file as input instead of inline text:
 
 | Provider | Safe command pattern |
 |----------|---------------------|
 | Claude | `claude -p - --output-format json --model "MODEL" --max-turns TURNS --allowedTools "Read,Glob,Grep" < "{AI_STATE_DIR}/consult/question.tmp"` |
 | Gemini | `gemini -p - --output-format json -m "MODEL" < "{AI_STATE_DIR}/consult/question.tmp"` |
-| Codex | `codex -q "$(cat "{AI_STATE_DIR}/consult/question.tmp")" --json -m "MODEL" -a suggest` (Codex lacks stdin mode -- use cat subshell from trusted file) |
+| Codex | `codex -q "$(cat "{AI_STATE_DIR}/consult/question.tmp")" --json -m "MODEL" -a suggest` (Codex lacks stdin mode -- cat reads from platform-controlled path, not user input) |
 | OpenCode | `opencode run - --format json --model "MODEL" --variant "VARIANT" < "{AI_STATE_DIR}/consult/question.tmp"` |
 | Copilot | `copilot -p - < "{AI_STATE_DIR}/consult/question.tmp"` |
 
-3. **Delete the temp file** after the command completes.
+3. **Delete the temp file** after the command completes (success or failure). Always clean up to prevent accumulation.
 
-**Model and session ID values** are controlled strings (from pickers or saved state) and safe to quote directly in the command. Only the question contains arbitrary user text and requires the temp file approach.
-
-**NEVER** interpolate user question text directly into a shell command string, even with escaping.
+**Model and session ID values** are controlled strings (from pickers or saved state) and safe to quote directly in the command. Only the question contains arbitrary user text and requires the temp file approach. The temp file path (`{AI_STATE_DIR}/consult/question.tmp`) uses a platform-controlled directory and fixed filename -- no user input in the path.
 
 ## Provider Detection
 
@@ -214,7 +217,10 @@ After successful consultation, save to `{AI_STATE_DIR}/consult/last-session.json
 }
 ```
 
-`AI_STATE_DIR` uses the platform state directory. See State Files section in project memory for platform defaults.
+`AI_STATE_DIR` uses the platform state directory:
+- Claude Code: `.opencode/`
+- OpenCode: `.opencode/`
+- Codex CLI: `.codex/`
 
 ### Load Session
 
@@ -227,14 +233,22 @@ If session file not found, warn and proceed as fresh consultation.
 
 ## Output Sanitization
 
-Before returning the response, the invoking agent MUST scan for and redact API keys, tokens, and credentials that may appear in the consulted tool's output. See `consult-agent.md` for the complete redaction pattern list.
+Before returning the response, the invoking agent MUST scan for and redact API keys, tokens, and credentials that may appear in the consulted tool's output. At minimum, redact these patterns:
+
+- `sk-[a-zA-Z0-9_-]{20,}` and `sk-ant-*`, `sk-proj-*` (API keys)
+- `AIza[a-zA-Z0-9_-]{30,}` (Google API keys)
+- `AKIA*`, `ASIA*` (AWS access/session keys)
+- `ghp_*`, `gho_*`, `github_pat_*` (GitHub tokens)
+- `ANTHROPIC_API_KEY=*`, `OPENAI_API_KEY=*`, `GOOGLE_API_KEY=*`, `GEMINI_API_KEY=*` (env assignments)
+- `Bearer [a-zA-Z0-9_-]{20,}` (auth headers)
+
+See `consult-agent.md` for the complete redaction pattern table with replacements.
 
 ## Output Format
 
-Return structured JSON between markers:
+Return a plain JSON object to stdout (no markers or wrappers):
 
-```
-=== CONSULT_RESULT ===
+```json
 {
   "tool": "gemini",
   "model": "gemini-3-pro-preview",
@@ -244,7 +258,6 @@ Return structured JSON between markers:
   "session_id": "abc-123",
   "continuable": true
 }
-=== END_RESULT ===
 ```
 
 ## Install Instructions
@@ -275,3 +288,5 @@ When a tool is not found, return these install commands:
 This skill is invoked by:
 - `consult-agent` for `/consult` command
 - Direct invocation: `Skill('consult', '"question" --tool=gemini --effort=high')`
+
+Example: `Skill('consult', '"Is this approach correct?" --tool=gemini --effort=high --model=gemini-3-pro')`

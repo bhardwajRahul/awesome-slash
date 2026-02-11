@@ -231,8 +231,8 @@ describe('command/skill/agent alignment', () => {
 
   test('command invokes skill via Skill tool in Phase 3', () => {
     expect(commandContent).toMatch(/Skill:\s*consult/);
-    expect(commandContent).toMatch(/--tool=<tool>/);
-    expect(commandContent).toMatch(/--effort=<effort>/);
+    expect(commandContent).toMatch(/--tool=\[tool\]/);
+    expect(commandContent).toMatch(/--effort=\[effort\]/);
   });
 
   test('agent invokes skill via Skill tool', () => {
@@ -458,34 +458,45 @@ describe('session management', () => {
 
 // ─── 7. Output Format ──────────────────────────────────────────────
 describe('output format', () => {
-  test('skill defines CONSULT_RESULT markers', () => {
-    expect(skillContent).toContain('=== CONSULT_RESULT ===');
-    expect(skillContent).toContain('=== END_RESULT ===');
+  test('skill uses plain JSON output (no markers)', () => {
+    expect(skillContent).toContain('plain JSON');
+    expect(skillContent).not.toContain('=== CONSULT_RESULT ===');
+    expect(skillContent).not.toContain('=== END_RESULT ===');
   });
 
-  test('agent returns same marker format', () => {
-    expect(agentContent).toContain('=== CONSULT_RESULT ===');
-    expect(agentContent).toContain('=== END_RESULT ===');
+  test('agent uses plain JSON and human-friendly format (no markers)', () => {
+    expect(agentContent).not.toContain('=== CONSULT_RESULT ===');
+    expect(agentContent).not.toContain('=== END_RESULT ===');
+  });
+
+  test('command uses plain JSON and human-friendly format (no markers)', () => {
+    expect(commandContent).toContain('plain JSON');
+    expect(commandContent).not.toContain('=== CONSULT_RESULT ===');
+    expect(commandContent).not.toContain('=== END_RESULT ===');
   });
 
   test('result JSON has required fields in skill example', () => {
     const requiredFields = ['tool', 'model', 'effort', 'duration_ms', 'response', 'session_id', 'continuable'];
 
-    // The skill has a JSON example between the markers
-    const markerSection = skillContent.match(
-      /=== CONSULT_RESULT ===[\s\S]*?=== END_RESULT ===/
+    // The skill has a JSON example in the Output Format section
+    const outputSection = skillContent.match(
+      /## Output Format[\s\S]*?(?=## |$)/
     );
-    expect(markerSection).not.toBeNull();
+    expect(outputSection).not.toBeNull();
 
     for (const field of requiredFields) {
-      expect(markerSection[0]).toContain(`"${field}"`);
+      expect(outputSection[0]).toContain(`"${field}"`);
     }
   });
 
-  test('command Phase 5 displays tool, model, effort, duration', () => {
-    expect(commandContent).toMatch(/\*\*Tool\*\*/);
-    expect(commandContent).toMatch(/\*\*Effort\*\*/);
-    expect(commandContent).toMatch(/\*\*Duration\*\*/);
+  test('command Phase 5 displays human-friendly format', () => {
+    expect(commandContent).toMatch(/Tool: \{tool\}, Model: \{model\}/);
+    expect(commandContent).toMatch(/The results of the consultation are:/);
+  });
+
+  test('agent step 4 displays human-friendly format', () => {
+    expect(agentContent).toMatch(/Tool: \{tool\}, Model: \{model\}/);
+    expect(agentContent).toMatch(/The results of the consultation are:/);
   });
 });
 
