@@ -7,7 +7,13 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
-    '/plugins/.*/lib/'
+    '/plugins/.*/lib/',
+    '/.claude/worktrees/',
+    '/worktrees/'
+  ],
+  modulePathIgnorePatterns: [
+    '/.claude/worktrees/',
+    '/worktrees/'
   ],
   collectCoverageFrom: [
     'lib/**/*.js',
