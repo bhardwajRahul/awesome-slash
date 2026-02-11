@@ -55,10 +55,10 @@ Use AskUserQuestion for any missing arguments. Ask as separate questions.
 | Tool | Models |
 |------|--------|
 | Claude | haiku, sonnet, opus |
-| Gemini | gemini-2.5-flash, gemini-3-flash-preview, gemini-3-pro-preview |
+| Gemini | gemini-2.5-flash, gemini-2.5-pro, gemini-3-flash-preview, gemini-3-pro-preview |
 | Codex | gpt-5.1-codex-mini, gpt-5.2-codex, gpt-5.3-codex |
-| OpenCode | glm-4.7, copilot/claude-opus-4-6, copilot/gpt-5.3-codex |
-| Copilot | (no model control - skip this question) |
+| OpenCode | (75+ models via providers, format: provider/model - show top picks: claude-sonnet-4-5, claude-opus-4-5, gpt-5.2, gemini-3-pro) |
+| Copilot | claude-sonnet-4-5 (default), claude-opus-4-6, claude-haiku-4-5, gpt-5 |
 
 **Thinking effort** (if `--effort` not provided): Ask separately for thinking effort level. This controls reasoning depth independently from model:
 

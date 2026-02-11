@@ -40,6 +40,8 @@ Command: claude -p "QUESTION" --output-format json --model "MODEL" --max-turns T
 Session resume: --resume "SESSION_ID"
 ```
 
+Models: haiku, sonnet, opus
+
 | Effort | Model | Max Turns |
 |--------|-------|-----------|
 | low | haiku | 1 |
@@ -58,11 +60,13 @@ Command: gemini -p "QUESTION" --output-format json -m "MODEL"
 Session resume: --resume "SESSION_ID"
 ```
 
+Models: gemini-2.5-flash, gemini-2.5-pro, gemini-3-flash-preview, gemini-3-pro-preview
+
 | Effort | Model |
 |--------|-------|
 | low | gemini-2.5-flash |
-| medium | gemini-3-flash-preview |
-| high | gemini-3-pro-preview |
+| medium | gemini-2.5-pro |
+| high | gemini-3-flash-preview |
 | max | gemini-3-pro-preview |
 
 **Parse output**: `JSON.parse(stdout).response`
@@ -73,6 +77,8 @@ Session resume: --resume "SESSION_ID"
 ```
 Command: codex -q "QUESTION" --json -m "MODEL" -a suggest -c model_reasoning_effort="LEVEL"
 ```
+
+Models: gpt-5.1-codex-mini, gpt-5-codex, gpt-5.1-codex, gpt-5.2-codex, gpt-5.3-codex, gpt-5.1-codex-max
 
 | Effort | Model | Reasoning |
 |--------|-------|-----------|
@@ -91,12 +97,14 @@ Command: opencode run "QUESTION" --format json --model "MODEL" --variant "VARIAN
 With thinking: add --thinking flag
 ```
 
+Models: 75+ via providers (format: provider/model). Top picks: claude-sonnet-4-5, claude-opus-4-5, gpt-5.2, gpt-5.1-codex, gemini-3-pro, minimax-m2.1
+
 | Effort | Model | Variant |
 |--------|-------|---------|
-| low | glm-4.7 | low |
-| medium | github-copilot/claude-opus-4-6 | medium |
-| high | github-copilot/claude-opus-4-6 | high |
-| max | github-copilot/gpt-5.3-codex | high + --thinking |
+| low | (user-selected or default) | low |
+| medium | (user-selected or default) | medium |
+| high | (user-selected or default) | high |
+| max | (user-selected or default) | high + --thinking |
 
 **Parse output**: Parse JSON events from stdout, extract final text response
 **Continuable**: No
@@ -107,9 +115,11 @@ With thinking: add --thinking flag
 Command: copilot -p "QUESTION"
 ```
 
+Models: claude-sonnet-4-5 (default), claude-opus-4-6, claude-haiku-4-5, claude-sonnet-4, gpt-5
+
 | Effort | Notes |
 |--------|-------|
-| all | No model or effort control available |
+| all | No effort control available. Model selectable via --model flag. |
 
 **Parse output**: Raw text from stdout
 **Continuable**: No
