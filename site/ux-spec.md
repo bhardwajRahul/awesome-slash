@@ -99,7 +99,7 @@ Scroll order with rationale for each section. All sections are full-width, alter
    - Font: 13px, font-weight 500, primary accent color
    - Padding: 4px 14px
 
-2. **Title:** "Automate the entire dev workflow. Not just the coding."
+2. **Title:** "A modular runtime and orchestration system for AI agents."
    - Font: 56px on desktop, 36px on mobile, font-weight 700, line-height 1.1
    - Color: white
    - "entire dev workflow" portion highlighted with a subtle gradient text (primary-to-secondary accent via `background-clip: text`)
@@ -445,7 +445,7 @@ npm install
 
 **Column 1 (left):** Brand
 - "AgentSys" in 16px, font-weight 600, white
-- "AI workflow automation toolkit" in 14px, `rgba(255, 255, 255, 0.4)`
+- "Agent runtime & orchestration system" in 14px, `rgba(255, 255, 255, 0.4)`
 - "MIT License" in 13px, `rgba(255, 255, 255, 0.3)`
 
 **Column 2 (center):** Links
@@ -649,8 +649,8 @@ This disables:
 
 ### Head Content
 ```html
-<title>AgentSys - AI Workflow Automation Toolkit</title>
-<meta name="description" content="11 plugins, 40 agents, 26 skills. Automate the entire dev workflow from task selection to merged PR. Works with Claude Code, OpenCode, and Codex CLI.">
+<title>AgentSys - Agent Runtime &amp; Orchestration System</title>
+<meta name="description" content="A modular runtime and orchestration system for AI agents. 12 plugins, 41 agents, 27 skills — structured pipelines for Claude Code, OpenCode, and Codex CLI.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0a0a0f">
 

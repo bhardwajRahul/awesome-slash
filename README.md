@@ -5,7 +5,7 @@
 <h1 align="center">AgentSys</h1>
 
 <p align="center">
-  <strong>Automate the entire dev workflow. Not just the coding.</strong>
+  <strong>A modular runtime and orchestration system for AI agents.</strong>
 </p>
 
 <p align="center">
@@ -36,20 +36,18 @@
 
 ---
 
-AI models can write code. That's not the hard part anymore. The hard part is everything else—picking what to work on, managing branches, reviewing output, cleaning up artifacts, handling CI, addressing comments, deploying. **AgentSys automates the entire workflow**, not just the coding.
+AI models can write code. That's not the hard part anymore. The hard part is everything around it — task selection, branch management, code review, artifact cleanup, CI, PR comments, deployment. **AgentSys is the runtime that orchestrates agents to handle all of it** — structured pipelines, gated phases, specialized agents, and persistent state that survives session boundaries.
 
 ---
 > Building custom skills, agents, hooks, or MCP tools? [agnix](https://github.com/avifenesh/agnix) is the CLI + LSP linter that catches config errors before they fail silently - real-time IDE validation, auto suggestions, auto-fix, and 155 rules for Cursor, Claude Code, Cline, Copilot, Codex, Windsurf, and more.
 
 ## What This Is
 
-Production-ready skills, agents, and commands for Claude Code, OpenCode, and Codex CLI.
+An agent orchestration system — 12 plugins, 41 agents, and 27 skills that compose into structured pipelines for software development.
 
-Install the plugins → get the skills → your agents become more capable. Each piece was built to work with the others. The whole system is E2E tested.
+Each agent has a single responsibility, a specific model assignment, and defined inputs/outputs. Pipelines enforce phase gates so agents can't skip steps. State persists across sessions so work survives interruptions.
 
-From messy project to clean codebase. From drifted plan to focused execution. From task to merged PR.
-
-**Works with:** Claude Code · OpenCode · Codex CLI
+The system runs on Claude Code, OpenCode, and Codex CLI. Install the plugins, get the runtime.
 
 ---
 
@@ -92,7 +90,7 @@ This came from testing on 1,000+ repositories.
 | [`/consult`](#consult) | Consult another AI CLI tool for a second opinion. Use when you want to cross-check ideas, get alternative approaches, or validate decisions with Gemini, Codex, Claude, OpenCode, or Copilot. |
 <!-- GEN:END:readme-commands -->
 
-Each command works standalone. Together, they form complete workflows.
+Each command works standalone. Together, they compose into end-to-end pipelines.
 
 ---
 
@@ -113,7 +111,7 @@ Each command works standalone. Together, they form complete workflows.
 | **Linting** | `agnix:agnix` |
 <!-- GEN:END:readme-skills -->
 
-Skills give your agents specialized capabilities. When you install a plugin, its skills become available to all agents in that session.
+Skills are the reusable implementation units. Agents invoke skills; commands orchestrate agents. When you install a plugin, its skills become available to all agents in that session.
 
 ---
 
@@ -706,7 +704,7 @@ The workflow tracks state so you can resume from any point.
 ## Design Philosophy
 
 <details>
-<summary><strong>Why build this? What's the thinking?</strong> (click to expand)</summary>
+<summary><strong>Architecture decisions and trade-offs</strong> (click to expand)</summary>
 
 ### The Actual Problem
 
@@ -858,7 +856,7 @@ npm run verify   # Tool availability + versions
 
 ## Research & Testing
 
-This project is built on research, not guesswork.
+The system is built on research, not guesswork.
 
 **Knowledge base** (`agent-docs/`): 8,000 lines of curated documentation from Anthropic, OpenAI, Google, and Microsoft covering:
 - Agent architecture and design patterns

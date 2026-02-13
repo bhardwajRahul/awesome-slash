@@ -1,6 +1,6 @@
 # Documentation
 
-AI models can write code. The bottleneck is everything else—picking tasks, managing branches, reviewing output, handling CI, addressing comments, deploying. These docs show how AgentSys automates the full workflow, not just the coding part.
+AgentSys is a modular runtime and orchestration system for AI agents. These docs cover the architecture, commands, and workflows — how agents compose into pipelines, how phases gate execution, and how state persists across sessions.
 
 **New here?** Start with [USAGE.md](./USAGE.md) to see commands in action.
 

@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "agentsys",
-    "description": "Production-ready skills, agents, and commands for Claude Code, OpenCode, and Codex CLI. 12 plugins that automate the entire AI development workflow, not just the coding.",
+    "description": "A modular runtime and orchestration system for AI agents. 12 plugins, 41 agents, 27 skills — structured pipelines for Claude Code, OpenCode, and Codex CLI.",
     "url": "https://avifenesh.github.io/agentsys",
     "repo": "https://github.com/avifenesh/agentsys",
     "npm": "https://www.npmjs.com/package/agentsys",
@@ -10,8 +10,8 @@
     "author_url": "https://github.com/avifenesh"
   },
   "hero": {
-    "title": "Automate the entire workflow, not just the coding",
-    "subtitle": "AI models can write code. That's not the hard part anymore. The hard part is everything else -- picking tasks, managing branches, reviewing output, handling CI, addressing comments, deploying. AgentSys automates all of it.",
+    "title": "A modular runtime and orchestration system for AI agents",
+    "subtitle": "AI models can write code. That's not the hard part anymore. The hard part is everything around it -- task selection, branch management, code review, artifact cleanup, CI, deployment. AgentSys is the runtime that orchestrates agents to handle all of it.",
     "cta_primary": {
       "text": "Get Started",
       "url": "#installation"
