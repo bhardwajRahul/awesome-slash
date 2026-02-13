@@ -218,6 +218,12 @@ function installForClaude() {
       // Validate plugin name before shell use (prevents injection)
       if (!/^[a-z0-9][a-z0-9-]*$/.test(plugin)) continue;
       console.log(`  Installing ${plugin}...`);
+      // Remove pre-rename plugin ID to prevent dual loading on upgrade
+      try {
+        execSync(`claude plugin uninstall ${plugin}@awesome-slash`, { stdio: 'pipe' });
+      } catch {
+        // Not installed under old name
+      }
       try {
         // Try install first
         execSync(`claude plugin install ${plugin}@agentsys`, { stdio: 'pipe' });

@@ -84,7 +84,7 @@ node ${CLAUDE_PLUGIN_ROOT}/lib/platform/detect-platform.js
 
 **Codex CLI:**
 ```bash
-node ~/.codex/skills/agentsys/lib/platform/detect-platform.js
+node ~/.codex/agentsys/lib/platform/detect-platform.js
 ```
 
 **OpenCode:**
