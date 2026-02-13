@@ -243,6 +243,11 @@ describe('dev-cli module', () => {
     expect(cliSource).toContain('require.main === module');
   });
 
+  test('test command runs npm without shell interpolation', () => {
+    expect(cliSource).toContain("spawnSync('npm'");
+    expect(cliSource).toContain('shell: false');
+  });
+
   test('exports parseArgs, COMMANDS, VALIDATE_SUBCOMMANDS, NEW_SUBCOMMANDS, route', () => {
     expect(cliSource).toContain('module.exports');
     expect(typeof parseArgs).toBe('function');
