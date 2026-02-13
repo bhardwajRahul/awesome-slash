@@ -25,6 +25,11 @@
   <a href="#commands">Commands</a> · <a href="#installation">Installation</a> · <a href="https://avifenesh.github.io/awesome-slash/">Website</a> · <a href="https://github.com/avifenesh/awesome-slash/discussions">Discussions</a>
 </p>
 
+<p align="center">
+  <a href="https://x.com/avi_fenesh"><img src="https://img.shields.io/badge/Follow-@avi__fenesh-1DA1F2?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X"></a>
+</p>
+<p align="center"><em>Claude Code, Codex CLI, and OpenCode ship updates constantly. Follow for real-time coverage as new features drop.</em></p>
+
 ---
 
 AI models can write code. That's not the hard part anymore. The hard part is everything else—picking what to work on, managing branches, reviewing output, cleaning up artifacts, handling CI, addressing comments, deploying. **awesome-slash automates the entire workflow**, not just the coding.
@@ -905,5 +910,3 @@ This project is built on research, not guesswork.
 ---
 
 MIT License | Made by [Avi Fenesh](https://github.com/avifenesh)
-
-Follow [@avi_fenesh](https://x.com/avi_fenesh) on X for live updates and new releases.
