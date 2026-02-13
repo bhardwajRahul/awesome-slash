@@ -1,4 +1,4 @@
-const { parseCommand } = require('../lib/utils/command-parser');
+const { parseCommand, resolveExecutableForPlatform } = require('../lib/utils/command-parser');
 
 describe('command parser', () => {
   test('parses simple command into executable and args', () => {
@@ -24,5 +24,19 @@ describe('command parser', () => {
 
   test('throws on empty command', () => {
     expect(() => parseCommand('   ')).toThrow('must be a non-empty string');
+  });
+});
+
+describe('resolveExecutableForPlatform', () => {
+  test('uses cmd shim for npm on windows', () => {
+    expect(resolveExecutableForPlatform('npm', 'win32')).toBe('npm.cmd');
+  });
+
+  test('keeps executable unchanged for non-windows', () => {
+    expect(resolveExecutableForPlatform('npm', 'linux')).toBe('npm');
+  });
+
+  test('keeps explicit extension on windows', () => {
+    expect(resolveExecutableForPlatform('npm.cmd', 'win32')).toBe('npm.cmd');
   });
 });

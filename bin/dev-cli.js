@@ -14,6 +14,7 @@
 
 const path = require('path');
 const { execSync, spawnSync } = require('child_process');
+const { resolveExecutableForPlatform } = require('../lib/utils/command-parser');
 
 const VERSION = require('../package.json').version;
 const ROOT_DIR = path.join(__dirname, '..');
@@ -298,7 +299,8 @@ const COMMANDS = {
           cmdArgs.push('--');
           cmdArgs.push(...args);
         }
-        const result = spawnSync('npm', cmdArgs, {
+        const npmExecutable = resolveExecutableForPlatform('npm');
+        const result = spawnSync(npmExecutable, cmdArgs, {
           cwd: ROOT_DIR,
           stdio: 'inherit',
           shell: false,

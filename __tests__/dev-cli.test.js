@@ -243,8 +243,9 @@ describe('dev-cli module', () => {
     expect(cliSource).toContain('require.main === module');
   });
 
-  test('test command runs npm without shell interpolation', () => {
-    expect(cliSource).toContain("spawnSync('npm'");
+  test('test command resolves npm executable without shell interpolation', () => {
+    expect(cliSource).toContain('resolveExecutableForPlatform');
+    expect(cliSource).toContain('spawnSync(npmExecutable');
     expect(cliSource).toContain('shell: false');
   });
 
