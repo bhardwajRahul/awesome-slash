@@ -16,7 +16,7 @@ describe('perf investigation conflict handling', () => {
     fs.rmSync(tempDir, { recursive: true, force: true });
   });
 
-  test('updateInvestigation returns null when updates are continuously overwritten', () => {
+  test('updateInvestigation returns latest readable state on continuous conflicts', () => {
     jest.doMock('../lib/utils/atomic-write', () => {
       const fsLocal = require('fs');
       return {
@@ -44,7 +44,8 @@ describe('perf investigation conflict handling', () => {
     investigationState.initializeInvestigation({}, tempDir);
 
     const updated = investigationState.updateInvestigation({ phase: 'baseline' }, tempDir);
-    expect(updated).toBeNull();
+    expect(updated).not.toBeNull();
+    expect(updated.phase).toBe('setup');
 
     const latest = investigationState.readInvestigation(tempDir);
     expect(latest.phase).toBe('setup');

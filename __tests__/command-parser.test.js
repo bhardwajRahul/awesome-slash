@@ -44,4 +44,12 @@ describe('resolveExecutableForPlatform', () => {
   test('keeps explicit extension on windows', () => {
     expect(resolveExecutableForPlatform('npm.cmd', 'win32')).toBe('npm.cmd');
   });
+
+  test('adds cmd extension for node_modules .bin paths on windows', () => {
+    expect(resolveExecutableForPlatform('node_modules/.bin/vitest', 'win32')).toBe('node_modules/.bin/vitest.cmd');
+  });
+
+  test('keeps path executable unchanged when not from .bin', () => {
+    expect(resolveExecutableForPlatform('tools/vitest', 'win32')).toBe('tools/vitest');
+  });
 });

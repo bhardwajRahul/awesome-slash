@@ -24,9 +24,19 @@ function resolveExecutableForPlatform(executable, platform = process.platform) {
     return executable;
   }
 
-  if (executable.includes('/') || executable.includes('\\')) {
+  const isPathExecutable = executable.includes('/') || executable.includes('\\');
+
+  if (isPathExecutable) {
+    const normalizedPath = executable.replace(/\\/g, '/');
+    const isNodeModulesBinPath = /\/\.bin\/[^/]+$/i.test(normalizedPath);
+
+    if (isNodeModulesBinPath && !/\.[a-zA-Z0-9]+$/.test(executable)) {
+      return executable + '.cmd';
+    }
+
     return executable;
   }
+
 
   if (/\.[a-zA-Z0-9]+$/.test(executable)) {
     return executable;

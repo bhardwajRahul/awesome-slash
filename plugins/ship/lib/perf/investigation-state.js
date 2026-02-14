@@ -197,9 +197,11 @@ function writeInvestigation(state, basePath = process.cwd()) {
  */
 function updateInvestigation(updates, basePath = process.cwd()) {
   const MAX_RETRIES = 5;
+  let fallbackState = null;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     const current = readInvestigation(basePath) || {};
+    fallbackState = current;
     const initialVersion = current._version || 0;
     const nextState = { ...current };
 
@@ -223,6 +225,9 @@ function updateInvestigation(updates, basePath = process.cwd()) {
 
     // Re-read to verify our write succeeded
     const afterWrite = readInvestigation(basePath);
+    if (afterWrite) {
+      fallbackState = afterWrite;
+    }
     if (afterWrite && afterWrite._version >= initialVersion + 1 && updatesApplied(afterWrite, updates)) {
       return afterWrite; // Success
     }
@@ -236,7 +241,7 @@ function updateInvestigation(updates, basePath = process.cwd()) {
 
   // All retries exhausted
   console.error('[ERROR] updateInvestigation: failed to apply updates after max retries');
-  return null;
+  return readInvestigation(basePath) || fallbackState || { ...updates };
 }
 
 /**
