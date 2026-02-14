@@ -266,7 +266,13 @@ function updateFlow(updates, worktreePath = process.cwd()) {
     }
   }
 
-  // All retries exhausted
+  // All retries exhausted. One final read can detect if another writer
+  // applied the same updates while we were retrying.
+  const latest = readFlow(worktreePath);
+  if (latest && updatesApplied(latest, updates)) {
+    return true;
+  }
+
   console.error('[ERROR] updateFlow: failed to apply updates after max retries');
   return false;
 }
