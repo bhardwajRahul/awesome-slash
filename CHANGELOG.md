@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.0.2] - 2026-02-17
+
+### Fixed
+- **Consult: Codex and OpenCode marked as continuable** - Both tools support session resume but were incorrectly marked as non-continuable. Codex supports `codex resume` (TUI-only; non-interactive uses context prepending). OpenCode supports `--session SESSION_ID` and `--continue` flags in non-interactive mode.
+
 ## [5.0.1] - 2026-02-14
 
 ### Fixed

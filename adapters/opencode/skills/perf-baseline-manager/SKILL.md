@@ -2,7 +2,7 @@
 ---
 name: perf-baseline-manager
 description: "Use when managing perf baselines, consolidating results, or comparing versions. Ensures one baseline JSON per version."
-version: 5.0.1
+version: 5.0.2
 ---
 
 # perf-baseline-manager
