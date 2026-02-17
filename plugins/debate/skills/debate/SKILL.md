@@ -76,7 +76,7 @@ Topic: {topic}
 
 {context_summary}
 
-The CHALLENGER ({challenger_tool}) raised these points in round {round-1}:
+The CHALLENGER ({challenger_tool}) raised these points in round {previous_round}:
 
 ---
 {challenger_previous_response}
@@ -117,7 +117,7 @@ Your job: Evaluate the proposer's defense. For each point they addressed:
 - Are there NEW weaknesses in their revised position?
 - Did they adequately address your concern with specific evidence? Only then acknowledge it, and cite what convinced you
 
-You MUST identify at least one new weakness or unresolved concern per round.
+You MUST either identify at least one new weakness or unresolved concern, OR explicitly certify a previous concern as genuinely resolved with specific evidence for why you're now satisfied. "I'm convinced because [evidence]" is acceptable. "I agree now" without evidence is not.
 If you see new problems, raise them.
 
 Provide your follow-up:

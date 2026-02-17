@@ -44,6 +44,7 @@ Extract from prompt (ALL pre-resolved by the /debate command):
 **Optional:**
 - **model_proposer**: Specific model for proposer
 - **model_challenger**: Specific model for challenger
+- **context**: Context mode to pass through to consult skill (diff, file=PATH, none). Default: none. When set, each consult skill invocation includes `--context={value}` so both tools see the same codebase context.
 
 If any required param is missing, return:
 ```json
@@ -76,9 +77,11 @@ For context assembly:
 
 #### 3b. Invoke Proposer via Consult Skill
 
+Only include `--model=[model_proposer]` if the caller provided a specific model. If model is "omit", empty, or "auto", do NOT pass --model to the consult skill.
+
 ```
 Skill: consult
-Args: "{proposer_prompt}" --tool=[proposer] --effort=[effort] --model=[model_proposer]
+Args: "{proposer_prompt}" --tool=[proposer] --effort=[effort] [--model=[model_proposer]] [--context=[context]]
 ```
 
 Parse the JSON result. Extract the response text. Record: round, role="proposer", tool, response, duration_ms.
@@ -101,9 +104,11 @@ If the proposer fails on round 2+, synthesize from completed rounds (skip to Ste
 
 #### 3d. Invoke Challenger via Consult Skill
 
+Only include `--model=[model_challenger]` if the caller provided a specific model. If model is "omit", empty, or "auto", do NOT pass --model to the consult skill.
+
 ```
 Skill: consult
-Args: "{challenger_prompt}" --tool=[challenger] --effort=[effort] --model=[model_challenger]
+Args: "{challenger_prompt}" --tool=[challenger] --effort=[effort] [--model=[model_challenger]] [--context=[context]]
 ```
 
 Parse the JSON result. Record: round, role="challenger", tool, response, duration_ms.
@@ -152,15 +157,11 @@ Create the `debate/` subdirectory if it doesn't exist.
 
 ## Output Sanitization
 
-Apply the same redaction patterns as the consult agent to all tool responses before displaying or saving:
+Apply the FULL redaction pattern table from the consult skill (`plugins/consult/skills/consult/SKILL.md`, Output Sanitization section). The skill is the canonical source with all 14 patterns. Do NOT maintain a separate subset here.
 
-| Pattern | Replacement |
-|---------|-------------|
-| `sk-[a-zA-Z0-9_-]{20,}` | `[REDACTED_API_KEY]` |
-| `AIza[a-zA-Z0-9_-]{30,}` | `[REDACTED_API_KEY]` |
-| `ghp_[a-zA-Z0-9]{36,}` | `[REDACTED_TOKEN]` |
-| `AKIA[A-Z0-9]{16}` | `[REDACTED_AWS_KEY]` |
-| `Bearer [a-zA-Z0-9_-]{20,}` | `Bearer [REDACTED]` |
+The consult skill's table covers: Anthropic keys (`sk-*`, `sk-ant-*`, `sk-proj-*`), Google keys (`AIza*`), GitHub tokens (`ghp_*`, `gho_*`, `github_pat_*`), AWS keys (`AKIA*`, `ASIA*`), env assignments (`ANTHROPIC_API_KEY=*`, `OPENAI_API_KEY=*`, `GOOGLE_API_KEY=*`, `GEMINI_API_KEY=*`), and auth headers (`Bearer *`).
+
+Read the consult skill file to get the exact patterns and replacements.
 
 ## Critical Constraints
 
