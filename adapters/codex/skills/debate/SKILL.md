@@ -81,7 +81,8 @@ Use a SINGLE request_user_input call for all missing params:
 request_user_input:
 > **Codex**: Each question MUST include a unique `id` field (e.g., `id: "q1"`).
   questions:
-    - header: "Proposer"                         # SKIP if proposer resolved
+    - id: "debate-proposer"
+      header: "Proposer"                         # SKIP if proposer resolved
       question: "Which tool should PROPOSE (argue for)?"
       options (only installed tools):
         - label: "Claude"       description: "Deep code reasoning"
@@ -90,12 +91,14 @@ request_user_input:
         - label: "OpenCode"     description: "Flexible model choice"
         - label: "Copilot"      description: "GitHub-integrated AI"
 
-    - header: "Challenger"                       # SKIP if challenger resolved
+    - id: "debate-challenger"
+      header: "Challenger"                       # SKIP if challenger resolved
       question: "Which tool should CHALLENGE (find flaws)?"
       options (only installed, excluding proposer):
         [same list minus the proposer tool]
 
-    - header: "Effort"                           # SKIP if effort resolved
+    - id: "debate-effort"
+      header: "Effort"                           # SKIP if effort resolved
       question: "What thinking effort level?"
       options:
         - label: "High (Recommended)"    description: "Thorough analysis for debate"
@@ -103,7 +106,8 @@ request_user_input:
         - label: "Low"                   description: "Fast, minimal reasoning"
         - label: "Max"                   description: "Maximum reasoning depth"
 
-    - header: "Rounds"                           # SKIP if rounds resolved
+    - id: "debate-rounds"
+      header: "Rounds"                           # SKIP if rounds resolved
       question: "How many debate rounds?"
       options:
         - label: "2 (Recommended)"       description: "Propose + challenge + defend + respond"
@@ -111,7 +115,8 @@ request_user_input:
         - label: "3 (Extended)"          description: "Three full exchanges"
         - label: "5 (Exhaustive)"        description: "Five rounds, deep exploration"
 
-    - header: "Context"                          # SKIP if --context resolved
+    - id: "debate-context"
+      header: "Context"                          # SKIP if --context resolved
       question: "Include codebase context for both tools?"
       options:
         - label: "None (Recommended)"    description: "No extra context, just the topic"
@@ -127,7 +132,8 @@ If context resolved to "file":
   request_user_input:
 > **Codex**: Each question MUST include a unique `id` field (e.g., `id: "q1"`).
     questions:
-      - header: "File path"
+      - id: "debate-file-path"
+        header: "File path"
         question: "Which file should both tools see?"
         options:
           - label: "src/"               description: "Source directory file"

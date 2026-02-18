@@ -83,7 +83,8 @@ Use a SINGLE AskUserQuestion call for all missing params:
 ```
 AskUserQuestion:
   questions:
-    - header: "Proposer"                         # SKIP if proposer resolved
+    - id: "debate-proposer"
+      header: "Proposer"                         # SKIP if proposer resolved
       question: "Which tool should PROPOSE (argue for)?"
       multiSelect: false
       options (only installed tools):
@@ -93,13 +94,15 @@ AskUserQuestion:
         - label: "OpenCode"     description: "Flexible model choice"
         - label: "Copilot"      description: "GitHub-integrated AI"
 
-    - header: "Challenger"                       # SKIP if challenger resolved
+    - id: "debate-challenger"
+      header: "Challenger"                       # SKIP if challenger resolved
       question: "Which tool should CHALLENGE (find flaws)?"
       multiSelect: false
       options (only installed, excluding proposer):
         [same list minus the proposer tool]
 
-    - header: "Effort"                           # SKIP if effort resolved
+    - id: "debate-effort"
+      header: "Effort"                           # SKIP if effort resolved
       question: "What thinking effort level?"
       multiSelect: false
       options:
@@ -108,7 +111,8 @@ AskUserQuestion:
         - label: "Low"                   description: "Fast, minimal reasoning"
         - label: "Max"                   description: "Maximum reasoning depth"
 
-    - header: "Rounds"                           # SKIP if rounds resolved
+    - id: "debate-rounds"
+      header: "Rounds"                           # SKIP if rounds resolved
       question: "How many debate rounds?"
       multiSelect: false
       options:
@@ -117,7 +121,8 @@ AskUserQuestion:
         - label: "3 (Extended)"          description: "Three full exchanges"
         - label: "5 (Exhaustive)"        description: "Five rounds, deep exploration"
 
-    - header: "Context"                          # SKIP if --context resolved
+    - id: "debate-context"
+      header: "Context"                          # SKIP if --context resolved
       question: "Include codebase context for both tools?"
       multiSelect: false
       options:
@@ -133,7 +138,8 @@ If context resolved to "file":
   ```
   AskUserQuestion:
     questions:
-      - header: "File path"
+      - id: "debate-file-path"
+        header: "File path"
         question: "Which file should both tools see?"
         multiSelect: false
         options:
