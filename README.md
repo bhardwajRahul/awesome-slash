@@ -693,7 +693,7 @@ agent-knowledge/
 
 # Explicit flags
 /debate "Should we use event sourcing?" --tools=claude,gemini --rounds=3 --effort=high
-/debate "Redis vs PostgreSQL for caching" --tools=codex,opencode
+/debate "Valkey vs PostgreSQL for caching" --tools=codex,opencode
 
 # With codebase context
 /debate "Is our current approach correct?" --tools=gemini,codex --context=diff
