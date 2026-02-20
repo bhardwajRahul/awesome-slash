@@ -119,6 +119,59 @@ describe('next-task Phase 11 integration', () => {
     });
   });
 
+  describe('Phase 12 ship:ship invocation', () => {
+    const cmdPath = path.join(nextTaskDir, 'commands', 'next-task.md');
+    let cmdContent;
+
+    beforeAll(() => {
+      cmdContent = fs.readFileSync(cmdPath, 'utf8');
+    });
+
+    test('allowed-tools includes both Skill and Task', () => {
+      const match = cmdContent.match(/^allowed-tools:\s*(.+)$/m);
+      expect(match).not.toBeNull();
+      expect(match[1]).toContain('Skill');
+      expect(match[1]).toContain('Task');
+    });
+
+    test('uses Skill() not Task() to invoke ship:ship', () => {
+      expect(cmdContent).toContain('Skill({ name: "ship:ship"');
+      expect(cmdContent).not.toMatch(/Task\(\s*\{\s*subagent_type:\s*["'`]ship:ship["'`]/);
+    });
+
+    test('startPhase uses shipping not ship (valid PHASES entry)', () => {
+      expect(cmdContent).toContain("startPhase('shipping')");
+      expect(cmdContent).not.toContain("startPhase('ship')");
+    });
+
+    test('passes --state-file argument on the same line as Skill invocation', () => {
+      // Use [^\n]* to enforce same-line matching (no /s flag)
+      expect(cmdContent).toMatch(/Skill\(\{[^\n]*ship:ship[^\n]*--state-file/);
+    });
+  });
+
+  describe('codex adapter ship:ship parity', () => {
+    const codexSkillPath = path.join(__dirname, '..', 'adapters', 'codex', 'skills', 'next-task', 'SKILL.md');
+    let codexContent;
+
+    beforeAll(() => {
+      codexContent = fs.existsSync(codexSkillPath) ? fs.readFileSync(codexSkillPath, 'utf8') : null;
+    });
+
+    test('codex adapter SKILL.md exists', () => {
+      expect(codexContent).not.toBeNull();
+    });
+
+    test('codex adapter SKILL.md uses Skill() for ship:ship', () => {
+      expect(codexContent).toContain('Skill({ name: "ship:ship"');
+      expect(codexContent).not.toMatch(/Task\(\s*\{\s*subagent_type:\s*["'`]ship:ship["'`]/);
+    });
+
+    test('codex adapter passes --state-file on the same line as Skill invocation', () => {
+      expect(codexContent).toMatch(/Skill\(\{[^\n]*ship:ship[^\n]*--state-file/);
+    });
+  });
+
   describe('next-task agent count', () => {
     const agentsDir = path.join(nextTaskDir, 'agents');
 
