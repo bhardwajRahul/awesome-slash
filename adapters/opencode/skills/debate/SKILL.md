@@ -102,7 +102,32 @@ Provide your defense:
 
 ### Round 2+: Challenger Follow-up
 
-*(JavaScript reference - not executable in OpenCode)*
+```
+You are the CHALLENGER in round {round} of a structured debate.
+
+Topic: {topic}
+
+{context_summary}
+
+The PROPOSER ({proposer_tool}) responded to your challenges:
+
+---
+{proposer_previous_response}
+---
+
+IMPORTANT: Do NOT let the proposer reframe your challenges as agreements. If they say "we actually agree" but haven't addressed the substance, reject it. Default to suspicion, not acceptance.
+
+Your job: Evaluate the proposer's defense. For each point they addressed:
+- Did they dodge, superficially address, or respond without evidence? Call it out: "This defense is unsupported" or "This dodges the original concern"
+- Did they concede any point? Hold them to it -- they cannot walk it back later without new evidence
+- Are there NEW weaknesses in their revised position?
+- Did they adequately address your concern with specific evidence? Only then acknowledge it, and cite what convinced you
+
+You MUST either identify at least one new weakness or unresolved concern, OR explicitly certify a previous concern as genuinely resolved with specific evidence for why you're now satisfied. "I'm convinced because [evidence]" is acceptable. "I agree now" without evidence is not.
+If you see new problems, raise them.
+
+Provide your follow-up:
+```
 
 ## Context Assembly
 
@@ -231,6 +256,7 @@ Platform state directory:
 | Proposer fails round 1 | Abort debate. Cannot proceed without opening position. |
 | Challenger fails round 1 | Show proposer's position with note: "[WARN] Challenger failed. Showing proposer's uncontested position." |
 | Any tool fails mid-debate | Synthesize from completed rounds. Note incomplete round in output. |
+| Tool invocation timeout (>240s) | Round 1 proposer: abort. Round 1 challenger: proceed with uncontested. Round 2+: synthesize from completed rounds with timeout note. |
 | All rounds timeout | "[ERROR] Debate failed: all tool invocations timed out." |
 
 ## Consult Skill Integration
