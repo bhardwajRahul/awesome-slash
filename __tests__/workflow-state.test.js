@@ -50,6 +50,14 @@ describe('workflow-state', () => {
       expect(PHASES).toContain('complete');
       expect(PHASES.indexOf('policy-selection')).toBeLessThan(PHASES.indexOf('complete'));
     });
+
+    test('new phases are in correct order relative to neighbors', () => {
+      expect(PHASES.indexOf('implementation')).toBeLessThan(PHASES.indexOf('pre-review-gates'));
+      expect(PHASES.indexOf('pre-review-gates')).toBeLessThan(PHASES.indexOf('review-loop'));
+      expect(PHASES.indexOf('review-loop')).toBeLessThan(PHASES.indexOf('delivery-validation'));
+      expect(PHASES.indexOf('delivery-validation')).toBeLessThan(PHASES.indexOf('docs-update'));
+      expect(PHASES.indexOf('docs-update')).toBeLessThan(PHASES.indexOf('shipping'));
+    });
   });
 
   describe('tasks.json operations', () => {
@@ -202,6 +210,124 @@ describe('workflow-state', () => {
       const flow = readFlow(testDir);
       expect(flow.status).toBe('aborted');
       expect(flow.abortReason).toBe('User cancelled');
+    });
+  });
+
+  describe('new phases: pre-review-gates and docs-update', () => {
+    beforeEach(() => {
+      createFlow(
+        { id: '1', title: 'Test', source: 'manual' },
+        { stoppingPoint: 'merged' },
+        testDir
+      );
+    });
+
+    test('PHASES contains pre-review-gates and docs-update', () => {
+      expect(PHASES).toContain('pre-review-gates');
+      expect(PHASES).toContain('docs-update');
+    });
+
+    test('isValidPhase accepts pre-review-gates and docs-update', () => {
+      expect(isValidPhase('pre-review-gates')).toBe(true);
+      expect(isValidPhase('docs-update')).toBe(true);
+    });
+
+    test('completePhase from implementation advances to pre-review-gates', () => {
+      setPhase('implementation', testDir);
+      completePhase(null, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('pre-review-gates');
+      expect(flow.status).toBe('in_progress');
+    });
+
+    test('completePhase from pre-review-gates advances to review-loop', () => {
+      setPhase('pre-review-gates', testDir);
+      completePhase({ passed: true }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('review-loop');
+      expect(flow.status).toBe('in_progress');
+      expect(flow.preReviewResult).toEqual({ passed: true });
+    });
+
+    test('completePhase from review-loop stores reviewResult and advances to delivery-validation', () => {
+      setPhase('review-loop', testDir);
+      completePhase({ approved: true, iterations: 2 }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('delivery-validation');
+      expect(flow.status).toBe('in_progress');
+      expect(flow.reviewResult).toEqual({ approved: true, iterations: 2 });
+    });
+
+    test('completePhase from review-loop stores blocked result (stall-detected)', () => {
+      setPhase('review-loop', testDir);
+      completePhase({ approved: false, blocked: true, reason: 'stall-detected', remaining: { critical: 1 } }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('delivery-validation');
+      expect(flow.reviewResult.approved).toBe(false);
+      expect(flow.reviewResult.reason).toBe('stall-detected');
+    });
+
+    test('completePhase from review-loop stores blocked result (iteration-limit)', () => {
+      setPhase('review-loop', testDir);
+      completePhase({ approved: false, blocked: true, reason: 'iteration-limit', remaining: { critical: 0, high: 2 } }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('delivery-validation');
+      expect(flow.reviewResult.reason).toBe('iteration-limit');
+      expect(flow.reviewResult.remaining.high).toBe(2);
+    });
+
+    test('completePhase stores falsy result (result !== null fix)', () => {
+      setPhase('pre-review-gates', testDir);
+      completePhase({ passed: false, reason: 'lint-failure' }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.preReviewResult).toBeDefined();
+      expect(flow.preReviewResult.passed).toBe(false);
+    });
+
+    test('completePhase from shipping advances to complete', () => {
+      setPhase('shipping', testDir);
+      completePhase(null, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('complete');
+      expect(flow.status).toBe('completed');
+    });
+
+    test('completePhase returns null for unknown current phase', () => {
+      setPhase('review-loop', testDir);
+      // Manually corrupt the phase to an unknown value
+      const currentFlow = readFlow(testDir);
+      currentFlow.phase = 'nonexistent-phase';
+      writeFlow(currentFlow, testDir);
+
+      const result = completePhase(null, testDir);
+      expect(result).toBeNull();
+    });
+
+    test('completePhase from delivery-validation advances to docs-update', () => {
+      setPhase('delivery-validation', testDir);
+      completePhase({ passed: true }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('docs-update');
+      expect(flow.status).toBe('in_progress');
+      expect(flow.deliveryResult).toEqual({ passed: true });
+    });
+
+    test('completePhase from docs-update advances to shipping', () => {
+      setPhase('docs-update', testDir);
+      completePhase({ docsUpdated: true }, testDir);
+
+      const flow = readFlow(testDir);
+      expect(flow.phase).toBe('shipping');
+      expect(flow.status).toBe('in_progress');
+      expect(flow.docsResult).toEqual({ docsUpdated: true });
     });
   });
 

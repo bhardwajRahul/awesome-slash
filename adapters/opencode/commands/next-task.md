@@ -50,7 +50,7 @@ This workflow exists because each step serves a purpose. Taking shortcuts defeat
 | Step | Purpose | What Happens If Skipped |
 |------|---------|------------------------|
 | Worktree creation | Parallel task isolation | Conflicts, lost work |
-| Review loop (3 iterations) | Catches bugs humans miss | Bugs ship to production |
+| Review loop (5 iterations, stall-safe) | Catches bugs humans miss | Bugs ship to production |
 | 3-minute CI wait | Auto-reviewers need time | Miss critical feedback |
 | Address all PR comments | Quality gate | Merge blocked, trust lost |
 
@@ -236,11 +236,9 @@ Spawn: `worktree-manager` (haiku)
 
 **Last human interaction point.** Present plan via EnterPlanMode/ExitPlanMode.
 
-```javascript
-EnterPlanMode();
-// User reviews and approves via ExitPlanMode
-workflowState.completePhase({ planApproved: true, plan });
-```
+- Use EnterPlanMode for user approval
+- Call `workflowState.completePhase(result)` to advance workflow state
+
 </phase-6>
 
 <phase-7>
@@ -260,6 +258,7 @@ workflowState.completePhase({ planApproved: true, plan });
 - Invoke `@deslop-agent` agent
 - Invoke `@test-coverage-checker` agent
 - Phase: pre-review-gates
+- Call `workflowState.completePhase(result)` to advance workflow state
 
 </phase-8>
 
@@ -267,6 +266,10 @@ workflowState.completePhase({ planApproved: true, plan });
 ## Phase 9: Review Loop
 
 **Blocking gate** - Must run iterations before delivery validation.
+
+```javascript
+workflowState.startPhase('review-loop');
+```
 
 **CRITICAL**: You MUST spawn multiple parallel reviewer agents. Do NOT use a single generic reviewer.
 
@@ -307,13 +310,13 @@ For each finding, use Edit tool to apply the suggested fix. Commit after each ba
 
 Repeat steps 3-5 until:
 - `openCount === 0` (all issues resolved) -> approved
-- 3+ iterations with only medium/low issues -> orchestrator may override
-- 5 iterations reached -> blocked
+- Same findings hash for 2 consecutive iterations (stall detected) -> blocked
+- 5 iterations reached (hard limit) -> blocked
 
 ### Review Iteration Rules
 - MUST run at least 1 full iteration with ALL 4 core reviewers
 - Do NOT use a single generic reviewer - spawn all specialists in parallel
-- Orchestrator may override after 3+ iterations if only medium/low issues remain
+- MUST continue while `openCount > 0`. Only stop on: openCount===0, stall detection, or 5-iteration hard limit
 - Do not skip directly to delivery validation
 - Do not claim "review passed" without spawning the reviewer agents
 
@@ -328,6 +331,10 @@ After review loop completes, output:
 - Findings resolved: X critical, Y high, Z medium
 - Status: approved | blocked
 ```
+
+Then advance the workflow state:
+- Call `workflowState.completePhase(result)` to advance workflow state
+
 </phase-9>
 
 <phase-10>
@@ -349,6 +356,7 @@ Uses the unified sync-docs agent from the sync-docs plugin with `before-pr` scop
 
 - Invoke `@sync-docs-agent` agent
 - Phase: docs-update
+- Call `workflowState.completePhase(result)` to advance workflow state
 
 </phase-11>
 

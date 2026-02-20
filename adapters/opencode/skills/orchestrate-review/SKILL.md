@@ -1,5 +1,6 @@
 ---
 name: orchestrate-review
+version: 5.1.0
 description: "Use when user asks to \"deep review the code\", \"thorough code review\", \"multi-pass review\", or when orchestrating the Phase 9 review loop. Provides review pass definitions (code quality, security, performance, test coverage), signal detection patterns, and iteration algorithms."
 metadata:
   short-description: "Multi-pass code review orchestration"
@@ -63,6 +64,8 @@ if (signals.hasDevops) passes.push({ id: 'devops', role: 'devops reviewer',
 
 - Invoke `@general-purpose` agent
 - Invoke `@deslop-agent` agent
+- Use AskUserQuestion tool for user input
+- Call `workflowState.completePhase(result)` to advance workflow state
 
 
 ## Review Queue
