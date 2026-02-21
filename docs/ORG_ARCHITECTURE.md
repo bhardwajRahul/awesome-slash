@@ -98,17 +98,17 @@
 
 ### 2. Plugin Distribution Registry
 **Issue**: [#251](https://github.com/agent-sh/agentsys/issues/251)
-**Status**: Planning
-**Depends on**: #254 (versioning)
-**Related**: #246 (original proposal)
+**Status**: Complete
+**Related**: #246 (closed, superseded)
 
-`plugins.json` + `agentsys install <plugin>` — how users discover and install standalone plugins.
-
-**Key decisions needed:**
-- [ ] plugins.json schema
-- [ ] Artifact format (tarball from GitHub Releases)
-- [ ] Install location (per-project vs global)
-- [ ] Update/lockfile strategy
+**Implemented:**
+- [x] `agentsys install <plugin>[@version]` with transitive dep resolution
+- [x] `agentsys remove <plugin>` with dep-in-use warnings
+- [x] `agentsys search [term]` with filtered table output
+- [x] `installed.json` manifest at `~/.agentsys/installed.json`
+- [x] Core version compatibility check (warns on mismatch)
+- [x] GitHub tarball fetching with cache at `~/.agentsys/plugins/`
+- [x] `agentsys list` and `agentsys update` subcommands
 
 ---
 
@@ -141,7 +141,7 @@ Org profile README, shared templates, reusable CI workflows, CODEOWNERS.
 - [x] CONTRIBUTING.md, SECURITY.md, CODE_OF_CONDUCT.md, CODEOWNERS
 - [x] Issue templates: bug.yml, feature.yml, config.yml
 - [x] Reusable workflows: ci-node.yml, codeql.yml, sync-core.yml
-- [ ] Pin repos on org profile (GitHub UI)
+- [ ] Pin repos on org profile (GitHub UI only — no API)
 
 ---
 
@@ -192,14 +192,19 @@ CI-driven vendor sync from agent-core → all consumer repos.
 
 ---
 
-## Pending Work (Not Yet Tracked as Issues)
+## Pending Work
 
 - [ ] Build web-ctl plugin (#241 — architecture done, implementation pending)
+- [ ] #255 — Documentation & Website (org landing page, plugin catalog)
+- [ ] Pin repos on org profile (GitHub UI only)
+- [ ] Auto-archive on project board (board UI)
+- [ ] Enable HTTPS on agnix Pages (cert provisioning — deploy triggered)
 - [ ] File GitHub squatting claim for `agentsys` org name
 - [ ] Add verified domain to agent-sh org (when domain registered)
-- [ ] Enable HTTPS on agnix Pages (cert still provisioning)
 - [x] Set org avatar
-- [x] Merge link-fix PRs: agentsys [#249](https://github.com/agent-sh/agentsys/pull/249), agnix [#543](https://github.com/agent-sh/agnix/pull/543)
+- [x] Merge link-fix PRs
+- [x] Close resolved issues (#245, #246, #250-#254, #256)
+- [x] agnix Claude Code plugin (agnix#550)
 
 ---
 
@@ -238,4 +243,4 @@ Parallel (independent):
 ---
 
 *Created: 2026-02-21*
-*Last updated: 2026-02-21 (Phase 2 complete — all 13 plugins extracted to standalone repos)*
+*Last updated: 2026-02-21 (Phase 1-3 complete, 6/7 tracks done)*
