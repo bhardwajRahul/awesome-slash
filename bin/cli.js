@@ -132,12 +132,15 @@ function parseArgs(args) {
       i++;
     } else if (['update', 'list', 'install', 'remove', 'search'].includes(arg)) {
       result.subcommand = arg;
-      // For 'list': accept --all, --agents, --skills, --commands, --hooks, --plugins as subcommandArg
-      if (arg === 'list' && args[i + 1] && ['--all', '--agents', '--skills', '--commands', '--hooks', '--plugins'].includes(args[i + 1])) {
+      // Check for subcommand --help
+      if (args[i + 1] && (args[i + 1] === '--help' || args[i + 1] === '-h')) {
+        result.subcommandArg = '--help';
+        i++;
+      // For 'list': accept --all, --agents, --skills, --commands, --hooks, --plugins
+      } else if (arg === 'list' && args[i + 1] && ['--all', '--agents', '--skills', '--commands', '--hooks', '--plugins'].includes(args[i + 1])) {
         result.subcommandArg = args[i + 1];
         i++;
       } else if (args[i + 1] && !args[i + 1].startsWith('-')) {
-        // Grab the next non-flag arg as subcommand argument (plugin name, search term)
         result.subcommandArg = args[i + 1];
         i++;
       }
@@ -1523,6 +1526,112 @@ function removeInstallation() {
   console.log('  - Codex: Remove ~/.codex/skills/*/');
 }
 
+function printSubcommandHelp(subcommand) {
+  const helps = {
+    install: `
+agentsys install — Install plugins and components
+
+Usage:
+  agentsys install <plugin>              Install a full plugin (all agents, skills, commands)
+  agentsys install <plugin>:<component>  Install a single agent, skill, or command
+  agentsys install <plugin>@<version>    Install a specific version
+
+Examples:
+  agentsys install next-task             Install next-task + dependencies (deslop, ship, sync-docs)
+  agentsys install next-task:ci-fixer    Install just the ci-fixer agent
+  agentsys install deslop:deslop         Install just the deslop skill
+  agentsys install enhance:enhance-docs  Install just the enhance-docs skill
+  agentsys install perf@1.2.0            Install perf at version 1.2.0
+
+Options:
+  --tool <name>     Install for a specific platform (claude, opencode, codex)
+  --tools <list>    Install for multiple platforms (comma-separated)
+
+Notes:
+  - Dependencies are resolved automatically (e.g., deslop requires next-task)
+  - The full plugin is cached locally; granular install only affects what gets
+    copied to platform directories (OpenCode, Codex)
+  - Claude Code always installs whole plugins (platform limitation)
+  - Use "agentsys search <plugin>:" to list available components
+`,
+    list: `
+agentsys list — List installed plugins and components
+
+Usage:
+  agentsys list               Plugin summary (name, version, scope, counts)
+  agentsys list --all         Show everything (plugins, agents, skills, commands, hooks)
+  agentsys list --plugins     Show plugins with version and scope
+  agentsys list --agents      Show all agents across all installed plugins
+  agentsys list --skills      Show all skills across all installed plugins
+  agentsys list --commands    Show all commands (slash commands)
+  agentsys list --hooks       Show all hooks
+
+Output format:
+  AGENTS
+    plugin:agent-name          model    description
+  SKILLS
+    plugin:skill-name          description
+  COMMANDS
+    /command-name              description
+  HOOKS
+    plugin:event               description
+
+Scope tags:
+  [full]     All components of the plugin are installed
+  [partial]  Only selected components are installed
+`,
+    search: `
+agentsys search — Search available plugins and components
+
+Usage:
+  agentsys search              List all available plugins
+  agentsys search <term>       Filter plugins by name or description
+  agentsys search <plugin>:    List all components (agents, skills, commands) of a plugin
+
+Examples:
+  agentsys search              Show all 13 plugins
+  agentsys search perf         Find plugins matching "perf"
+  agentsys search next-task:   Show next-task's 10 agents, 3 skills, 2 commands
+  agentsys search :ci-fixer    Search all plugins for "ci-fixer"
+
+Output:
+  NAME          VERSION  DESCRIPTION
+  next-task     1.0.0    Master workflow orchestrator
+  deslop        1.0.0    Clean AI slop from code
+`,
+    remove: `
+agentsys remove — Remove an installed plugin
+
+Usage:
+  agentsys remove <plugin>     Remove plugin from cache and platform directories
+
+Notes:
+  - Warns if another installed plugin depends on the one being removed
+  - Claude Code: runs "claude plugin uninstall <plugin>@agentsys"
+  - OpenCode/Codex: notes manual cleanup may be needed
+  - Updates installed.json manifest
+`,
+    update: `
+agentsys update — Update installed plugins to latest versions
+
+Usage:
+  agentsys update              Re-fetch all installed plugins from GitHub
+
+Notes:
+  - Clears cached versions and re-downloads latest from each plugin's GitHub repo
+  - Only updates plugins already in the cache (~/.agentsys/plugins/)
+  - Does not change platform installations — run "agentsys" again to re-install
+`
+  };
+
+  const text = helps[subcommand];
+  if (text) {
+    console.log(text);
+  } else {
+    console.log(`No help available for "${subcommand}". Run: agentsys --help`);
+  }
+}
+
 function printHelp() {
   console.log(`
 agentsys v${VERSION} - Workflow automation for AI coding assistants
@@ -1603,6 +1712,12 @@ async function main() {
   // Handle --help
   if (args.help) {
     printHelp();
+    return;
+  }
+
+  // Handle subcommand help
+  if (args.subcommandArg === '--help') {
+    printSubcommandHelp(args.subcommand);
     return;
   }
 
