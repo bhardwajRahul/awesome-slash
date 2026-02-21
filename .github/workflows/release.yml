@@ -109,16 +109,12 @@ jobs:
             exit 1
           fi
 
-          # Check plugin.json files
-          for plugin_json in .claude-plugin/plugin.json plugins/*/.claude-plugin/plugin.json; do
-            if [ -f "$plugin_json" ]; then
-              PLUGIN_VERSION=$(node -p "require('./$plugin_json').version")
-              if [ "$PLUGIN_VERSION" != "$VERSION" ]; then
-                echo "[ERROR] $plugin_json version ($PLUGIN_VERSION) doesn't match release version ($VERSION)"
-                exit 1
-              fi
-            fi
-          done
+          # Check root plugin.json (plugin repos have independent versions)
+          PLUGIN_VERSION=$(node -p "require('./.claude-plugin/plugin.json').version")
+          if [ "$PLUGIN_VERSION" != "$VERSION" ]; then
+            echo "[ERROR] .claude-plugin/plugin.json version ($PLUGIN_VERSION) doesn't match release version ($VERSION)"
+            exit 1
+          fi
 
           echo "[OK] All version numbers match: $VERSION"
 

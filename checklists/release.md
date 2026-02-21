@@ -7,8 +7,9 @@ Full release guide: [agent-docs/release.md](../agent-docs/release.md)
 Single command stamps version into all files (`package.json` is the source of truth):
 
 ```bash
-# Bump version everywhere (package.json, package-lock.json, all plugin.json,
+# Bump version everywhere (package.json, package-lock.json, plugin.json,
 # marketplace.json, site/content.json) via npm lifecycle + stamp-version.js
+# Note: plugin repos have independent versions — not stamped here
 npx agentsys-dev bump X.Y.Z
 # or: npm version X.Y.Z --no-git-tag-version
 ```
@@ -18,13 +19,13 @@ npx agentsys-dev bump X.Y.Z
 
 ## New Plugin Checklist
 
-If adding a NEW plugin (not just updating):
+If adding a NEW standalone plugin repo to the marketplace:
 
-- [ ] Plugin follows conventions: `plugins/<name>/.claude-plugin/plugin.json` exists
-- [ ] Plugin has `commands/<name>.md` with `codex-description` frontmatter
-- [ ] `docs/INSTALLATION.md` → Add `/plugin install <name>@agentsys` commands
-- [ ] `.claude-plugin/marketplace.json` → Add new plugin entry to `plugins` array
-- [ ] `plugins/<name>/.claude-plugin/plugin.json` → Create plugin manifest
+- [ ] Create repo under agent-sh org (or use `scripts/graduate-plugin.js`)
+- [ ] Plugin has `.claude-plugin/plugin.json` with version and description
+- [ ] `.claude-plugin/marketplace.json` in agentsys → Add entry with source URL, requires, core
+- [ ] `docs/INSTALLATION.md` → Add to plugin list
+- [ ] Add repo to agent-core sync matrix (if plugin uses lib/)
 
 ## Documentation Updates
 

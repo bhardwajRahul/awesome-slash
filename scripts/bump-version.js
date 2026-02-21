@@ -17,12 +17,7 @@
 
 const { execFileSync } = require('child_process');
 const path = require('path');
-const discovery = require(path.join(__dirname, '..', 'lib', 'discovery'));
-
 const VERSION_PATTERN = /^\d+\.\d+\.\d+(-[a-zA-Z0-9.]+)?$/;
-
-// Discover plugins from filesystem (for help text)
-const PLUGIN_NAMES = discovery.discoverPlugins(path.join(__dirname, '..'));
 
 function main(args) {
   if (!args) args = process.argv.slice(2);
@@ -43,8 +38,8 @@ Files updated (via npm version + stamp-version.js):
   - package.json + package-lock.json (npm native)
   - .claude-plugin/plugin.json
   - .claude-plugin/marketplace.json (all occurrences)
-  - plugins/*/.claude-plugin/plugin.json (${PLUGIN_NAMES.length} plugins)
   - site/content.json (meta.version)
+  (Plugin repos have independent versions — not stamped here)
 `);
     return 0;
   }
