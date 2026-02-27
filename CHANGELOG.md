@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.2.0] - 2026-02-27
+
 ### Added
 
 - **Cursor platform support (#261)** — agentsys now installs to Cursor as a 4th platform alongside Claude Code, OpenCode, and Codex CLI. Use `agentsys --tool cursor` or `agentsys install <plugin> --tool cursor` to install. Skills are copied to `.cursor/skills/` (same SKILL.md format - no transform needed), commands to `.cursor/commands/` (light transform), and rules to `.cursor/rules/*.mdc` (MDC frontmatter). All content is project-scoped. Cursor v2.4+ natively supports the Agent Skills standard.
@@ -26,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`/next-task` GitHub Projects source** — Added `gh-projects` as a supported task source. When selected, the workflow prompts for a project number and owner, then fetches issues from a GitHub Projects v2 board via `gh project item-list`. Includes PR-linked issue exclusion (same as GitHub Issues), input validation for project number and owner, and caching of project preferences. Fixes #247.
 
 ### Fixed
+
+- **Installer crash with new marketplace schema** - Fixed `plugin.source.startsWith is not a function` error when installing plugins. The marketplace.json `source` field changed from a string to an object in #266 but the installer was not updated to handle the new format. Added `resolveSourceUrl()` helper that handles both legacy string and new `{ source: "url", url: "..." }` formats. Also fixed `.git` suffix in source URLs causing 404 errors when fetching tarballs from the GitHub API. Added fallback to `main` branch when version tags don't exist yet. Fixed Windows tar extraction failure by converting backslash paths to forward slashes for MSYS2 compatibility.
+
+- **CLAUDE.md merge conflict markers** - Resolved broken merge conflict markers (HEAD/ancestor markers without closer) that were committed to main.
 
 - **Windows jscpd output bug (#270)** - Fixed `runDuplicateDetection` creating a mangled filename on Windows when `--output NUL` was passed to jscpd via `execFileSync` (no shell). Replaced platform-specific null device with a temp directory via `os.tmpdir()` that is cleaned up in a `finally` block. Added 5 regression tests for temp directory lifecycle.
 

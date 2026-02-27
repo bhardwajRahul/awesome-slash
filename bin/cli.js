@@ -231,6 +231,19 @@ function loadMarketplace() {
 }
 
 /**
+ * Resolve the source URL string from a plugin's source field.
+ * Handles both legacy string format ("https://...") and the new object
+ * format ({ source: "url", url: "https://..." }) from Claude Code plugin schema.
+ * Returns null for local/bundled sources or missing values.
+ */
+function resolveSourceUrl(source) {
+  if (!source) return null;
+  if (typeof source === 'string') return source;
+  if (typeof source === 'object' && source.url) return source.url;
+  return null;
+}
+
+/**
  * Resolve plugin dependencies transitively.
  *
  * Circular dependencies are expected and handled: the `visiting` Set tracks
@@ -311,10 +324,8 @@ async function fetchPlugin(name, source, version) {
     throw new Error(`Unsupported source format for ${name}: ${source}`);
   }
   owner = match[1];
-  repo = match[2];
+  repo = match[2].replace(/\.git$/, '');
   ref = match[3] || `v${version}`;
-
-  const tarballUrl = `https://api.github.com/repos/${owner}/${repo}/tarball/${ref}`;
 
   console.log(`  Fetching ${name}@${version} from ${owner}/${repo}...`);
 
@@ -324,8 +335,18 @@ async function fetchPlugin(name, source, version) {
   }
   fs.mkdirSync(pluginDir, { recursive: true });
 
-  // Download and extract tarball
-  await downloadAndExtractTarball(tarballUrl, pluginDir);
+  // Download and extract tarball, falling back to main branch if version tag 404s
+  const tarballUrl = `https://api.github.com/repos/${owner}/${repo}/tarball/${ref}`;
+  try {
+    await downloadAndExtractTarball(tarballUrl, pluginDir);
+  } catch (err) {
+    if (ref !== 'main' && err.message && err.message.includes('404')) {
+      const mainUrl = `https://api.github.com/repos/${owner}/${repo}/tarball/main`;
+      await downloadAndExtractTarball(mainUrl, pluginDir);
+    } else {
+      throw err;
+    }
+  }
 
   // Write version marker
   fs.writeFileSync(versionFile, version);
@@ -366,8 +387,10 @@ function downloadAndExtractTarball(url, dest) {
         }
 
         // Use tar command to extract (available on all supported platforms)
+        // On Windows/MSYS2, convert backslash paths to forward slashes for tar
+        const tarDest = process.platform === 'win32' ? dest.replace(/\\/g, '/') : dest;
         const tar = require('child_process').spawn('tar', [
-          'xz', '--strip-components=1', '-C', dest
+          'xz', '--strip-components=1', '-C', tarDest
         ], { stdio: ['pipe', 'inherit', 'pipe'] });
 
         let stderr = '';
@@ -448,14 +471,15 @@ async function fetchExternalPlugins(pluginNames, marketplace) {
     if (!plugin) continue;
 
     // If source is local (starts with ./), plugin is bundled - just use PACKAGE_DIR
-    if (!plugin.source || plugin.source.startsWith('./') || plugin.source.startsWith('../')) {
+    const sourceUrl = resolveSourceUrl(plugin.source);
+    if (!sourceUrl || sourceUrl.startsWith('./') || sourceUrl.startsWith('../')) {
       // Bundled plugin, no fetch needed
       fetched.push(name);
       continue;
     }
 
     try {
-      await fetchPlugin(name, plugin.source, plugin.version);
+      await fetchPlugin(name, sourceUrl, plugin.version);
       fetched.push(name);
     } catch (err) {
       failed.push(name);
@@ -890,11 +914,12 @@ async function installPlugin(nameWithVersion, args) {
   // Fetch all
   for (const depName of toFetch) {
     const dep = pluginMap[depName];
-    if (!dep || !dep.source || dep.source.startsWith('./')) continue;
+    const depSourceUrl = resolveSourceUrl(dep && dep.source);
+    if (!dep || !depSourceUrl || depSourceUrl.startsWith('./')) continue;
     checkCoreCompat(dep);
     const ver = depName === name && requestedVersion ? requestedVersion : dep.version;
     try {
-      await fetchPlugin(depName, dep.source, ver);
+      await fetchPlugin(depName, depSourceUrl, ver);
     } catch (err) {
       console.error(`  [ERROR] Failed to fetch ${depName}: ${err.message}`);
     }
