@@ -799,6 +799,33 @@ describe('Kiro transforms', () => {
       expect(result).toContain('Delegate to the `code-quality` subagent');
       expect(result).toContain('Delegate to the `security` subagent');
     });
+
+    test('transforms Promise.all Task() calls inside code blocks', () => {
+      const input = '---\nname: test\n---\nSpawn reviewers:\n\n```javascript\nconst results = await Promise.all([\n' +
+        "  Task({ subagent_type: 'general-purpose', model: 'sonnet', prompt: `You are a code quality reviewer. Check files.` }),\n" +
+        "  Task({ subagent_type: 'general-purpose', model: 'sonnet', prompt: `You are a security reviewer. Check files.` }),\n" +
+        "  Task({ subagent_type: 'general-purpose', model: 'sonnet', prompt: `You are a performance reviewer. Check files.` }),\n" +
+        "  Task({ subagent_type: 'general-purpose', model: 'sonnet', prompt: `You are a test coverage reviewer. Check files.` })\n" +
+        ']);\n```\n\nDone.';
+      const result = transforms.transformCommandForKiro(input, { pluginInstallPath: '/tmp', name: 'test', description: 'test' });
+      expect(result).toContain('Review phase (Kiro - max 4 agents, fallback to 2 sequential)');
+      expect(result).toContain('reviewer-quality-security');
+      expect(result).toContain('reviewer-perf-test');
+      expect(result).toContain('code quality reviewer');
+      expect(result).toContain('security reviewer');
+      expect(result).not.toContain('```javascript');
+    });
+
+    test('transforms 2 Task() calls in code block without batching', () => {
+      const input = '---\nname: test\n---\n```javascript\nconst r = await Promise.all([\n' +
+        "  Task({ subagent_type: 'deslop-agent', model: 'sonnet', prompt: `Clean slop.` }),\n" +
+        "  Task({ subagent_type: 'test-checker', model: 'sonnet', prompt: `Check tests.` })\n" +
+        ']);\n```';
+      const result = transforms.transformCommandForKiro(input, { pluginInstallPath: '/tmp', name: 'test', description: 'test' });
+      expect(result).toContain('Delegate to the `deslop-agent` subagent');
+      expect(result).toContain('Delegate to the `test-checker` subagent');
+      expect(result).not.toContain('Review phase (Kiro');
+    });
   });
 });
 
