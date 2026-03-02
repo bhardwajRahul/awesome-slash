@@ -949,9 +949,8 @@ function detectInstalledPlatforms() {
   // Cursor rules are project-scoped; detect only if Cursor rules/commands/skills exist in CWD
   const cursorDir = path.join(process.cwd(), '.cursor');
   if (fs.existsSync(path.join(cursorDir, 'rules')) || fs.existsSync(path.join(cursorDir, 'commands')) || fs.existsSync(path.join(cursorDir, 'skills'))) platforms.push('cursor');
-  // Kiro is project-scoped; detect .kiro/ directory in CWD (any content, including fresh workspaces)
-  const kiroDir = path.join(process.cwd(), '.kiro');
-  if (fs.existsSync(kiroDir)) platforms.push('kiro');
+  // Kiro: detect global ~/.kiro/ or project .kiro/
+  if (fs.existsSync(path.join(home, '.kiro')) || fs.existsSync(path.join(process.cwd(), '.kiro'))) platforms.push('kiro');
   return platforms;
 }
 
@@ -1702,12 +1701,13 @@ function installForCursor(installDir, options = {}) {
 function installForKiro(installDir, options = {}) {
   console.log('\n[INSTALL] Installing for Kiro...\n');
   const { filter = null } = options;
-  const cwd = process.cwd();
 
-  // Create target directories (all project-scoped)
-  const skillsDir = path.join(cwd, '.kiro', 'skills');
-  const steeringDir = path.join(cwd, '.kiro', 'steering');
-  const agentsDir = path.join(cwd, '.kiro', 'agents');
+  // Install globally to ~/.kiro/ (same as OpenCode → ~/.config/opencode/, Codex → ~/.codex/)
+  const home = process.env.HOME || process.env.USERPROFILE;
+  const kiroHome = path.join(home, '.kiro');
+  const skillsDir = path.join(kiroHome, 'skills');
+  const steeringDir = path.join(kiroHome, 'steering');
+  const agentsDir = path.join(kiroHome, 'agents');
   fs.mkdirSync(skillsDir, { recursive: true });
   fs.mkdirSync(steeringDir, { recursive: true });
   fs.mkdirSync(agentsDir, { recursive: true });
@@ -1847,7 +1847,7 @@ function installForKiro(installDir, options = {}) {
   console.log(`   Skills: ${skillCount} installed to ${skillsDir}`);
   console.log(`   Steering: ${steeringCount} installed to ${steeringDir}`);
   console.log(`   Agents: ${agentCount} installed to ${agentsDir} (includes 2 combined reviewers)`);
-  console.log('   All content is project-scoped under .kiro/.\n');
+  console.log(`   Global install: ${kiroHome}\n`);
   return true;
 }
 
@@ -1868,7 +1868,7 @@ function removeInstallation() {
   console.log('  - OpenCode: Remove files under ~/.config/opencode/ (commands/*.md, agents/*.md, skills/*/SKILL.md) and ~/.config/opencode/plugins/agentsys.ts');
   console.log('  - Codex: Remove ~/.codex/skills/*/');
   console.log('  - Cursor: Remove .cursor/skills/, .cursor/commands/, and .cursor/rules/agentsys-*.mdc from your project');
-  console.log('  - Kiro: Remove .kiro/skills/, .kiro/steering/, and .kiro/agents/ from your project');
+  console.log('  - Kiro: Remove ~/.kiro/skills/, ~/.kiro/steering/, and ~/.kiro/agents/');
 }
 
 function printSubcommandHelp(subcommand) {

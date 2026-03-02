@@ -468,17 +468,21 @@ describe('installForKiro', () => {
   let tmpDir;
   let originalCwd;
   let originalLog;
+  let originalHome;
 
   beforeEach(() => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'kiro-install-test-'));
     originalCwd = process.cwd();
+    originalHome = process.env.HOME;
     process.chdir(tmpDir);
+    process.env.HOME = tmpDir; // Kiro installs globally to ~/.kiro/
     originalLog = console.log;
     console.log = jest.fn();
   });
 
   afterEach(() => {
     process.chdir(originalCwd);
+    process.env.HOME = originalHome;
     console.log = originalLog;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
