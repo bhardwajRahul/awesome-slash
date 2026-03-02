@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.1] - 2026-03-02
+
+### Fixed
+
+- **Code block Task() transform for Kiro** - Phase 9 reviewer Task() calls inside fenced JavaScript code blocks were not being transformed. Fixed with multiline-anchored fence regex that correctly handles backtick template literals inside code blocks.
+
 ## [5.3.0] - 2026-03-02
 
 ### Added
