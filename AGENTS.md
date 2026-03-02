@@ -190,6 +190,8 @@ Platform-aware state directory:
 - Claude Code: `.claude/`
 - OpenCode: `config/.opencode/`
 - Codex: `.codex/`
+- Cursor: `.cursor/`
+- Kiro: `.kiro/`
 </state-files>
 
 <workflow-agents>
@@ -240,7 +242,7 @@ Cannot skip in /next-task:
 - Use CHANGELOG.md for completion tracking (not summary files)
 - BEFORE starting → Read the relevant checklist (`checklists/*.md`)
 - BEFORE delivering any work, especially releases → Go through that checklist item by item
-- 4 platforms: Claude Code + OpenCode + Codex + Cursor - ALL must work
+- 5 platforms: Claude Code + OpenCode + Codex + Cursor + Kiro - ALL must work
 - Agent/Skill pattern: Agents invoke skills, skills have implementation
 - Create PRs for non-trivial changes
 </end-reminder>

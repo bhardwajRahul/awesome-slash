@@ -24,12 +24,14 @@ Build tools once, run everywhere. The core workflows are the same regardless of 
 | Claude Code | Native plugins | `/` (slash) | [OK] Full support |
 | OpenCode | Plugins + agent configs | `/` (slash) | [OK] Supported |
 | Codex CLI | Skills | `$` (dollar) | [OK] Supported |
+| Cursor | Skills + commands | N/A | [OK] Supported |
+| Kiro | Steering + skills + agents | N/A | [OK] Supported |
 
 > **Note:** Codex CLI uses `$` prefix for skills (e.g., `$next-task`, `$ship`) instead of `/` slash commands.
 
 ## Common Architecture
 
-All four platforms share:
+All five platforms share:
 
 1. **Agent/Subagent systems** - Specialized assistants with tool restrictions
 2. **Slash commands** - User-invoked actions
@@ -303,6 +305,8 @@ State files are stored in platform-specific directories:
 | Claude Code | `.claude/` |
 | OpenCode | `.opencode/` |
 | Codex CLI | `.codex/` |
+| Cursor | `.cursor/` |
+| Kiro | `.kiro/` |
 
 The plugin auto-detects the platform and uses the appropriate directory. Override with `AI_STATE_DIR` environment variable.
 
@@ -336,6 +340,18 @@ The plugin auto-detects the platform and uses the appropriate directory. Overrid
 - OpenAI-native with GPT-5-Codex
 - State directory: `.codex/`
 - Skills in `~/.codex/skills/` (invoked with `$` prefix, e.g., `$next-task`)
+
+### Cursor
+- Project-scoped installation
+- State directory: `.cursor/`
+- Skills in `.cursor/skills/`, commands in `.cursor/commands/`
+
+### Kiro
+- Project-scoped installation
+- State directory: `.kiro/`
+- Steering files in `.kiro/steering/` (commands with `inclusion: manual`)
+- Skills in `.kiro/skills/`, agents in `.kiro/agents/`
+- Reads AGENTS.md and `.kiro/steering/*.md` for instructions
 
 ## Migration Guide
 
