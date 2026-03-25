@@ -634,6 +634,53 @@
             <p class="steps__card-desc">Code, review, cleanup, documentation, PR, CI, merge. All handled. You review the result.</p>
           </div>
         </div>
+
+        <h3 class="how-it-works__subtitle anim-fade-up" data-delay="400" style="margin-top: var(--space-12); text-align: center; font-size: var(--text-lg); color: var(--color-text-secondary);">Every command follows the same pattern: detect, act, verify.</h3>
+
+        <div class="philosophy__grid" style="margin-top: var(--space-8);">
+          <div class="philosophy__card anim-fade-up" data-delay="0">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/prepare-delivery</h3>
+            <p class="philosophy__card-desc">Deslop + simplify + test coverage (parallel) - Config lint (agnix + enhance) - Review loop (4 reviewers, max 5 iterations) - Delivery validation - Docs sync</p>
+          </div>
+          <div class="philosophy__card anim-fade-up" data-delay="100">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/ship</h3>
+            <p class="philosophy__card-desc">Commit - Push + create PR - Wait for auto-reviewers (3 min) - Address every comment - Monitor CI - Merge - Deploy - Cleanup</p>
+          </div>
+          <div class="philosophy__card anim-fade-up" data-delay="200">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/deslop</h3>
+            <p class="philosophy__card-desc">Scan for AI slop (regex + analyzers) - Grade findings by certainty (HIGH/MEDIUM/LOW) - Auto-fix HIGH certainty - Report remaining for review</p>
+          </div>
+          <div class="philosophy__card anim-fade-up" data-delay="300">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/perf</h3>
+            <p class="philosophy__card-desc">Map code paths - Generate hypotheses from git history - Establish baselines - Run controlled experiments - Synthesize evidence-backed recommendations</p>
+          </div>
+          <div class="philosophy__card anim-fade-up" data-delay="400">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/enhance</h3>
+            <p class="philosophy__card-desc">Discover content types - Launch 7 analyzers in parallel (plugin, agent, docs, memory, prompt, hooks, skills) - Aggregate findings - Auto-learn suppressions</p>
+          </div>
+          <div class="philosophy__card anim-fade-up" data-delay="500">
+            <div class="philosophy__card-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="philosophy__card-title">/gate-and-ship</h3>
+            <p class="philosophy__card-desc">/prepare-delivery (all quality gates) - /ship (PR + CI + merge). One command from code-complete to merged PR. Each piece runs independently too.</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -799,16 +846,18 @@
         <h3 class="agents-skills__skills-title anim-fade-up" data-delay="300">40 Skills across 19 Plugins</h3>
         <div class="skills-grid anim-fade-up" data-delay="350">
           <div class="skill-group">
-            <span class="skill-group__label">next-task</span>
+            <span class="skill-group__label">prepare-delivery</span>
             <div class="skill-group__items">
+              <span class="skill-card">prepare-delivery</span>
+              <span class="skill-card">check-test-coverage</span>
               <span class="skill-card">orchestrate-review</span>
-              <span class="skill-card">discover-tasks</span>
               <span class="skill-card">validate-delivery</span>
             </div>
           </div>
           <div class="skill-group">
             <span class="skill-group__label">enhance</span>
             <div class="skill-group__items">
+              <span class="skill-card">enhance-orchestrator</span>
               <span class="skill-card">enhance-agents</span>
               <span class="skill-card">enhance-claudemd</span>
               <span class="skill-card">enhance-docs</span>
@@ -817,7 +866,6 @@
               <span class="skill-card">enhance-prompts</span>
               <span class="skill-card">enhance-skills</span>
               <span class="skill-card">enhance-cross-file</span>
-              <span class="skill-card">enhance-orchestrator</span>
             </div>
           </div>
           <div class="skill-group">
@@ -827,35 +875,54 @@
               <span class="skill-card">benchmark</span>
               <span class="skill-card">profile</span>
               <span class="skill-card">theory-tester</span>
-              <span class="skill-card">code-paths</span>
               <span class="skill-card">theory-gatherer</span>
+              <span class="skill-card">code-paths</span>
               <span class="skill-card">investigation-logger</span>
               <span class="skill-card">perf-analyzer</span>
             </div>
           </div>
           <div class="skill-group">
-            <span class="skill-group__label">other plugins</span>
+            <span class="skill-group__label">next-task</span>
+            <div class="skill-group__items">
+              <span class="skill-card">discover-tasks</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <span class="skill-group__label">web-ctl</span>
+            <div class="skill-group__items">
+              <span class="skill-card">web-auth</span>
+              <span class="skill-card">web-browse</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <span class="skill-group__label">skillers</span>
+            <div class="skill-group__items">
+              <span class="skill-card">recommend</span>
+              <span class="skill-card">skillers-compact</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <span class="skill-group__label">single-skill plugins</span>
             <div class="skill-group__items">
               <span class="skill-card">deslop</span>
               <span class="skill-card">drift-analysis</span>
               <span class="skill-card">repo-intel</span>
               <span class="skill-card">sync-docs</span>
-              <span class="skill-card">learn-topic</span>
-              <span class="skill-card">agnix-lint</span>
+              <span class="skill-card">learn</span>
               <span class="skill-card">consult</span>
               <span class="skill-card">debate</span>
-              <span class="skill-card">web-auth</span>
-              <span class="skill-card">web-browse</span>
-              <span class="skill-card">prepare-delivery</span>
-              <span class="skill-card">gate-and-ship</span>
               <span class="skill-card">release</span>
-              <span class="skill-card">skillers-recommend</span>
-              <span class="skill-card">skillers-compact</span>
               <span class="skill-card">onboard</span>
               <span class="skill-card">can-i-help</span>
-              <span class="skill-card">glidemq-greenfield</span>
-              <span class="skill-card">glidemq-migrate</span>
-              <span class="skill-card">glidemq-optimize</span>
+              <span class="skill-card">audit-project</span>
+            </div>
+          </div>
+          <div class="skill-group">
+            <span class="skill-group__label">glidemq</span>
+            <div class="skill-group__items">
+              <span class="skill-card">glide-mq</span>
+              <span class="skill-card">glide-mq-migrate-bullmq</span>
+              <span class="skill-card">glide-mq-migrate-bee</span>
             </div>
           </div>
         </div>
