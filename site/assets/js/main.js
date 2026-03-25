@@ -837,6 +837,52 @@
         updateHowItWorks(e.detail.index);
       });
     }
+
+    // Inject inline pipeline steps into each command panel so users see them without scrolling
+    var commandPanels = document.querySelectorAll('.commands .tabs__panel');
+    commandPanels.forEach(function (panel, idx) {
+      var data = howItWorksData[idx];
+      if (!data || !data.steps) return;
+
+      var pipeline = document.createElement('div');
+      pipeline.className = 'pipeline-inline';
+
+      var label = document.createElement('p');
+      label.className = 'pipeline-inline__label';
+      label.textContent = 'How it works';
+      pipeline.appendChild(label);
+
+      var stepsRow = document.createElement('div');
+      stepsRow.className = 'pipeline-inline__steps';
+
+      data.steps.forEach(function (step, i) {
+        if (i > 0) {
+          var arrow = document.createElement('span');
+          arrow.className = 'pipeline-inline__arrow';
+          arrow.setAttribute('aria-hidden', 'true');
+          arrow.textContent = '\u2192';
+          stepsRow.appendChild(arrow);
+        }
+        var stepEl = document.createElement('div');
+        stepEl.className = 'pipeline-inline__step';
+        stepEl.setAttribute('title', step.desc);
+
+        var num = document.createElement('span');
+        num.className = 'pipeline-inline__num';
+        num.textContent = i + 1;
+        stepEl.appendChild(num);
+
+        var title = document.createElement('span');
+        title.className = 'pipeline-inline__title';
+        title.textContent = step.title;
+        stepEl.appendChild(title);
+
+        stepsRow.appendChild(stepEl);
+      });
+
+      pipeline.appendChild(stepsRow);
+      panel.appendChild(pipeline);
+    });
   }
 
   // ========================================================================
