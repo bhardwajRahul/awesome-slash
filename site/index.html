@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AgentSys - Agent Runtime &amp; Orchestration System</title>
-  <meta name="description" content="A modular runtime and orchestration system for AI agents. 15 plugins, 35 agents, 32 skills — structured pipelines for Claude Code, OpenCode, Codex CLI, Cursor, and Kiro.">
+  <meta name="description" content="A modular runtime and orchestration system for AI agents. 19 plugins, 47 agents, 40 skills — structured pipelines for Claude Code, OpenCode, Codex CLI, Cursor, and Kiro.">
   <meta name="theme-color" content="#09090b">
 
   <!-- Open Graph -->
   <meta property="og:title" content="AgentSys">
-  <meta property="og:description" content="A modular runtime and orchestration system for AI agents. 15 plugins, 35 agents, 32 skills.">
+  <meta property="og:description" content="A modular runtime and orchestration system for AI agents. 19 plugins, 47 agents, 40 skills.">
   <meta property="og:image" content="https://agent-sh.github.io/agentsys/assets/logo.png">
   <meta property="og:url" content="https://agent-sh.github.io/agentsys/">
   <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AgentSys">
-  <meta name="twitter:description" content="AI workflow automation. 15 plugins, 35 agents, 32 skills.">
+  <meta name="twitter:description" content="AI workflow automation. 19 plugins, 47 agents, 40 skills.">
   <meta name="twitter:image" content="https://agent-sh.github.io/agentsys/assets/logo.png">
 
   <!-- Content Security Policy -->
@@ -109,7 +109,7 @@
       <div class="hero__inner">
         <div class="hero__content">
           <div class="hero__badge anim-fade-in" data-delay="100">
-            15 plugins &middot; 35 agents &middot; 32 skills
+            19 plugins &middot; 47 agents &middot; 40 skills
           </div>
           <h1 class="hero__title anim-fade-up" id="hero-title" data-delay="200">
             A modular <span class="text-gradient">runtime and orchestration system</span><br>
@@ -158,15 +158,15 @@
     <section class="stats" id="stats" aria-label="Project statistics">
       <div class="stats__inner">
         <div class="stats__item">
-          <span class="stats__number" aria-live="polite" data-target="14">0</span>
+          <span class="stats__number" aria-live="polite" data-target="19">0</span>
           <span class="stats__label">Plugins</span>
         </div>
         <div class="stats__item">
-          <span class="stats__number" aria-live="polite" data-target="43">0</span>
+          <span class="stats__number" aria-live="polite" data-target="47">0</span>
           <span class="stats__label">Agents</span>
         </div>
         <div class="stats__item">
-          <span class="stats__number" aria-live="polite" data-target="30">0</span>
+          <span class="stats__number" aria-live="polite" data-target="40">0</span>
           <span class="stats__label">Skills</span>
         </div>
         <div class="stats__item">
@@ -179,7 +179,7 @@
     <!-- ===== COMMANDS ===== -->
     <section class="commands" id="commands" aria-labelledby="commands-title">
       <div class="commands__inner">
-        <h2 class="commands__title anim-fade-up" id="commands-title">13 Commands. One Toolkit.</h2>
+        <h2 class="commands__title anim-fade-up" id="commands-title">20 Commands. One Toolkit.</h2>
         <p class="commands__subtitle anim-fade-up" data-delay="100">Each works standalone. Together, they automate everything.</p>
 
         <div class="commands__tabs anim-fade-up" data-delay="200">
@@ -198,6 +198,12 @@
             <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-11" id="tab-11" tabindex="-1" data-index="11">/consult</button>
             <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-12" id="tab-12" tabindex="-1" data-index="12">/debate</button>
             <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-13" id="tab-13" tabindex="-1" data-index="13">/web-ctl</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-14" id="tab-14" tabindex="-1" data-index="14">/prepare-delivery</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-15" id="tab-15" tabindex="-1" data-index="15">/gate-and-ship</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-16" id="tab-16" tabindex="-1" data-index="16">/release</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-17" id="tab-17" tabindex="-1" data-index="17">/skillers</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-18" id="tab-18" tabindex="-1" data-index="18">/onboard</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="tab-panel-19" id="tab-19" tabindex="-1" data-index="19">/can-i-help</button>
           </div>
 
           <!-- Tab panels -->
@@ -466,6 +472,120 @@
 <span class="code-prompt">$</span> /web-ctl auth github --url https://github.com/login    <span class="code-comment"># Auth handoff</span></code></pre>
             </div>
           </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-14" aria-labelledby="tab-14" hidden>
+            <h3 class="tabs__panel-name">/prepare-delivery</h3>
+            <p class="tabs__panel-tagline">Pre-ship quality gates</p>
+            <ul class="tabs__panel-features">
+              <li>Deslop, simplify, review loop, delivery validation, docs sync</li>
+              <li>Conditional agnix + enhance for config changes</li>
+              <li>Works standalone or as part of /next-task</li>
+              <li>Does not ship - use /gate-and-ship for full pipeline</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/prepare-delivery                # Run all quality gates
+/prepare-delivery --skip-review  # Skip review loop">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /prepare-delivery                <span class="code-comment"># Run all quality gates</span>
+<span class="code-prompt">$</span> /prepare-delivery --skip-review  <span class="code-comment"># Skip review loop</span></code></pre>
+            </div>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-15" aria-labelledby="tab-15" hidden>
+            <h3 class="tabs__panel-name">/gate-and-ship</h3>
+            <p class="tabs__panel-tagline">Quality gates then ship</p>
+            <ul class="tabs__panel-features">
+              <li>Chains /prepare-delivery then /ship</li>
+              <li>One command from code-complete to merged PR</li>
+              <li>All flags forwarded to sub-commands</li>
+              <li>Each piece runs independently too</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/gate-and-ship                # Full pipeline
+/gate-and-ship --base=develop # Custom base branch">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /gate-and-ship                <span class="code-comment"># Full pipeline</span>
+<span class="code-prompt">$</span> /gate-and-ship --base=develop <span class="code-comment"># Custom base branch</span></code></pre>
+            </div>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-16" aria-labelledby="tab-16" hidden>
+            <h3 class="tabs__panel-name">/release</h3>
+            <p class="tabs__panel-tagline">Versioned release with ecosystem detection</p>
+            <ul class="tabs__panel-features">
+              <li>Auto-detects: npm, cargo, go, python, maven, gradle</li>
+              <li>Discovers release tools (semantic-release, goreleaser, etc.)</li>
+              <li>Pre-release health check with repo-intel</li>
+              <li>Tag, publish, create GitHub release</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/release              # Create release
+/release --dry-run    # Preview without publishing">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /release              <span class="code-comment"># Create release</span>
+<span class="code-prompt">$</span> /release --dry-run    <span class="code-comment"># Preview without publishing</span></code></pre>
+            </div>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-17" aria-labelledby="tab-17" hidden>
+            <h3 class="tabs__panel-name">/skillers</h3>
+            <p class="tabs__panel-tagline">Learn from your workflow patterns</p>
+            <ul class="tabs__panel-features">
+              <li>Reads transcripts from Claude Code, Codex, OpenCode</li>
+              <li>Clusters patterns into themed knowledge</li>
+              <li>Suggests skills, hooks, and agents to automate repetitive work</li>
+              <li>No per-turn overhead - works from saved transcripts</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/skillers            # Analyze workflow patterns
+/skillers compact    # Compact transcripts into knowledge">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /skillers            <span class="code-comment"># Analyze workflow patterns</span>
+<span class="code-prompt">$</span> /skillers compact    <span class="code-comment"># Compact transcripts into knowledge</span></code></pre>
+            </div>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-18" aria-labelledby="tab-18" hidden>
+            <h3 class="tabs__panel-name">/onboard</h3>
+            <p class="tabs__panel-tagline">Codebase orientation for newcomers</p>
+            <ul class="tabs__panel-features">
+              <li>Automated project data collection</li>
+              <li>Interactive guided tour of the codebase</li>
+              <li>Identifies key files, patterns, conventions</li>
+              <li>Works on any codebase - no setup required</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/onboard            # Full onboarding tour
+/onboard --quick    # Quick overview">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /onboard            <span class="code-comment"># Full onboarding tour</span>
+<span class="code-prompt">$</span> /onboard --quick    <span class="code-comment"># Quick overview</span></code></pre>
+            </div>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="tab-panel-19" aria-labelledby="tab-19" hidden>
+            <h3 class="tabs__panel-name">/can-i-help</h3>
+            <p class="tabs__panel-tagline">Find where to contribute</p>
+            <ul class="tabs__panel-features">
+              <li>Matches developer skills to project needs</li>
+              <li>Finds test gaps, stale docs, open issues</li>
+              <li>Good-first-task identification</li>
+              <li>Uses repo-intel for data-driven suggestions</li>
+            </ul>
+            <div class="code-block">
+              <button class="code-block__copy" aria-label="Copy code to clipboard" data-code="/can-i-help                      # Find contribution opportunities
+/can-i-help --skills=typescript  # Match specific skills">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 010 1.5h-1.5a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-1.5a.75.75 0 011.5 0v1.5A1.75 1.75 0 019.25 16h-7.5A1.75 1.75 0 010 14.25v-7.5z"/><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0114.25 11h-7.5A1.75 1.75 0 015 9.25v-7.5zm1.75-.25a.25.25 0 00-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 00.25-.25v-7.5a.25.25 0 00-.25-.25h-7.5z"/></svg>
+              </button>
+              <pre><code><span class="code-prompt">$</span> /can-i-help                      <span class="code-comment"># Find contribution opportunities</span>
+<span class="code-prompt">$</span> /can-i-help --skills=typescript  <span class="code-comment"># Match specific skills</span></code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -536,7 +656,7 @@
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
             <h3 class="philosophy__card-title">One agent, one job, done well</h3>
-            <p class="philosophy__card-desc"><span class="text-accent">43 specialized agents</span>, each with a narrow scope and clear success criteria. No agent tries to do everything.</p>
+            <p class="philosophy__card-desc"><span class="text-accent">47 specialized agents</span>, each with a narrow scope and clear success criteria. No agent tries to do everything.</p>
           </div>
           <div class="philosophy__card anim-fade-up" data-delay="200">
             <div class="philosophy__card-icon">
@@ -591,14 +711,14 @@
     <!-- ===== AGENTS & SKILLS ===== -->
     <section class="agents-skills" id="agents-skills" aria-labelledby="as-title">
       <div class="agents-skills__inner">
-        <h2 class="agents-skills__title anim-fade-up" id="as-title">43 Agents. 30 Skills.</h2>
+        <h2 class="agents-skills__title anim-fade-up" id="as-title">47 Agents. 40 Skills.</h2>
         <p class="agents-skills__subtitle anim-fade-up" data-delay="100">Right model for the task. Opus reasons. Sonnet validates. Haiku executes.</p>
 
         <!-- Agent tier tabs -->
         <div class="agents-skills__tabs anim-fade-up" data-delay="200">
           <div class="agent-tabs" role="tablist" aria-label="Agent tiers">
-            <button class="agent-tabs__tab agent-tabs__tab--active" role="tab" aria-selected="true" aria-controls="agent-tier-opus" id="agent-tab-opus" data-index="0">Opus <span class="agent-tabs__count">14</span></button>
-            <button class="agent-tabs__tab" role="tab" aria-selected="false" aria-controls="agent-tier-sonnet" id="agent-tab-sonnet" tabindex="-1" data-index="1">Sonnet <span class="agent-tabs__count">15</span></button>
+            <button class="agent-tabs__tab agent-tabs__tab--active" role="tab" aria-selected="true" aria-controls="agent-tier-opus" id="agent-tab-opus" data-index="0">Opus <span class="agent-tabs__count">15</span></button>
+            <button class="agent-tabs__tab" role="tab" aria-selected="false" aria-controls="agent-tier-sonnet" id="agent-tab-sonnet" tabindex="-1" data-index="1">Sonnet <span class="agent-tabs__count">18</span></button>
             <button class="agent-tabs__tab" role="tab" aria-selected="false" aria-controls="agent-tier-haiku" id="agent-tab-haiku" tabindex="-1" data-index="2">Haiku <span class="agent-tabs__count">4</span></button>
             <button class="agent-tabs__tab" role="tab" aria-selected="false" aria-controls="agent-tier-specialists" id="agent-tab-specialists" tabindex="-1" data-index="3">Specialists <span class="agent-tabs__count">10</span></button>
           </div>
@@ -620,6 +740,7 @@
               <div class="agent-card"><span class="agent-card__name">prompt-enhancer</span><span class="tier-badge tier-badge--opus">opus</span><p class="agent-card__desc">Prompt engineering best practices</p></div>
               <div class="agent-card"><span class="agent-card__name">skills-enhancer</span><span class="tier-badge tier-badge--opus">opus</span><p class="agent-card__desc">Skill definition quality analysis</p></div>
               <div class="agent-card"><span class="agent-card__name">debate-orchestrator</span><span class="tier-badge tier-badge--opus">opus</span><p class="agent-card__desc">Structured adversarial debate coordination</p></div>
+              <div class="agent-card"><span class="agent-card__name">skillers-recommender</span><span class="tier-badge tier-badge--opus">opus</span><p class="agent-card__desc">Workflow pattern analysis and automation suggestions</p></div>
             </div>
           </div>
 
@@ -641,6 +762,9 @@
               <div class="agent-card"><span class="agent-card__name">agnix-agent</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Agent config linting orchestration</p></div>
               <div class="agent-card"><span class="agent-card__name">consult-agent</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Cross-tool AI consultation orchestration</p></div>
               <div class="agent-card"><span class="agent-card__name">web-session</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Browser automation and session management</p></div>
+              <div class="agent-card"><span class="agent-card__name">skillers-compactor</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Transcript compaction into knowledge themes</p></div>
+              <div class="agent-card"><span class="agent-card__name">release-agent</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Versioned release with ecosystem detection</p></div>
+              <div class="agent-card"><span class="agent-card__name">onboard-agent</span><span class="tier-badge tier-badge--sonnet">sonnet</span><p class="agent-card__desc">Codebase orientation and guided onboarding</p></div>
             </div>
           </div>
 
@@ -672,7 +796,7 @@
         </div>
 
         <!-- Skills grid -->
-        <h3 class="agents-skills__skills-title anim-fade-up" data-delay="300">30 Skills across 14 Plugins</h3>
+        <h3 class="agents-skills__skills-title anim-fade-up" data-delay="300">40 Skills across 19 Plugins</h3>
         <div class="skills-grid anim-fade-up" data-delay="350">
           <div class="skill-group">
             <span class="skill-group__label">next-task</span>
@@ -693,6 +817,7 @@
               <span class="skill-card">enhance-prompts</span>
               <span class="skill-card">enhance-skills</span>
               <span class="skill-card">enhance-cross-file</span>
+              <span class="skill-card">enhance-orchestrator</span>
             </div>
           </div>
           <div class="skill-group">
@@ -721,6 +846,16 @@
               <span class="skill-card">debate</span>
               <span class="skill-card">web-auth</span>
               <span class="skill-card">web-browse</span>
+              <span class="skill-card">prepare-delivery</span>
+              <span class="skill-card">gate-and-ship</span>
+              <span class="skill-card">release</span>
+              <span class="skill-card">skillers-recommend</span>
+              <span class="skill-card">skillers-compact</span>
+              <span class="skill-card">onboard</span>
+              <span class="skill-card">can-i-help</span>
+              <span class="skill-card">glidemq-greenfield</span>
+              <span class="skill-card">glidemq-migrate</span>
+              <span class="skill-card">glidemq-optimize</span>
             </div>
           </div>
         </div>
