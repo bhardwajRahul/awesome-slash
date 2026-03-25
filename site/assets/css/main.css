@@ -1006,6 +1006,7 @@
 @media (min-width: 768px) {
   .steps {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
     gap: var(--space-4);

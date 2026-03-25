@@ -686,11 +686,9 @@
       14: {
         subtitle: 'Five quality gates. Zero shortcuts.',
         steps: [
-          { title: 'Clean and simplify', desc: 'Deslop, simplify, and test-coverage-checker run in parallel. AI slop removed, code simplified, test gaps flagged.' },
-          { title: 'Lint configs', desc: 'If changes touch agent/skill/plugin files, runs agnix (342 rules) and /enhance in parallel. Auto-fixes applied.' },
-          { title: 'Review loop', desc: '4 core reviewers (code quality, security, performance, tests) plus conditional specialists. Max 5 iterations with stall detection.' },
-          { title: 'Validate delivery', desc: 'Tests pass, build passes, requirements met, diff-risk scored. Blocks shipping if any mandatory check fails.' },
-          { title: 'Sync docs', desc: 'Finds stale references, updates CHANGELOG, fixes version numbers. Documentation matches code before the PR.' }
+          { title: 'Clean and lint', desc: 'Deslop + simplify + test-coverage run in parallel. Then agnix and /enhance lint any changed agent configs.' },
+          { title: 'Review and validate', desc: '4 core reviewers iterate until clean (max 5 rounds). Then delivery-validator checks tests, build, and requirements.' },
+          { title: 'Sync docs and ship', desc: 'Documentation synced with code changes. Ready for /ship or /gate-and-ship to create the PR.' }
         ]
       },
       15: {
@@ -777,7 +775,8 @@
         num.textContent = i + 1;
         card.appendChild(num);
 
-        card.appendChild(stepIconTemplates[i].content.cloneNode(true));
+        var tpl = stepIconTemplates[i % stepIconTemplates.length];
+        if (tpl) card.appendChild(tpl.content.cloneNode(true));
 
         var title = document.createElement('h3');
         title.className = 'steps__card-title';
