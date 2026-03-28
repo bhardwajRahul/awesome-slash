@@ -41,7 +41,7 @@
 AI models can write code. That's not the hard part anymore. The hard part is everything around it — task selection, branch management, code review, artifact cleanup, CI, PR comments, deployment. **AgentSys is the runtime that orchestrates agents to handle all of it** — structured pipelines, gated phases, specialized agents, and persistent state that survives session boundaries.
 
 ---
-> Building custom skills, agents, hooks, or MCP tools? [agnix](https://github.com/agent-sh/agnix) is the CLI + LSP linter that catches config errors before they fail silently - real-time IDE validation, auto suggestions, auto-fix, and 342 rules for Claude Code, Codex, OpenCode, Cursor, Kiro, Copilot, Gemini CLI, Cline, Windsurf, Roo Code, Amp, and more.
+> Building custom skills, agents, hooks, or MCP tools? [agnix](https://github.com/agent-sh/agnix) is the CLI + LSP linter that catches config errors before they fail silently - real-time IDE validation, auto suggestions, auto-fix, and 385 rules for Claude Code, Codex, OpenCode, Cursor, Kiro, Copilot, Gemini CLI, Cline, Windsurf, Roo Code, Amp, and more.
 
 ## What This Is
 
@@ -118,7 +118,7 @@ The investment shifts from model spend to pipeline design. Better prompts, riche
 | [`/next-task`](#next-task) | Task workflow: discovery, implementation, PR, merge |
 | [`/prepare-delivery`](#prepare-delivery) | Pre-ship quality gates: deslop, review, validation, docs sync |
 | [`/gate-and-ship`](#gate-and-ship) | Quality gates then ship (/prepare-delivery + /ship) |
-| [`/agnix`](#agnix) | Lint agent configurations (342 rules) |
+| [`/agnix`](#agnix) | Lint agent configurations (385 rules) |
 | [`/ship`](#ship) | PR creation, CI monitoring, merge |
 | [`/deslop`](#deslop) | Clean AI slop patterns |
 | [`/perf`](#perf) | Performance investigation with baselines and profiling |
@@ -328,7 +328,7 @@ agnix catches these issues before they cause problems.
 | **Best Practices** | Tool restrictions, model selection, trigger phrase quality |
 | **Cross-Platform** | Compatibility across Claude Code, Codex, OpenCode, Cursor, Kiro, Copilot, Gemini CLI, Cline, Windsurf, Roo Code, Amp, and more |
 
-**342 validation rules** (102 auto-fixable) derived from:
+**385 validation rules** (102 auto-fixable) derived from:
 - Official tool specifications (Claude Code, Codex CLI, OpenCode, Cursor, Kiro, GitHub Copilot, Gemini CLI, Cline, Windsurf, Roo Code, Amp, and more)
 - Research papers on agent reliability and prompt injection
 - Real-world testing across 500+ repositories

@@ -135,7 +135,7 @@ The package provides these capabilities through commands, agents, and skills:
 | Documentation | `/sync-docs` | Sync docs with code changes |
 | Drift detection | `/drift-detect` | Plan vs implementation analysis |
 | Code review | `/audit-project` | Multi-agent code review |
-| Config linting | `/agnix` | Lint agent configurations (342 rules) |
+| Config linting | `/agnix` | Lint agent configurations (385 rules) |
 | Research | `/learn` | Research topics, create learning guides |
 | AI consultation | `/consult` | Cross-tool AI consultation |
 | AI debate | `/debate` | Structured debate between AI tools |

@@ -160,7 +160,7 @@
         "source": "url",
         "url": "https://github.com/agent-sh/agnix.git"
       },
-      "description": "Lint agent configuration files (SKILL.md, CLAUDE.md, hooks, MCP) against 342 rules across 10+ AI tools",
+      "description": "Lint agent configuration files (SKILL.md, CLAUDE.md, hooks, MCP) against 385 rules across 10+ AI tools",
       "version": "1.0.0",
       "category": "development",
       "homepage": "https://github.com/agent-sh/agnix"
