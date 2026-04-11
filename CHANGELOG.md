@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.8.3] - 2026-04-11
+
+### Fixed
+- **next-task v1.1.1** - SubagentStop hook now only fires during active /next-task workflows, not on every subagent stop (agent-sh/agentsys#325). Cross-platform guard script replaces unconditional prompt injection that wasted 136K+ tokens per unrelated agent.
+
+### Changed
+- Bump next-task marketplace version to 1.1.1
+
 ## [5.8.2] - 2026-04-11
 
 ### Added
