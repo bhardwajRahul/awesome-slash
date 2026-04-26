@@ -9,6 +9,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.10.0] - 2026-04-26
+
+### Security
+- **Marketplace supply-chain hardening** (#347) - pin every `source: "url"` sub-plugin entry in `.claude-plugin/marketplace.json` to an immutable commit SHA (plus release tag when one exists) instead of tracking default branches. Unpinned `source: "url"` entries previously let `claude plugin install` follow the remote's default branch, meaning any sub-plugin compromise would ship code to every user on their next install. New `scripts/pin-marketplace.js` resolves `v<version>` tags to commit SHAs via `gh api repos/.../git/ref/tags/<tag>` (annotated tags are dereferenced to the underlying commit), rejects ambiguous array responses, and falls back to default-branch HEAD SHA when the desired tag does not yet exist. Covered by `__tests__/pin-marketplace.test.js`.
+- **Reusable CI workflow SHA-pinned** (#347) - `agent-sh/.github/.github/workflows/agnix.yml@main` pinned to an explicit commit SHA so a compromise of the shared workflows repo cannot silently change agentsys's CI behavior.
+- **Release workflow shell injection hardening** (#347) - replaced 5 shell blocks that interpolated `${{ inputs.version }}` / `${{ github.event.inputs.* }}` directly into bash with `env:` block wiring; values are now read as shell variables so a malicious tag/input cannot break out of the command string.
+- **Removed self-referential npm dependency** (#347) - the `"agentsys": "^5.0.0"` entry in `package.json` / `package-lock.json` had no functional purpose and could confuse resolvers.
+- **`agent-analyzer` binary downloader security** (#350, synced from agent-core) - `lib/binary/index.js` now requires a matching `.sha256` sidecar, computes and verifies SHA-256 before extraction (with an explicit `skipChecksum` escape hatch for local dev), and extracts into an isolated scratch directory with archive-path-traversal defenses: reject absolute paths, UNC paths, drive letters, `..` segments, and symlinks; copy only the expected binary into the final install location; scrub the scratch tree afterward. Windows extraction moved from `Expand-Archive` command strings to a `-File` PowerShell script with env-var argument passing so paths containing spaces are handled safely. Covered by `lib/binary/index.test.js`.
+
+### Changed
+- **Marketplace pins upgraded to release tags** - post-#347, re-ran `scripts/pin-marketplace.js` after the downstream plugins cut tagged releases:
+  - `agnix`: default-branch SHA -> `v0.22.1` (tag + commit)
+  - `web-ctl`: default-branch SHA -> `v1.1.0` (tag + commit)
+  - `ship`: default-branch SHA -> `v1.1.1` (tag + commit)
+  - Running totals: 7 plugins pinned to tag + SHA, 13 still on default-branch SHA pending their first release tag.
+- Bumped `version` fields in `marketplace.json` for `agnix`, `web-ctl`, and `ship` to match the latest published tags so future `pin-marketplace.js` runs resolve to the correct refs.
+
 ## [5.9.1] - 2026-04-26
 
 ### Changed
