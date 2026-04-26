@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [5.12.0] - 2026-04-26
+
+### Propagated upstream releases
+- agent-core v0.4.4 (fixer.js symlink + TOCTOU) -> v0.4.5 (client-side SLSA verification + sync allowlist) synced into all 13 consumers.
+- agent-analyzer v0.8.0 -> v0.8.1 (cargo-deny CI).
+- prepare-delivery v0.1.2, audit-project v1.0.2 (reviewer-contract markers + orchestrator blocked handling).
+
 ## [5.11.0] - 2026-04-26
 
 ### Changed
